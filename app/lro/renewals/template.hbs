@@ -1,3 +1,19 @@
-<section class="renewal-mgmt">
-	{{outlet}}
+<div class="section-menu">
+	{{fa-icon "recycle" fixedWidth=true}}
+	<div class="hamburger" {{action 'toggleSectionMenu'}}>
+		{{fa-icon "bars"}}
+	</div>
+	<div class="menu {{if showMenu 'show'}}">
+		<div class="active">
+			<div>
+				Renewal Manager
+			</div>
+		</div>
+	</div>
+</div>
+<section class="module-content">
+	<section class="renewal-mgmt">
+		{{outlet}}
+	</section>
 </section>
+
