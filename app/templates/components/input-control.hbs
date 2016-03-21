@@ -1,0 +1,16 @@
+<div class="input-control">
+	<div class="label {{orientation}}">{{label}}</div>
+	<div class="control {{orientation}}">
+		{{#if isText}}
+			{{input type="text" value=value}}
+		{{else if isCal}}
+
+		{{else if isToggle}}
+			{{ios-toggle toggleOnly=true orientation=orientation switched=value}}
+		{{else if isList}}
+			{{dropdown-list content=content selectedObject=value}}
+		{{else if isNumber}}
+			{{input type="number" min=config.min max=config.max step=config.step value=value}}
+		{{/if}}
+	</div>
+</div>

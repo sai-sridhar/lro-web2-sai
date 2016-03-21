@@ -1,0 +1,106 @@
+<div class="new-pricing">
+    <section class="control-wrapper">
+        {{community-select communities=communities community=community}}
+        <div class="filter-button" {{action "toggleFilters"}}><i class="fa fa-filter"></i></div>
+
+        <div class="filter-wrapper {{if showFilters 'show'}}">
+            <div class="filter">
+                <div class="label">Pricing Date</div>
+                {{date-picker startDate=startDate endDate=endDate currentDate=currentDate viewportHeight="216" rowHeight="36"}}
+            </div>
+            {{!-- <div class="filter mobile-only">
+                <div class="label">LRO Unit Type</div>
+                <div class="selected">All</div>
+            </div> --}}
+
+            <div class="filter">
+                <div class="label">PMS Unit Type</div>
+                <div class="selected">All</div>
+            </div>
+            <div class="filter">
+                <div class="label">Max Price <span class="blue"><b>${{format-commas userPrice}}</b></span></div>
+                {{input type="range" min=minPrice max=maxPrice step="5" value=userPrice}}
+            </div>
+            <div class="filter no-mobile">
+                {{column-select-menu showColumns=showColumns}}
+            </div>
+            <button {{action "toggleFilters"}} class="width-200 apply-filters">Apply Filters</button>
+        </div>
+        <div class="search-wrapper float-right">
+            <div class="search-control">
+                {{input type="search" placeholder="Search" value=searchText}}
+            </div>
+        </div>
+    </section>
+    <section class="ut-wrapper no-mobile">
+        <a {{action "clearUtFilter"}}><b>Clear Filters</b></a>
+        {{#each summarizedContent as |ut|}}
+            <div class="metric-box available {{if ut.active 'active'}}" {{action "filterUnitTypes" ut}}>
+                <div class="title left">{{ut.unitType}}</div>
+                <div class="metric {{if ut.active 'active' 'blue'}}">{{ut.count}}</div>
+                <div class="label">
+                    {{#if ut.oneUnit}}
+                        Unit
+                    {{else}}
+                        Units
+                    {{/if}}
+                </div>
+                <div class="sub-metric">
+                    {{#if ut.oneUnit}}
+                        ${{format-commas ut.minRent}}
+                    {{else}}
+                        ${{format-commas ut.minRent}} - ${{format-commas ut.maxRent}}
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+    </section>
+    <section class="table-wrapper">
+    	<table>
+			<thead>
+          		<tr>
+            		<th>Unit ID</th>
+            		<th>Status</th>
+            		<th>Available</th>
+            		{{#if hbsShowColumns.pmsUnitType.show}}<th class="no-mobile">PMS Unit Type</th>{{/if}}
+                    <th>Term</th>
+            		<th class="number">Effective Rent</th>
+		            {{#if hbsShowColumns.sf.show}}<th class="no-mobile">SF</th>{{/if}}
+		            {{#if hbsShowColumns.moveout.show}}<th class="no-mobile">Moveout</th>{{/if}}
+		            {{#if hbsShowColumns.priorRent.show}}<th class="number no-mobile">Prior Rent</th>{{/if}}
+		            {{#if hbsShowColumns.baseRent.show}}<th class="number no-mobile">Base Rent</th>{{/if}}
+		            {{#if hbsShowColumns.totalConcession.show}}<th class="number no-mobile">Total Conc.</th>{{/if}}
+		            {{#if hbsShowColumns.amenityAmount.show}}<th class="number no-mobile">Amen. Amt.</th>{{/if}}
+		            {{#if hbsShowColumns.offset.show}}<th class="number no-mobile">Offset</th>{{/if}}
+		            {{#if hbsShowColumns.amenities.show}}<th class="no-mobile">Amenities</th>{{/if}}
+          		</tr>
+        	</thead>
+        	<tbody>
+                {{#each groupedContent as |ut|}}
+                    <tr>
+                        <td colspan=99 class="grouper">{{ut.unitType}} ({{ut.unitCategory}})</td>
+                    </tr>
+                    {{#each ut.units as |unit|}}
+                		{{#link-to 'lro.pricingLeasing.community.new.unit' unit.id tagName='tr'}}
+                			<td>{{unit.unitNumber}}</td>
+                			<td>{{unit.status}}</td>
+                			<td>{{format-date unit.available}}</td>
+                            {{#if hbsShowColumns.pmsUnitType.show}}<td class="no-mobile">{{unit.pmsUnitType}}</td>{{/if}}
+                			<td>{{unit.leaseTerm}}</td>
+                			<td>${{format-commas unit.effectiveRent}}</td>
+                            {{#if hbsShowColumns.sf.show}}<td class="no-mobile">{{format-commas unit.sf}}</td>{{/if}}
+                            {{#if hbsShowColumns.moveout.show}}<td class="no-mobile">{{format-date unit.moveout}}</td>{{/if}}
+                            {{#if hbsShowColumns.priorRent.show}}<td class="number no-mobile">${{format-commas unit.priorRent}}</td>{{/if}}
+                            {{#if hbsShowColumns.baseRent.show}}<td class="number no-mobile">${{format-commas unit.baseRent}}</td>{{/if}}
+                            {{#if hbsShowColumns.totalConcession.show}}<td class="number no-mobile">${{format-commas unit.totalConcession}}</td>{{/if}}
+                            {{#if hbsShowColumns.amenityAmount.show}}<td class="number no-mobile">${{format-commas unit.amenityAmount}}</td>{{/if}}
+                            {{#if hbsShowColumns.offset.show}}<td class="number no-mobile">${{format-commas unit.offset}}</td>{{/if}}
+                            {{#if hbsShowColumns.amenities.show}}<td class="left no-mobile">{{unit.amenities}}</td>{{/if}}
+                		{{/link-to}}
+                    {{/each}}
+                {{/each}}
+        	</tbody>
+      	</table>
+    </section>
+   	{{outlet}}
+</div>

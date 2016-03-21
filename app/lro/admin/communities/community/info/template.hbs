@@ -1,0 +1,95 @@
+<div class="scroll-content">
+	<section class="two-col">
+		<div>
+			<p>
+				<div class="label">Community Name</div>
+				{{input value=model.name}}
+			</p>
+			<p>
+				<div class="label">Community Code</div>
+				{{input value=model.code}}
+			</p>
+			<p>
+				<div class="label">Country</div>
+				{{input value=model.country}}
+			</p>
+			<p>
+				<div class="label">Address 1</div>
+				{{input value=model.address1}}
+			</p>
+			<p>
+				<div class="label">Address 2</div>
+				{{input value=model.address2}}
+			</p>
+			<p>
+				<div class="label">City</div>
+				{{input value=model.city}}
+			</p>
+			<p>
+				<div class="label">State</div>
+				{{input value=model.state}}
+			</p>
+			<p>
+				<div class="label">Zip/Postal Code</div>
+				{{input value=model.zip}}
+			</p>
+			<p>
+				<div class="label">Management Company</div>
+				{{input value=model.mgmtCompany}}
+			</p>
+			<p>
+				<div class="label">Owner Company</div>
+				{{input value=model.ownerCompany}}
+			</p>
+		</div
+		><div>
+			<p>
+				<div class="label">Point of Contact</div>
+				{{input value=model.poc}}
+			</p>
+			<p>
+				<div class="label">Email</div>
+				{{input value=model.email}}
+			</p>
+			<p>
+				<div class="label">Phone</div>
+				{{input value=model.phone}}
+			</p>
+			<p>
+				<div class="label">Website</div>
+				{{input value=model.website}}
+			</p>
+			<p>
+				<div class="label">Year Built</div>
+				{{input value=model.yearBuilt}}
+			</p>
+			<p>
+				<div class="label">Year Renovated</div>
+				{{input value=model.yearRenovated}}
+			</p>
+			<p>
+				<div class="label">Property Size</div>
+				{{input value=model.propertySize}}
+			</p>
+			<p>
+				<div class="label">Floors</div>
+				{{input value=model.floors}}
+			</p>
+			<p>
+				<div class="label">Units</div>
+				{{input value=model.units}}
+			</p>
+		</div>
+	</section>
+</div>
+<div class="fixed-footer">
+	<button {{action "saveCommunityInfo"}} class="with-icon float-right">
+		{{#if isSaving}}
+			<i class="fa fa-spinner fa-spin"></i>
+			Saving...
+		{{else}}
+			<i class="fa fa-check"></i>
+			Save
+		{{/if}}
+	</button>
+</div>

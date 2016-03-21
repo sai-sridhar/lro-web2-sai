@@ -1,0 +1,41 @@
+<div class="section-menu">
+	<i class="fa fa-tint fa-fw"></i>
+	<div class="hamburger" {{action 'toggleSectionMenu'}}>
+		<i class="fa fa-bars"></i>
+	</div>
+	<div class="menu {{if showMenu 'show'}}">
+		{{#link-to 'lro.pricingLeasing.community.new' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				New Pricing
+			</div>
+		{{/link-to}}
+		{{!-- {{#link-to 'lro.pricingLeasing.community.renewals' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Renewals
+			</div>
+		{{/link-to}} --}}
+		{{#link-to 'lro.pricingLeasing.community.ptr' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Pricing Trend Report
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.pricingLeasing.community.competitors' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Competitors
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.pricingLeasing.community.charts' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Charts
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.pricingLeasing.community.utilities' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Utilities
+			</div>
+		{{/link-to}}
+	</div>
+</div>
+<section class="module-content">
+	{{outlet}}
+</section>

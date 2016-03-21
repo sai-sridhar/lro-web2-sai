@@ -1,0 +1,97 @@
+<div class="detail-drawer new-pricing-drawer">
+	<div class="fixed-header">
+		{{#link-to 'lro.pricingLeasing.community.new' tagName="div" class="close"}}<i class="fa fa-times"></i>{{/link-to}}
+		<div class="unit-header"><h1><b>Unit ID {{model.unitNumber}}</b></h1></div>
+	</div>
+	<div class="scroll-content">
+		<div class="button-wrapper"></div>
+		<div class="data-point-wrapper">
+			<div>
+				<div class="label">Unit Category</div>
+				<div class="value">{{model.unitCategory}}</div>
+			</div>
+			<div>
+				<div class="label">Unit Type</div>
+				<div class="value">{{model.unitType}}</div>
+			</div>
+		</div>
+		<div class="data-point-wrapper">
+			<div>
+				<div class="label">Unit Status</div>
+				<div class="value">{{model.status}}</div>
+			</div>
+			<div>
+				<div class="label">PMS Unit Type</div>
+				<div class="value">{{model.pmsUnitType}}</div>
+			</div>
+		</div>
+		<div class="data-point-wrapper">
+			<div>
+				<div class="label">Available Date</div>
+				<div class="value">{{format-date model.available}}</div>
+			</div>
+			<div>
+				<div class="label">Optimal Rent</div>
+				<div class="value">{{model.leaseTerm}} @ ${{format-commas model.effectiveRent}}</div>
+			</div>
+		</div>
+		<div class="data-point-wrapper">
+			<div >
+				<div class="label">Moveout Date</div>
+				<div class="value">{{format-date model.moveout}}</div>
+			</div>
+			<div>
+				<div class="label">Prior Rent</div>
+				<div class="value">${{format-commas model.priorRent}}</div>
+			</div>
+		</div>
+		<div class="data-point-wrapper">
+			<div class="single">
+				<div class="label">Amenities</div>
+				<div class="value">{{model.amenities}}</div>
+			</div>
+		</div>
+		<div class="data-point-wrapper">
+			<div>
+				<div class="label">Square Footage</div>
+				<div class="value">{{format-commas model.sf}}</div>
+			</div>
+			<div>
+				<div class="label">Amenity Amount</div>
+				<div class="value">${{format-commas model.amenityAmount}}</div>
+			</div>
+		</div>
+		<div class="lease-terms">
+			<div class="title">Available Lease Terms</div>
+			<div class="move-in">
+				Desired Move-in Date: {{input type="date" value=model.moveInDate min=model.moveInDateMin}}
+			</div>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							{{!-- <th>Term</th>
+							{{#if hbsShowColumns.baseRent.show}}<th>Base Rent</th>{{/if}}
+							{{#if hbsShowColumns.totalConcession.show}}<th>Concession</th>{{/if}}
+							<th>Effective Rent</th> --}}
+							<th>Term</th>
+							<th>Base Rent</th>
+							<th>Concession</th>
+							<th>Effective Rent</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each model.leaseTerms as |t|}}
+							<tr >
+								<td>{{t.term}}</td>
+								<td>${{format-commas t.baseRent}}</td>
+								<td>${{format-commas t.totalConcession}}</td>
+								<td>${{format-commas t.effectiveRent}}</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

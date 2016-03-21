@@ -1,0 +1,15 @@
+<div class="username">
+	{{input placeholder="Email Address" type="email" value=emailAddress autofocus=true}}
+</div>
+<div class="password">
+	{{input placeholder="Password" type="password" value=password}}
+</div>
+{{#link-to "login.forgotPassword" tagName="div" class="small-link"}}Forgot Password{{/link-to}}
+<div class="error-container">
+</div>
+{{#if credentialsEntered}}
+    {{!-- {{#link-to "login.passwordExpired" tagName="div" class="big blue login-button button"}} Login {{/link-to}} --}}
+	{{#link-to "lro" tagName="button" class="login-button width-200"}} Login {{/link-to}}
+{{else}}
+	<button class="login-button width-200 disabled">Login</button>
+{{/if}}

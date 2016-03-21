@@ -1,0 +1,9 @@
+<div class="ios-toggle {{if block 'block'}} {{if toggleOnly 'toggle-only'}}">
+	{{#if label}}
+		<div class="toggle-label">{{label}}</div>
+	{{/if}}
+	<div class="toggle {{if switched 'switched'}}" {{action "toggle"}}>
+		<div class="background"></div>
+		<div class="pill"></div>
+	</div>
+</div>

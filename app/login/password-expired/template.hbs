@@ -1,0 +1,26 @@
+<div class="login-header">Password Expired!</div>
+  <div class="login-message">
+    Your password has expired.  You must change it to proceed.  Your new password cannot be any of your last 3 passwords and cannot contain part of your name or email address.
+  </div>
+  <div class="expired">
+    <div class="input-label">
+      New Password
+    </div>
+    <div class="input-label small bottom-margin">
+      8+ characters, 1 capital letter, 1 lowercase letter, and 1 number required.
+    </div>
+    {{input type="password" value=password1 autofocus=true}}
+  </div>
+  <div class="expired">
+    <div class="input-label bottom-margin">
+      Confirm Password
+    </div>
+    {{input type="password" value=password2 autofocus=true}}
+    <div class="error-container">
+    </div>
+  </div>
+  {{#if passwordComplete}}
+    {{#link-to "lro" tagName="button" class="login-button"}} Change Password {{/link-to}}
+  {{else}}
+    <button class="login-button disabled">Change Password</button>
+  {{/if}}

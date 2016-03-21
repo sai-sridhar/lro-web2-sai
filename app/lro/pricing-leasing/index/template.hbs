@@ -1,0 +1,9 @@
+<div class="community-select">
+	<div class="community-list-wrapper">
+		{{#each model as |community|}}
+			<div>
+				{{#link-to "lro.pricingLeasing.community" community.id }}{{community.name}}{{/link-to}}
+			</div>
+		{{/each}}
+	</div>
+</div>

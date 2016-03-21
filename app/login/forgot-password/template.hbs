@@ -1,0 +1,12 @@
+<div class="login-header">Forgot Password</div>
+<div class="username">
+	{{input type="email" placeholder="Email Address" value=emailAddress autofocus=true}}
+</div>
+<div class="error-container">
+</div>
+{{#if emailAddress}}
+	{{#link-to "login.passwordReset" tagName="button" class="login-button"}} Send Email {{/link-to}}
+{{else}}
+	<button class="login-button disabled">Send Email</button>
+{{/if}}
+{{#link-to "login.index" tagName="div" class="small-link"}}Return to login{{/link-to}}

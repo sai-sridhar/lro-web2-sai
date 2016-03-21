@@ -1,0 +1,12 @@
+<div class="dd-list-selected" {{action "toggleList"}}>
+	{{#if selectedObject}}
+		{{selectedObject.name}}
+	{{else}}
+		Choose...
+	{{/if}}
+</div>
+<div class="dd-list {{if showList 'show'}}">
+	{{#each content as |itm|}}
+		<div class="{{if itm.isSelected 'selected'}}" {{action "selectObject" itm}}>{{itm.name}}</div>
+	{{/each}}
+</div>

@@ -1,0 +1,46 @@
+<div class="overlay">
+	<div class="overlay-content">
+		<header>
+			<h2><b>Create New Renewal Batch</b></h2>
+			{{#link-to "lro.renewals.batches" tagName="div" class="close"}}{{fa-icon "times"}}{{/link-to}}
+		</header>
+		<section class="scroll-content">
+			<div class="left-column">
+				{{input-control value=batchName type="text" label="Batch Name" orientation="inline"}}
+				{{input-control value=month type="list" label="Month" orientation="inline" content=listContent}}
+				{{input-control value=includeMtm type="toggle" label="Include MTM?" orientation="inline"}}
+				{{input-control value=mtmOnly type="toggle" label="MTM only?" orientation="inline"}}
+
+			</div>
+			<div class="vertical-divider"></div>
+			<div class="right-column">
+				<table>
+					<thead>
+						<tr>
+							<th>Community Code</th>
+							<th>Community Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each model as |community|}}
+							<tr {{action "selectCommunity" community}} class="{{if community.selected 'active'}}">
+								<td>{{community.code}}</td>
+								<td>{{community.name}}</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+				<div {{action "selectAll"}}>Select All</div>
+				<div {{action "unselectAll"}}>Unselect All</div>
+			</div>
+		</section>
+		<footer>
+			<button class="with-icon" {{action "createBatch"}}>{{fa-icon "check"}}Create Batch</button>
+			{{#link-to "lro.renewals.batches" tagName="button" class="white with-icon"}}
+				{{fa-icon "times"}}
+				Cancel
+			{{/link-to}}
+		</footer>
+	</div>
+</div>
+

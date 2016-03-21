@@ -1,0 +1,37 @@
+<div class="date-picker {{if showCalendar 'show-hud'}}">
+		<div class="active-state" {{action "openCalendar"}}>
+			{{!-- <i>&#128197;</i> --}}
+			<div class="cur-date">{{format-date currentDate "MMM D, YYYY"}}</div>
+		</div>
+		<div class="cal-wrapper reset" {{action "preventBubble" bubbles=false}}>
+			<div class="header">
+				<div class="month">{{format-date currentMonth "MMMM YYYY"}}</div>
+				<ul class="week">
+					<li><span>S</span></li>
+					<li><span>M</span></li>
+					<li><span>T</span></li>
+					<li><span>W</span></li>
+					<li><span>R</span></li>
+					<li><span>F</span></li>
+					<li><span>S</span></li>
+				</ul>
+				<div class="arrow left" {{action "prevMonth"}}>{{fa-icon "chevron-left"}}</div>
+				<div class="arrow right" {{action "nextMonth"}}>{{fa-icon "chevron-right"}}</div>
+			</div>
+			<div class="week-content">
+				<div class="scroll-content">
+					<div class="infinite-scroll" style={{scrollContentStyle}}>
+						{{#each weeks as |w|}}
+							<ul class="week" style={{w.style}}>
+								{{#each w.days as |day|}}
+									<li class="{{if isCurrent 'selected'}} {{if day.isInMonth '' 'not-current'}} {{if day.clickable '' 'disabled'}}" {{action "selectDate" day.date}}>
+										<span>{{format-date day.date "D"}}</span>
+									</li>
+								{{/each}}
+							</ul>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

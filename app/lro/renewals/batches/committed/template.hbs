@@ -1,0 +1,42 @@
+<div class="batches">
+	{{#if model.length}}
+		<table>
+			<thead>
+				<tr>
+					<th>Batch/Community Name</th>
+					<th>Date Range</th>
+					<th>Expirations</th>
+					<th>Avg. Rec. Rent</th>
+					<th>Avg. Increase</th>
+					<th>Avg. Rec. Term</th>
+					<th>Avg. Prior Rent</th>
+					<th>Avg. Prior Term</th>
+					<th>Notice</th>
+					<th>Renewed</th>
+					<th>Undecided</th>
+					<th>Committed</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each model as |batch|}}
+					{{#link-to "lro.renewals.batch" batch.id tagName="tr"}}
+						<td>{{batch.name}}</td>
+						<td>{{batch.dateRange}}</td>
+						<td>{{addCommas batch.expirationCount}}</td>
+						<td>${{addCommas batch.avgRecRent}}</td>
+						<td>{{percent batch.avgIncrease}}</td>
+						<td>{{addCommas batch.avgRecLeaseTerm}}</td>
+						<td>${{addCommas batch.avgCurrentRent}}</td>
+						<td>{{addCommas batch.avgCurrentLeaseTerm}}</td>
+						<td>12</td>
+						<td>50</td>
+						<td>50</td>
+						<td>2015-11-01<br>jtrkovsky@letitrain.com</td>
+					{{/link-to}}
+				{{/each}}
+			</tbody>
+		</table>
+	{{else}}
+		<h2 class="center dbl-top-margin">There are no committed renewal batches.</h2>
+	{{/if}}
+</div>

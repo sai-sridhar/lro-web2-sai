@@ -1,0 +1,25 @@
+<div class="community-select-wrapper">
+    <div class="community-control" {{action "toggleCommunityMenu"}}>
+            <div class="community-code">
+                {{community.code}}
+            </div>
+            <div class="community-name">
+                {{community.name}}
+            </div>
+    </div>
+    <div class="community-menu {{if showCommunityMenu 'open'}}">
+        <div class="search-wrapper block">
+            <div class="search-control full-width borderless">
+            	{{input type="search" placeholder="Search..." value=communitySearch}}
+            </div>
+        </div>
+        <div class="list-wrapper" {{action "toggleCommunityMenu"}}>
+            {{#each communities as |comm|}}
+                {{#link-to "lro.pricingLeasing.community.new" comm.id tagName="div"}}
+                    <div class="c-code">{{comm.code}}</div>
+                    <div class="c-name">{{comm.name}}</div>
+                {{/link-to}}
+            {{/each}}
+        </div>
+    </div>
+</div>

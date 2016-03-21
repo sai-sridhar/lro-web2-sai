@@ -1,0 +1,48 @@
+<div class="page-wrap">
+	<nav></nav>
+	<div class="main-menu">
+		<div class="hamburger" {{action 'toggleMainMenu'}}>
+			<i class="fa fa-bars"></i>
+		</div>
+		<div class="menu {{if showMenu 'show'}}">
+			{{#link-to 'lro.dashboard' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-tachometer fa-fw"></i>
+					<name>Dashboard</name>
+				</div>
+			{{/link-to}}
+			{{#link-to "lro.pricingLeasing" tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-tint fa-fw"></i>
+					<name>Pricing & Leasing</name>
+				</div>
+			{{/link-to}}
+			{{#link-to "lro.renewals" tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-tint fa-fw"></i>
+					<name>Renewal Manager</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.lri' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-line-chart fa-fw"></i>
+					<name>LRI</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.admin' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-cogs fa-fw"></i>
+					<name>Admin & Settings</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.support' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					<i class="fa fa-graduation-cap fa-fw"></i>
+					<name>Training & Support</name>
+				</div>
+			{{/link-to}}
+		</div>
+	</div>
+	{{outlet}}
+
+</div>

@@ -1,0 +1,25 @@
+<section class="catalog">
+	<div class="catalog-search">
+		{{input type="search" placeholder="Search..." value=searchText}}
+	</div>
+	<div class="catalog-scroll {{if addingCommunity 'shorter'}}">
+		{{#each model as |community|}}
+			{{#link-to "lro.admin.communities.community" community.id tagName="div"}}{{community.name}}{{/link-to}}
+		{{/each}}
+	</div>
+	<div class="catalog-add {{if addingCommunity 'taller'}}">
+		{{#if addingCommunity}}
+			{{input value=newCommunityName placeholder="Community name"}}
+			{{input value=newCommunityCode placeholder="Community code"}}
+			<div class="button-wrapper">
+				<button {{action "cancelAddCommunity"}} class="width-100 white">Cancel</button>
+				<button {{action "addCommunity"}} class="width-100">Save</button>
+			</div>
+		{{else}}
+			<button {{action "initAddCommunity"}} class="width-200">Add New Community</button>
+		{{/if}}
+	</div>
+</section>
+<section class="item-content">
+	{{outlet}}
+</section>

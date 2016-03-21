@@ -1,0 +1,36 @@
+<div class="section-menu">
+	<i class="fa fa-cogs fa-fw"></i>
+	<div class="hamburger" {{action 'toggleSectionMenu'}}>
+		{{fa-icon "bars"}}
+	</div>
+	<div class="menu {{if showMenu 'show'}}">
+		{{#link-to 'lro.admin.communities' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Communities
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.params' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Parameters
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.hierarchy' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Hierarchy
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.users' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Users
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.utilities' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Utilities
+			</div>
+		{{/link-to}}
+	</div>
+</div>
+<section class="module-content">
+	{{outlet}}
+</section>

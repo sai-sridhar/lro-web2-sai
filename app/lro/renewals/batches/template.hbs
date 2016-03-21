@@ -1,0 +1,20 @@
+<div class="renewal-batches">
+	<div class="control-wrapper center">
+		<div class="search-wrapper float-right">
+			<div class="search-control">
+				{{input type="search" placeholder="Search..."}}
+			</div>
+		</div>
+		<div class="left-button-control float-left">
+        	{{#link-to "lro.renewals.batches.newBatch" tagName="button" class="with-icon"}}
+	    		{{fa-icon "plus"}}
+        		Create New Batch
+        	{{/link-to}}
+        </div>
+		<div class="tab-menu tm-3">
+			{{#link-to "lro.renewals.batches.open" tagName="div"}}Open{{/link-to}}{{#link-to "lro.renewals.batches.committed" tagName="div"}}Committed{{/link-to}}
+		</div>
+	</div>
+	{{outlet}}
+</div>
+

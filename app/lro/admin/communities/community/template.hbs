@@ -1,0 +1,26 @@
+<section class="community">
+	<div class="fixed-header">
+		<section class="header">
+			<h2>{{model.name}}</h2>
+		</section>
+		<section class="nav">
+			<table class="table-tab-menu">
+				<thead>
+					<tr>
+						{{#link-to 'lro.admin.communities.community.info' tagName="th"}}Community Info{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.unitTypes' tagName="th"}}Unit Types{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.leaseTerms' tagName="th"}}Lease Terms{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.affordable' tagName="th"}}Affordable{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.quote' tagName="th"}}Quote Sheet{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.strategy' tagName="th"}}Rec Strategy{{/link-to}}
+						{{#link-to 'lro.admin.communities.community.comments' tagName="th"}}Comments{{/link-to}}
+					</tr>
+				</thead>
+			</table>
+		</section>
+	</div>
+	{{outlet}}
+</section>
+
+
+

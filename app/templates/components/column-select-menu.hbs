@@ -1,0 +1,13 @@
+<div class="dd-menu">
+	<div class="menu-control" {{action "toggleMenu"}}>
+		<div class="label">Show / Hide</div>
+		<div class="selected">Columns</div>
+	</div>
+	<div class="menu {{if showMenu 'open'}}">
+		<div class="list-wrapper">
+			{{#each showColumns as |itm|}}
+				{{ios-toggle orientation="inline" label=itm.name switched=itm.show}}
+			{{/each}}
+		</div>
+	</div>
+</div>
