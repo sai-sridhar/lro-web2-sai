@@ -22,15 +22,56 @@ export default DS.Model.extend({
 	notice : DS.attr("boolean"),
 	renewed : DS.attr("boolean"),
 	undecided : DS.attr("boolean"),
-	overrideRent : DS.attr("number"),
-	overrideLeaseTerm : DS.attr("number"),
-	increase : Ember.computed('currentRent', 'recRent', function() {
+	finalRecRent : DS.attr("number"),
+	lroIncreasePct : Ember.computed('currentRent', 'recRent', function() {
 		return this.get("recRent") / this.get("currentRent") - 1;
 	}),
+	lroIncreaseDollars : Ember.computed("currentRent", "recRent", function() {
+		return this.get("recRent") - this.get("currentRent");
+	}),
 	currentDiscountToMarket : Ember.computed('cmr', 'currentRent', function() {
-		return 1 - (this.get("currentRent") / this.get("cmr"));
+		return (this.get("currentRent") / this.get("cmr")) - 1;
 	}),
 	newDiscountToMarket : Ember.computed('cmr', 'recRent', function() {
-		return 1 - (this.get("recRent") / this.get("cmr"));
+		return (this.get("recRent") / this.get("cmr")) - 1;
+	}),
+	finalDiscountToMarket : Ember.computed('cmr', "finalRecRent", function() {
+		return (this.get("finalRecRent") / this.get("cmr")) - 1;
+	}),
+	terms : DS.hasMany("renewalTerm", { async : true }),
+	userOverridePct : DS.attr("number"),
+	userOverrideDollars : DS.attr("number"),
+	userOverrideMode : DS.attr("string"),
+
+	overrideChanged : Ember.observer("userOverridePct", "userOverrideDollars", "userOverrideMode", function() {
+		if( this.get("userOverrideMode") === "percent" ) {
+			this.set("userOverridePctBoolean", true);
+			this.set("userOverrideDollars", null);
+		} else {
+			this.set("userOverridePctBoolean", false);
+		}
+
+		if( this.get("userOverrideMode") === "dollars" ) {
+			this.set("userOverrideDollarsBoolean", true);
+			this.set("userOverridePct", null);
+		} else {
+			this.set("userOverrideDollarsBoolean", false);
+		}
+
+		if( this.get("userOverrideDollarsBoolean") ) {
+			this.set("finalRecRent", +this.get("currentRent") + +this.get("userOverrideDollars"));
+		} else if( this.get("userOverridePctBoolean") ) {
+			this.set("finalRecRent", this.get("currentRent") * (1 + this.get("userOverridePct") / 100));
+		} else {
+			this.set("finalRecRent", this.get("recRent"));
+		}
+	}),
+
+	userIncreasePct : Ember.computed("finalRecRent", function() {
+		return this.get("finalRecRent") / this.get("currentRent") - 1;
+	}),
+	userIncreaseDollars : Ember.computed("finalRecRent", function() {
+		return +this.get("finalRecRent") - +this.get("currentRent");
 	})
+
 });

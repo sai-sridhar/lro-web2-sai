@@ -67,5 +67,18 @@ export default DS.Model.extend({
 		return this.get("communities").reduce(function(prev, itm) {
 			return (prev > itm.get("maxNewDiscountToMarket") ? prev : itm.get('maxNewDiscountToMarket'));
 		}, this.get("communities.firstObject.maxNewDiscountToMarket"));
-	})
+	}),
+	readyForCommit : Ember.computed("units.@each.approved", function() {
+		var unapproved = this.get("units").findBy("approved", false);
+		if( unapproved ) {
+			return false
+		} else {
+			return true;
+		}
+	}),
+
+	overrideCount : Ember.computed("units.@each.userOverrideMode", function() {
+		var nonOverride = this.get("units").filterBy("userOverrideMode", null);
+		return (this.get("units.length") - nonOverride.length) || 0;
+	}),
 });

@@ -24,8 +24,8 @@ export default DS.Model.extend({
 	avgRecRent : Ember.computed("totalRecRent", "expirationCount", function() {
 	  	return this.get("totalRecRent") / this.get("expirationCount");
 	}),
-	increaseSum : Ember.computed("units.@each.increase", function() {
-	  	return calcSum(this.get("units"), "increase");
+	increaseSum : Ember.computed("units.@each.lroIncreasePct", function() {
+	  	return calcSum(this.get("units"), "lroIncreasePct");
 	}),
 	avgIncrease : Ember.computed("expirationCount", "increaseSum", function() {
 	  	return this.get("increaseSum") / this.get("expirationCount");
@@ -60,15 +60,15 @@ export default DS.Model.extend({
 	avgNewDiscountToMarket : Ember.computed("totalNewDiscountToMarket", "expirationCount", function() {
 		return this.get("totalNewDiscountToMarket") / this.get("expirationCount");
 	}),
-	minIncrease : Ember.computed("units.@each.increase", function() {
+	minIncrease : Ember.computed("units.@each.lroIncreasePct", function() {
 		return this.get("units").reduce(function(prev, itm) {
-			return (prev < itm.get("increase") ? prev : itm.get('increase'));
-		}, this.get("units.firstObject.increase"));
+			return (prev < itm.get("lroIncreasePct") ? prev : itm.get('lroIncreasePct'));
+		}, this.get("units.firstObject.lroIncreasePct"));
 	}),
-	maxIncrease : Ember.computed("units.@each.increase", function() {
+	maxIncrease : Ember.computed("units.@each.lroIncreasePct", function() {
 		return this.get("units").reduce(function(prev, itm) {
-			return (prev > itm.get("increase") ? prev : itm.get('increase'));
-		}, this.get("units.firstObject.increase"));
+			return (prev > itm.get("lroIncreasePct") ? prev : itm.get('lroIncreasePct'));
+		}, this.get("units.firstObject.lroIncreasePct"));
 	}),
 	minCurrentDiscountToMarket : Ember.computed("units.@each.currentDiscountToMarket", function() {
 		return this.get("units").reduce(function(prev, itm) {
@@ -89,6 +89,18 @@ export default DS.Model.extend({
 		return this.get("units").reduce(function(prev, itm) {
 			return (prev > itm.get("newDiscountToMarket") ? prev : itm.get('newDiscountToMarket'));
 		}, this.get("units.firstObject.newDiscountToMarket"));
+	}),
+	allApproved : Ember.computed("units.@each.approved", function() {
+		var unapproved = this.get("units").findBy("approved", false);
+		if( unapproved ) {
+			return false
+		} else {
+			return true;
+		}
+	}),
+	overrideCount : Ember.computed("units.@each.userOverrideMode", function() {
+		var nonOverride = this.get("units").filterBy("userOverrideMode", null);
+		return (this.get("units.length") - nonOverride.length) || 0;
 	})
 
 });

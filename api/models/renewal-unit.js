@@ -22,8 +22,10 @@ var modelSchema = new Schema({
 	notice : Boolean,
 	renewed : Boolean,
 	undecided : Boolean,
-	overrideRent : Number,
-	overrideLeaseTerm : Number,
+	userOverridePct : Number,
+	userOverrideDollars : Number,
+	userOverrideMode : String,
+	finalRecRent : Number
 });
 
 module.exports = mongoose.model('RenewalUnit', modelSchema);

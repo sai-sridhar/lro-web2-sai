@@ -3,12 +3,18 @@
 
 	</section>
 	<section class="control-wrapper">
-		<div><h1>{{model.community.name}}</h1></div>
-		<button class="with-icon float-right" {{action "approveCommunity"}}>{{fa-icon "thumbs-up"}}Approve All</button>
-		<button class="with-icon transparent float-right" {{action "closeCommunity"}}>{{fa-icon "times"}}Close</button>
-		<button class="transparent float-right" {{action "toggleParams"}}>Parameters</button>
-		<button class="transparent float-right" {{action "toggleTerms"}}>Lease Terms</button>
-		<button class="transparent float-right" {{action "deleteCommunity"}}>{{fa-icon "trash"}}</button>
+		<title><h1>{{model.community.name}}</h1></title>
+		<div class="button-wrapper">
+			<button class="transparent" {{action "deleteCommunity"}}>{{fa-icon "trash"}}</button>
+			<button class="transparent" {{action "toggleTerms"}}>Lease Terms</button>
+			<button class="transparent" {{action "toggleParams"}}>Parameters</button>
+			<button class="with-icon transparent" {{action "closeCommunity"}}>{{fa-icon "times"}}Close</button>
+			{{#if model.allApproved}}
+				<button class="with-icon red" {{action "unapproveCommunity"}}>{{fa-icon "thumbs-down"}}Unapprove All</button>
+			{{else}}
+				<button class="with-icon" {{action "approveCommunity"}}>{{fa-icon "thumbs-up"}}Approve All</button>
+			{{/if}}
+		</div>
 	</section>
 	<div class="overlay {{if showParams 'show' 'hide'}}">
 		<div class="overlay-content">
@@ -84,6 +90,10 @@
 			</div
 			><div class="col col-15">
 				{{high-charts mode=chartMode content=donutChartData chartOptions=donutChartOptions}}
+				<div class="center">
+					<h2 class="std-bottom-margin">Overrides</h2>
+					<h1>{{format-commas model.overrideCount}}</h1>
+				</div>
 			</div>
 		</section>
 		<section class="rb-details">
@@ -92,7 +102,7 @@
 				><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
 			</div>
 			<section class="rb-detail-content">
-				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}}">
+				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
 					{{#if showDetailFilters}}
 						<div class="filter-header">
 							{{fa-icon "sliders"}}
@@ -113,50 +123,48 @@
 						<table>
 							<thead>
 								<tr>
-									<th>PMS Unit Type</th>
+									<th class="no-mobile">PMS Unit Type</th>
 									<th>Unit Type</th>
-									<th>Beds</th>
-									<th>Baths</th>
+									<th class="no-mobile">Beds</th>
+									<th class="no-mobile">Baths</th>
 									<th>Unit ID</th>
-									<th>Resident</th>
-									<th>Renewal Date</th>
-									<th>Prior Term</th>
-									<th>Rec Term</th>
-									<th>Prior CPR</th>
+									<th class="no-mobile">Resident</th>
+									<th class="no-mobile">Renewal Date</th>
+									<th class="no-mobile">Prior Term</th>
+									<th class="no-mobile">Rec Term</th>
+									<th class="no-mobile">Prior CPR</th>
 									<th>Rec CPR</th>
 									<th>Increase %</th>
-									<th>CMR</th>
+									<th class="no-mobile">CMR</th>
 									<th>DTM</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								{{#each model.units as |unit|}}
-									<tr>
-										<td>{{unit.pmsUnitType}}</td>
+									{{#link-to "lro.renewals.batch.community.unit" unit.id tagName="tr"}}
+										<td class="no-mobile">{{unit.pmsUnitType}}</td>
 										<td>{{unit.unitType}}</td>
-										<td>{{format-commas unit.beds}}</td>
-										<td>{{format-commas unit.baths}}</td>
+										<td class="no-mobile">{{format-commas unit.beds}}</td>
+										<td class="no-mobile">{{format-commas unit.baths}}</td>
 										<td>{{unit.unitId}}</td>
-										<td>{{unit.resident}}</td>
-										<td>{{format-date unit.renewalDate}}</td>
-										<td>{{format-commas unit.currentLeaseTerm}}</td>
-										<td>{{format-commas unit.recLeaseTerm}}</td>
-										<td>${{format-commas unit.currentRent}}</td>
-										<td>${{format-commas unit.recRent}}</td>
-										<td>{{format-percent unit.increase 1 1}}</td>
-										<td>${{format-commas unit.cmr}}</td>
-										<td>{{format-percent unit.currentDiscountToMarket 1 1}} / {{format-percent unit.newDiscountToMarket 1 1}}</td>
-										{{#if unit.approved}}
-											<td {{action "unapproveUnit" unit}}>
-												{{fa-icon "thumbs-o-down" class="gray"}}
-											</td>
-										{{else}}
-											<td {{action "approveUnit" unit}}>
-												{{fa-icon "thumbs-o-up"}}
-											</td>
-										{{/if}}
-									</tr>
+										<td class="no-mobile">{{unit.resident}}</td>
+										<td class="no-mobile">{{format-date unit.renewalDate}}</td>
+										<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
+										<td class="no-mobile">{{format-commas unit.recLeaseTerm}}</td>
+										<td class="no-mobile">${{format-commas unit.currentRent}}</td>
+										<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+										<td class="{{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+										<td class="no-mobile">${{format-commas unit.cmr}}</td>
+										<td>{{format-percent unit.currentDiscountToMarket 1 1}} / {{format-percent unit.finalDiscountToMarket 1 1}}</td>
+										<td>
+											{{#if unit.approved}}
+												<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+											{{else}}
+												<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
+											{{/if}}
+										</td>
+									{{/link-to}}
 								{{/each}}
 							</tbody>
 						</table>
@@ -198,4 +206,5 @@
 			</section>
 		</section>
 	</section>
+	{{outlet}}
 </div>

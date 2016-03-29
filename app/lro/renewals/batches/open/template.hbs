@@ -6,13 +6,13 @@
 					<th>Batch/Community Name</th>
 					<th>Date Range</th>
 					<th>Expirations</th>
-					<th>Approvals</th>
-					<th>Avg. Rec. Rent</th>
+					<th class="no-mobile">Approvals</th>
+					<th class="no-mobile">Avg. Rec. Rent</th>
 					<th>Avg. Increase</th>
-					<th>Avg. Rec. Term</th>
-					<th>Avg. Prior Rent</th>
-					<th>Avg. Prior Term</th>
-					<th>Last Modified</th>
+					<th class="no-mobile">Avg. Rec. Term</th>
+					<th class="no-mobile">Avg. Prior Rent</th>
+					<th class="no-mobile">Avg. Prior Term</th>
+					<th class="no-mobile">Last Modified</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,13 +22,13 @@
 							<td>{{batch.name}}</td>
 							<td>{{batch.dateRange}}</td>
 							<td>{{format-commas batch.expirationCount}}</td>
-							<td>{{format-commas batch.approvalCount}}</td>
-							<td>${{format-commas batch.avgRecRent}}</td>
+							<td class="no-mobile">{{format-commas batch.approvalCount}}</td>
+							<td class="no-mobile">${{format-commas batch.avgRecRent}}</td>
 							<td>{{format-percent batch.avgIncrease}}</td>
-							<td>{{format-commas batch.avgRecLeaseTerm}}</td>
-							<td>${{format-commas batch.avgCurrentRent}}</td>
-							<td>{{format-commas batch.avgCurrentLeaseTerm}}</td>
-							<td>{{batch.modifiedDate}}<br>{{batch.modifiedBy}}</td>
+							<td class="no-mobile">{{format-commas batch.avgRecLeaseTerm}}</td>
+							<td class="no-mobile">${{format-commas batch.avgCurrentRent}}</td>
+							<td class="no-mobile">{{format-commas batch.avgCurrentLeaseTerm}}</td>
+							<td class="no-mobile">{{batch.modifiedDate}}<br>{{batch.modifiedBy}}</td>
 						{{/link-to}}
 					{{/each}}
 

@@ -40,7 +40,12 @@ Router.map(function() {
         this.route('newBatch');
       });
       this.route('batch', { path : "/batch/:batch_id" }, function() {
-        this.route('community', { path : "/community/:community_id" });
+        this.route('community', { path : "/community/:community_id" }, function() {
+          this.route('unit', { path : "/unit/:unit_id" });
+        });
+        this.route("home", function() {
+          this.route('unit', { path : "/unit/:unit_id" });
+        });
       });
     });
     this.route('lri');

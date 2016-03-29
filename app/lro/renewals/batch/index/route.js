@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+	redirect : function() {
+		this.transitionTo("lro.renewals.batch.home");
+	},
 	actions : {
 		deleteBatch : function() {
 			var self = this;
@@ -30,7 +33,7 @@ export default Ember.Route.extend({
 							batch.deleteRecord();
 							batch.save().then( () => {
 								swal("Deleted!", "Your batch has been deleted.", "success");
-								self.transitionTo("lro.pricingLeasing.community.renewals");
+								self.transitionTo("lro.renewals.open");
 							});
 						}
 					}
@@ -39,7 +42,7 @@ export default Ember.Route.extend({
 			});
 		},
 		closeBatch : function() {
-			window.history.back();
+			this.transitionTo("lro.renewals.batches.open");
 		},
 		toggleParams : function() {
 			this.controller.toggleProperty("showParams");
@@ -60,6 +63,58 @@ export default Ember.Route.extend({
 		},
 		closeDetailFilterPane : function() {
 			this.controller.set("showDetailFilters", false);
+		},
+		approveCommunity : function(comm) {
+			var commName = comm.get("community.name");
+
+			this.store.query("renewalUnit", { renewalComm : comm.get("id") }).then( (units) => {
+				swal(
+					{  	title: "Approve?",
+						text: "Approve all renewal offers for " + commName + "?",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#51bc6a",
+						confirmButtonText: "Yes, approve all",
+						cancelButtonText: "No, cancel",
+						closeOnConfirm: true,
+						closeOnCancel: true
+					},
+					function (isConfirm) {
+						if( isConfirm ) {
+							units.forEach(function(unit) {
+								unit.set("approved", true);
+								unit.save();
+							});
+						}
+					}
+				);
+			});
+		},
+		approveBatch : function() {
+			var self = this;
+
+			this.store.query("renewalUnit", { batch : this.controller.get("model.id") }).then( (units) => {
+				swal(
+					{  	title: "Approve?",
+						text: "Approve all renewal offers?",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#51bc6a",
+						confirmButtonText: "Yes, approve all",
+						cancelButtonText: "No, cancel",
+						closeOnConfirm: true,
+						closeOnCancel: true
+					},
+					function (isConfirm) {
+						if( isConfirm ) {
+							units.forEach(function(unit) {
+								unit.set("approved", true);
+								unit.save();
+							});
+						}
+					}
+				);
+			});
 		}
 	}
 });

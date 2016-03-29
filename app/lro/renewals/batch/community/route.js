@@ -45,7 +45,7 @@ export default Ember.Route.extend({
 			});
 		},
 		closeCommunity : function() {
-			window.history.back();
+			this.transitionTo("lro.renewals.batch");
 		},
 		toggleParams : function() {
 			this.controller.toggleProperty("showParams");
@@ -118,7 +118,7 @@ export default Ember.Route.extend({
 		approveUnit : function(unit) {
 			swal(
 				{  	title: "Approve?",
-					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("recRent"),
+					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("finalRecRent"),
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#51bc6a",
@@ -138,7 +138,7 @@ export default Ember.Route.extend({
 		unapproveUnit : function(unit) {
 			swal(
 				{  	title: "Unapprove?",
-					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("recRent"),
+					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("finalRecRent"),
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#51bc6a",
@@ -153,6 +153,29 @@ export default Ember.Route.extend({
 						unit.save();
 					}
 
+				}
+			);
+		},
+		unapproveCommunity : function() {
+			var self = this;
+			swal(
+				{  	title: "Unapprove?",
+					text: "Unapprove all renewal offers?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#51bc6a",
+					confirmButtonText: "Yes, unapprove all",
+					cancelButtonText: "No, cancel",
+					closeOnConfirm: true,
+					closeOnCancel: true
+				},
+				function (isConfirm) {
+					if( isConfirm ) {
+						self.controller.get("content.units").forEach(function(unit) {
+							unit.set("approved", false);
+							unit.save();
+						});
+					}
 				}
 			);
 		}

@@ -5,6 +5,44 @@
 	html {
 		font-size: 14px;
 	}
+
+	.col {
+		vertical-align: top;
+		display: inline-block;
+		box-sizing: border-box;
+		padding: @stdPadding;
+
+		&.col-10 {
+			width: 10%;
+		}
+		&.col-15 {
+			width: 50%;
+		}
+		&.col-20 {
+			width: 50%;
+		}
+		&.col-25 {
+			width: 30%;
+		}
+		&.col-30 {
+			width: 30%;
+		}
+		&.col-33 {
+			width: 33%;
+		}
+		&.col-40 {
+			width: 70%;
+		}
+		&.col-50 {
+			width: 50%;
+		}
+		&.col-60 {
+			width: 60%;
+		}
+		&.col-66 {
+			width: 66%;
+		}
+	}
 }
 
 @media (max-width: 1000px) {
@@ -22,6 +60,23 @@
 		display: none !important;
 	}
 
+	.mobile-block {
+		display: block !important;
+		float: none;
+	}
+
+	.mobile-float-right {
+		float: right;
+	}
+
+	.mobile-std-top-margin {
+		margin-top: @dblPadding;
+	}
+
+	.mobile-dbl-top-margin {
+		margin-top: @dblPadding;
+	}
+
 	.login {
 		background: none;
 
@@ -34,6 +89,28 @@
 	nav {
 		background-position: 0.5em 50%;
 		background-size: 100px 38px;
+	}
+
+	button {
+		box-sizing: border-box;
+		font-size: 1.8em;
+
+		&.with-icon {
+			i {
+				font-size: 1.5em !important;
+				line-height: 1em;
+			}
+		}
+		i {
+			color: white;
+			font-size: 1em;
+		}
+		&.transparent {
+			i {
+				font-size: 1.2em;
+				line-height: 1em;
+			}
+		}
 	}
 
 	.main-menu {
@@ -134,10 +211,14 @@
 
 	.detail-drawer {
 		border: 0px;
+		@detailDrawerWidth: 100%;
 
 		&.new-pricing-drawer {
-			width: 100%;
+			width: @detailDrawerWidth;
+		}
 
+		&.renewal-unit-drawer {
+			width: @detailDrawerWidth;
 		}
 
 		.fixed-header {
@@ -151,10 +232,37 @@
 				}
 			}
 		}
+
+		.scroll-content {
+			.data-point-wrapper {
+				&>div {
+					width: (@detailDrawerWidth / 2) - 2;
+
+					div {
+						&.label {
+							color: @gray;
+							font-size: 1.8em;
+							margin-bottom: 4px;
+						}
+
+						&.value {
+							font-size: 2.5em;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.control-wrapper {
-		height: 2.5 * @toolbarHeight;
+		height: 2.8 * @toolbarHeight;
+
+		title {
+			display: block;
+			margin: @stdPadding auto;
+			text-align: center;
+			float: none;
+		}
 
 		.filter-button {
 			float: right;
@@ -214,6 +322,14 @@
 				}
 			}
 		}
+
+		.button-wrapper {
+			display: block;
+			position: relative;
+			float: none;
+			margin: @dblPadding auto;
+			text-align: center;
+		}
 	}
 
 	.community-dd-wrapper {
@@ -256,6 +372,216 @@
 				margin: 0px;
 				font-size: 2em;
 			}
+		}
+	}
+
+	.col {
+		vertical-align: top;
+		display: inline-block;
+		box-sizing: border-box;
+		padding: @stdPadding;
+
+		&.col-10 {
+			width: 100%;
+		}
+		&.col-15 {
+			width: 100%;
+		}
+		&.col-20 {
+			width: 100%;
+		}
+		&.col-25 {
+			width: 100%;
+		}
+		&.col-30 {
+			width: 100%;
+		}
+		&.col-33 {
+			width: 100%;
+		}
+		&.col-40 {
+			width: 100%;
+		}
+		&.col-50 {
+			width: 100%;
+		}
+		&.col-60 {
+			width: 100%;
+		}
+		&.col-66 {
+			width: 100%;
+		}
+	}
+
+	.renewal-mgmt {
+		.renewal-batches {
+			.batches {
+				    top: 2.8 * @toolbarHeight;
+			}
+		}
+
+		.batch {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
+
+			.batch-content {
+				position: absolute;
+				top: 2.8 * @toolbarHeight;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				overflow-y: scroll;
+				border-top: @stdBorder;
+				box-sizing: border-box;
+			}
+		}
+		.rb-details {
+			height: none;
+			margin-bottom: 0px;
+
+			.rb-detail-tabs {
+				padding-left: 0px;
+
+				&.filters-open {
+					padding-left: 0px;
+				}
+			}
+			.rb-detail-content {
+				.table-wrapper {
+					left: 0;
+					margin-right: 0px;
+					max-height: none;
+
+					&.filters-open {
+						left: 0;
+						margin-right: 0px;
+					}
+				}
+			}
+		}
+	}
+
+	.tab-menu {
+		position: relative;
+		display: block;
+		text-align: center;
+		vertical-align: top;
+
+		&.tm-1 {
+			position: relative;
+			display: block;
+			height: @headerBarHeight - (3 * @stdPadding);
+			border-bottom: 3px solid white;
+			text-align: center;
+			background-color: @backgroundGray;
+
+			div {
+				position: relative;
+				display: inline-block;
+				padding: @dblPadding (3 * @stdPadding);
+				color: @grayBlue;
+				font-size: 1em;
+				line-height: 1.5em;
+				cursor: pointer;
+				font-weight: bold;
+
+				&.active {
+					color: @mediumBlue;
+					border-bottom: 3px solid @mediumBlue;
+				}
+			}
+		}
+
+		&.tm-2 {
+		}
+
+		&.tm-3 {
+			display: inline-block;
+
+			&>div {
+				padding: 8px @dblPadding;
+				font-size: 1.8em;
+			}
+		}
+
+		&.tm-4 {
+			text-align: left;
+			border-bottom: @stdBorder;
+
+			&>div {
+				position: relative;
+				display: inline-block;
+				padding: @stdPadding @dblPadding;
+				color: @grayBlue1;
+				font-size: 1.8em;
+				cursor: pointer;
+				border: @stdBorder;
+				border-bottom: 0px;
+				background: white;
+				text-align: center;
+
+				&.active {
+					color: white;
+					background: @mediumBlue;
+					border: 1px solid @mediumBlue;
+
+					&:hover {
+						color: white;
+					}
+				}
+
+				&:first-of-type {
+					border-top-left-radius: 6px;
+					/*border-bottom-left-radius: 6px;*/
+				}
+
+				&:last-of-type {
+					border-top-right-radius: 6px;
+					/*border-bottom-right-radius: 6px;*/
+				}
+
+				&:hover {
+					color: @mediumBlue;
+				}
+			}
+		}
+
+		div {
+			position: relative;
+			display: inline-block;
+			padding: @dblPadding (3 * @stdPadding);
+			color: @grayBlue;
+			font-size: 1.8em;
+			line-height: normal;
+			cursor: pointer;
+
+			&.active {
+				color: @mediumBlue;
+				border-bottom: 3px solid @mediumBlue;
+			}
+		}
+	}
+
+	.community-select {
+		.community-list-wrapper {
+			font-size: 2em;
+			height: 80%;
+			width: 80%;
+		}
+	}
+
+	.overlay {
+		.overlay-content {
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			border-radius: 0px;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+
 		}
 	}
 }

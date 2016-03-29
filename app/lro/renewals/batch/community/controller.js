@@ -7,7 +7,21 @@ export default Ember.Controller.extend({
 	unitTypeView : false,
 	unitView : true,
 
-	unitTypes : Ember.computed("content.units.@each.recRent", function() {
+	// allApproved : Ember.computed("content.units.@each.approved", function() {
+	// 	var unapproved = this.get("content.units").findBy("approved", false);
+	// 	if( unapproved ) {
+	// 		return false
+	// 	} else {
+	// 		return true;
+	// 	}
+	// }),
+
+	// overrideCount : Ember.computed("content.units.@each.userOverrideMode", function() {
+	// 	var nonOverride = this.get("content.units").filterBy("userOverrideMode", null);
+	// 	return (this.get("content.units.length") - nonOverride.length) || 0;
+	// }),
+
+	unitTypes : Ember.computed("content.units.@each.finalRecRent", function() {
 		var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
 
 		this.get("content.units").forEach( function(unit) {
@@ -18,22 +32,22 @@ export default Ember.Controller.extend({
 			if( utObj ) {
 				utObj.units.push(unit);
 				utObj.expirationCount = utObj.units.length;
-				utObj.totalRecRent += unit.get("recRent");
+				utObj.totalRecRent += unit.get("finalRecRent");
 				utObj.totalRecLeaseTerm += unit.get("recLeaseTerm");
 				utObj.totalCurrentRent += unit.get("currentRent");
 				utObj.totalCurrentLeaseTerm += unit.get("currentLeaseTerm");
-				utObj.totalIncrease += unit.get("increase");
+				utObj.totalIncrease += unit.get("userIncreasePct");
 			} else {
 				var newObj = Ember.Object.create({
 					unitType : unitType,
 					expirationCount : 1,
-					totalRecRent : unit.get("recRent"),
+					totalRecRent : unit.get("finalRecRent"),
 					totalRecLeaseTerm : unit.get("recLeaseTerm"),
 					totalCurrentRent : unit.get("currentRent"),
 					totalCurrentLeaseTerm : unit.get("currentLeaseTerm"),
-					totalIncrease : unit.get("increase"),
-					minIncrease : unit.get("increase"),
-					maxIncrease : unit.get("increase"),
+					totalIncrease : unit.get("userIncreasePct"),
+					minIncrease : unit.get("userIncreasePct"),
+					maxIncrease : unit.get("userIncreasePct"),
 					showDetail : false,
 					units : [unit]
 				});
@@ -50,11 +64,11 @@ export default Ember.Controller.extend({
 			ut.avgIncrease = ut.get("totalIncrease") / ut.get("expirationCount");
 
 			ut.minIncrease = ut.units.reduce(function( prevValue, unit ) {
-				return Math.min(prevValue, unit.get("increase"));
+				return Math.min(prevValue, unit.get("userIncreasePct"));
 			}, 10000);
 
 			ut.maxIncrease = ut.units.reduce(function( prevValue, unit ) {
-				return Math.max(prevValue, unit.get("increase"));
+				return Math.max(prevValue, unit.get("userIncreasePct"));
 			}, -10000);
 		});
 
@@ -68,9 +82,9 @@ export default Ember.Controller.extend({
 			aboveMkt = 0;
 
 		this.get("content.units").forEach(function(unit) {
-			if( unit.get("currentDiscountToMarket") < 0 ) {
+			if( unit.get("currentDiscountToMarket") > 0 ) {
 				aboveMkt += 1;
-			} else if ( unit.get("currentDiscountToMarket") > 0 ) {
+			} else if ( unit.get("currentDiscountToMarket") < 0 ) {
 				belowMkt += 1;
 			} else {
 				atMkt += 1;
@@ -80,7 +94,7 @@ export default Ember.Controller.extend({
 		return [belowMkt, atMkt, aboveMkt];
 	}),
 
-	chartDataAvgInc : Ember.computed("content.units.@each.recRent", function() {
+	chartDataAvgInc : Ember.computed("content.units.@each.finalRecRent", function() {
 		var belowMktSum = 0,
 			belowMktCount = 0,
 			atMktSum = 0,
@@ -90,12 +104,12 @@ export default Ember.Controller.extend({
 			belowMktAvg, atMktAvg, aboveMktAvg, inc, dtm;
 
 		this.get("content.units").forEach(function(unit) {
-			inc = unit.get("increase");
+			inc = unit.get("userIncreasePct");
 			dtm = unit.get("currentDiscountToMarket");
-			if( dtm < 0 ) {
+			if( dtm > 0 ) {
 				aboveMktCount += 1;
 				aboveMktSum += inc;
-			} else if ( dtm > 0 ) {
+			} else if ( dtm < 0 ) {
 				belowMktCount += 1;
 				belowMktSum += inc;
 			} else {
@@ -166,7 +180,7 @@ export default Ember.Controller.extend({
         }
   	},
 
-	chartData : Ember.computed("content.units.[]", function(){
+	chartData : Ember.computed("content.units.@each.finalRecRent", function(){
 		var content = [];
 
 		// The Unit counts by Below, At, Above Market Series
@@ -284,23 +298,23 @@ export default Ember.Controller.extend({
 		this.get("content.units").forEach(function(unit) {
 			dtm = unit.get("currentDiscountToMarket") * 100;
 			invDtm = -1 * dtm;
-			if( dtm >= self.get("striation3") ) {
+			if( invDtm >= self.get("striation3") ) {
 				data[0] += 1;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
+			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
 				data[1] += 1;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
+			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
 				data[2] += 1;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
+			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
 				data[3] += 1;
 			} else if( dtm === self.get("striation0") ) {
 				data[4] += 1;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
+			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
 				data[5] += 1;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
+			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
 				data[6] += 1;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
+			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
 				data[7] += 1;
-			} else if( invDtm >= self.get("striation3") ) {
+			} else if( dtm >= self.get("striation3") ) {
 				data[8] += 1;
 			}
 		});
@@ -308,32 +322,32 @@ export default Ember.Controller.extend({
 		return data;
 	}),
 
-	chartDataNewDtm : Ember.computed("content.units.@each.recRent", function() {
+	chartDataNewDtm : Ember.computed("content.units.@each.finalRecRent", function() {
 		var data = [0,0,0,0,0,0,0,0,0],
 			self = this,
 			dtm,
 			invDtm;
 
 		this.get("content.units").forEach(function(unit) {
-			dtm = unit.get("newDiscountToMarket") * 100;
+			dtm = unit.get("finalDiscountToMarket") * 100;
 			invDtm = -1 * dtm;
-			if( dtm >= self.get("striation3") ) {
+			if( invDtm >= self.get("striation3") ) {
 				data[0] += 1;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
+			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
 				data[1] += 1;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
+			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
 				data[2] += 1;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
+			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
 				data[3] += 1;
 			} else if( dtm === self.get("striation0") ) {
 				data[4] += 1;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
+			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
 				data[5] += 1;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
+			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
 				data[6] += 1;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
+			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
 				data[7] += 1;
-			} else if( invDtm >= self.get("striation3") ) {
+			} else if( dtm >= self.get("striation3") ) {
 				data[8] += 1;
 			}
 		});
@@ -341,7 +355,7 @@ export default Ember.Controller.extend({
 		return data;
 	}),
 
-	chartDataDetailAvgInc : Ember.computed("content.units.@each.recRent", function() {
+	chartDataDetailAvgInc : Ember.computed("content.units.@each.finalRecRent", function() {
 		var data = [],
 			arr = [],
 			self = this,
@@ -353,33 +367,33 @@ export default Ember.Controller.extend({
 
 		this.get("content.units").forEach(function(unit) {
 			dtm = unit.get("currentDiscountToMarket") * 100;
-			inc = unit.get("increase");
+			inc = unit.get("userIncreasePct");
 			invDtm = -1 * dtm;
-			if( dtm >= self.get("striation3") ) {
+			if( invDtm >= self.get("striation3") ) {
 				data[0].count += 1;
 				data[0].sum += inc;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
+			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
 				data[1].count += 1;
 				data[1].sum += inc;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
+			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
 				data[2].count += 1;
 				data[2].sum += inc;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
+			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
 				data[3].count += 1;
 				data[3].sum += inc;
 			} else if( dtm === self.get("striation0") ) {
 				data[4].count += 1;
 				data[4].sum += inc;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
+			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
 				data[5].count += 1;
 				data[5].sum += inc;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
+			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
 				data[6].count += 1;
 				data[6].sum += inc;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
+			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
 				data[7].count += 1;
 				data[7].sum += inc;
-			} else if( invDtm >= self.get("striation3") ) {
+			} else if( dtm >= self.get("striation3") ) {
 				data[8].count += 1;
 				data[8].sum += inc;
 			}
@@ -442,7 +456,7 @@ export default Ember.Controller.extend({
         }
   	},
 
-	detailChartData : Ember.computed("content.units.[]", function(){
+	detailChartData : Ember.computed("content.units.@each.finalRecRent", function(){
 		var content = [];
 
 		// The Unit counts by Below, At, Above Market Series

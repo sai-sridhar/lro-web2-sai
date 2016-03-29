@@ -543,35 +543,37 @@ router.route('/renewalUnits/:renewal_unit_id')
         var req = request.body.renewalUnit;
 
         // use our community model to find the community we want
-        RenewalUnit.findById(request.params.renewal_unit_id, function(error, renewalUnit) {
+        RenewalUnit.findById(request.params.renewal_unit_id, function(error, obj) {
             if (error) response.send(error);
 
             // update the community info
-            renewalUnit.renewalComm          = req.renewalComm;
-            renewalUnit.batch                = req.batch;
-            renewalUnit.unitId               = req.unitId;
-            renewalUnit.unitType             = req.unitType;
-            renewalUnit.pmsUnitType          = req.pmsUnitType;
-            renewalUnit.beds                 = req.beds;
-            renewalUnit.baths                = req.baths;
-            renewalUnit.renewalDate          = req.renewalDate;
-            renewalUnit.resident             = req.resident;
-            renewalUnit.amenities            = req.amenities;
-            renewalUnit.amenityAmount        = req.amenityAmount;
-            renewalUnit.currentLeaseTerm     = req.currentLeaseTerm;
-            renewalUnit.recLeaseTerm         = req.recLeaseTerm;
-            renewalUnit.currentRent          = req.currentRent;
-            renewalUnit.recRent              = req.recRent;
-            renewalUnit.cmr                  = req.cmr;
-            renewalUnit.approved             = req.approved;
-            renewalUnit.notice               = req.notice;
-            renewalUnit.renewed              = req.renewed;
-            renewalUnit.undecided            = req.undecided;
-            renewalUnit.overrideRent         = req.overrideRent;
-            renewalUnit.overrideLeaseTerm    = req.overrideLeaseTerm;
+            obj.renewalComm          = req.renewalComm;
+            obj.batch                = req.batch;
+            obj.unitId               = req.unitId;
+            obj.unitType             = req.unitType;
+            obj.pmsUnitType          = req.pmsUnitType;
+            obj.beds                 = req.beds;
+            obj.baths                = req.baths;
+            obj.renewalDate          = req.renewalDate;
+            obj.resident             = req.resident;
+            obj.amenities            = req.amenities;
+            obj.amenityAmount        = req.amenityAmount;
+            obj.currentLeaseTerm     = req.currentLeaseTerm;
+            obj.recLeaseTerm         = req.recLeaseTerm;
+            obj.currentRent          = req.currentRent;
+            obj.recRent              = req.recRent;
+            obj.cmr                  = req.cmr;
+            obj.approved             = req.approved;
+            obj.notice               = req.notice;
+            obj.renewed              = req.renewed;
+            obj.undecided            = req.undecided;
+            obj.userOverridePct      = req.userOverridePct;
+            obj.userOverrideDollars  = req.userOverrideDollars;
+            obj.userOverrideMode     = req.userOverrideMode;
+            obj.finalRecRent         = req.finalRecRent;
 
             // save the community
-            renewalUnit.save(function(error, renewalUnit) {
+            obj.save(function(error, renewalUnit) {
                 if (error) response.send(error);
                 response.json({ renewalUnit: renewalUnit });
             });
