@@ -9,6 +9,13 @@ export default Ember.Route.extend({
 	// 	this.store.query('renewalUnit', { batch : params.batch_id });
 	// },
 
+	setupController : function(controller, model) {
+		this._super(controller, model);
+		if( !controller.get("detailView") ) {
+			controller.set("detailView", "community");
+		}
+	},
+
 	actions : {
 		deleteBatch : function() {
 			var self = this;
@@ -56,12 +63,10 @@ export default Ember.Route.extend({
 			this.controller.toggleProperty("showTerms");
 		},
 		toggleCommunityView : function() {
-			this.controller.set("communityView", true);
-			this.controller.set("unitView", false);
+			this.controller.set("detailView", "community");
 		},
 		toggleUnitView : function() {
-			this.controller.set("unitView", true);
-			this.controller.set("communityView", false);
+			this.controller.set("detailView", "unit");
 		},
 		openDetailFilterPane : function() {
 			this.controller.set("showDetailFilters", true);

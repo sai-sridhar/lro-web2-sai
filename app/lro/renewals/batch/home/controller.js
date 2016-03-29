@@ -4,14 +4,28 @@ export default Ember.Controller.extend({
 
 	showParams : false,
 	showTerms : false,
-	communityView : true,
-	unitView : false,
+	communityView : null,
+	unitView : null,
+	detailView : null,
+	showDetailFilters : false,
 	increaseMin : 0,
 	increaseMax : 0,
 	newDtmMin : 0,
 	newDtmMax : 0,
 	currentDtmMin : 0,
 	currentDtmMax : 0,
+
+	queryParams : ["showDetailFilters", "detailView"],
+
+	detailViewObserver : Ember.observer("detailView", function() {
+		if( this.get("detailView") === "community" ) {
+			this.set("unitView", false);
+			this.set("communityView", true);
+		} else if( this.get("detailView") === "unit" ) {
+			this.set("unitView", true);
+			this.set("communityView", false);
+		}
+	}),
 
 	increaseObserver : Ember.observer("model.minIncrease", "model.maxIncrease", function() {
 		this.set("increaseMin", this.get("model.minIncrease") * 100);
@@ -118,8 +132,8 @@ export default Ember.Controller.extend({
 				f7 = true, // current discount to market
 				f8 = true; // new discount to market
 
-				inc = unit.get("userIncreasePct"),
-				cDtm = unit.get("currentDiscountToMarket"),
+				inc = unit.get("userIncreasePct");
+				cDtm = unit.get("currentDiscountToMarket");
 				nDtm = unit.get("newDiscountToMarket");
 
 			 if( !(inc >= incMin && inc <= incMax) ) {
