@@ -18,7 +18,7 @@
 			<tbody>
 
 					{{#each model as |batch|}}
-						{{#link-to "lro.renewals.batch" batch.id tagName="tr"}}
+						{{#link-to "lro.renewals.batch.home" batch.id tagName="tr"}}
 							<td>{{batch.name}}</td>
 							<td>{{batch.dateRange}}</td>
 							<td>{{format-commas batch.expirationCount}}</td>

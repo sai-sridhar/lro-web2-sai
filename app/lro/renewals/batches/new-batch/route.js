@@ -12,7 +12,7 @@ export default Ember.Route.extend({
 		selectAll : function() {
 			this.controller.get("model").setEach("selected", true);
 		},
-		unselectAll : function() {
+		deselectAll : function() {
 			this.controller.get("model").setEach("selected", false);
 		},
 		createBatch : function() {

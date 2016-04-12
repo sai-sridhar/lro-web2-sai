@@ -41,6 +41,7 @@
     "ember-export-application-global": "^1.0.4",
     "ember-highcharts": "0.4.2",
     "ember-radio-button": "1.0.7",
+    "ember-select-2": "1.3.0",
     "ember-simple-auth": "1.0.1",
     "highcharts": "4.2.3"
   }

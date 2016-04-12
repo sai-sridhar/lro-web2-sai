@@ -2,8 +2,8 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
-	renewalComm : DS.belongsTo("renewalComm"),
-	batch : DS.belongsTo("renewalBatch"),
+	renewalComm : DS.belongsTo("renewalComm", { async : true }),
+	batch : DS.belongsTo("renewalBatch", { async : true }),
 	unitId : DS.attr("string"),
 	unitType : DS.attr("string"),
 	pmsUnitType : DS.attr("string"),

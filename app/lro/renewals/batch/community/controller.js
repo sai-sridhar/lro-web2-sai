@@ -7,20 +7,6 @@ export default Ember.Controller.extend({
 	unitTypeView : false,
 	unitView : true,
 
-	// allApproved : Ember.computed("content.units.@each.approved", function() {
-	// 	var unapproved = this.get("content.units").findBy("approved", false);
-	// 	if( unapproved ) {
-	// 		return false
-	// 	} else {
-	// 		return true;
-	// 	}
-	// }),
-
-	// overrideCount : Ember.computed("content.units.@each.userOverrideMode", function() {
-	// 	var nonOverride = this.get("content.units").filterBy("userOverrideMode", null);
-	// 	return (this.get("content.units.length") - nonOverride.length) || 0;
-	// }),
-
 	unitTypes : Ember.computed("content.units.@each.finalRecRent", function() {
 		var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
 

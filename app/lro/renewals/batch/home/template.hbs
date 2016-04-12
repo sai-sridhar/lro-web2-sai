@@ -33,6 +33,56 @@
 				<div class="close" {{action "toggleTerms"}}>{{fa-icon "times"}}</div>
 			</header>
 			<section class="scroll-content">
+				<div class="left-column">
+					<section>
+						<h3>Select lease terms to offer:</h3>
+						<div class="select-deselect-all">
+							<div {{action "selectAllTerms"}}>Select All</div
+							><div {{action "deselectAllTerms"}}>Deselect All</div>
+						</div>
+					</section>
+					<section class="rb-lease-terms">
+						{{#each leaseTermCategories as |ltc|}}
+							<div class="ltc">
+								<div>
+									{{check-box checked=ltc.isChecked value=ltc action="toggleLtc"}}
+									{{!-- <input type="checkbox" checked={{ltc.isChecked}} onclick={{action "toggleLtc" value="target.checked"}} /> --}}
+									<span>{{ltc.ltc}}</span>
+								</div>
+								{{#each ltc.terms as |term|}}
+									<div>
+										{{check-box checked=term.isChecked value=ltc action="toggleLeaseTerm"}}
+										<span>{{term.text}}</span>
+									</div>
+								{{/each}}
+							</div>
+						{{/each}}
+					</section>
+				</div>
+				<div class="vertical-divider"></div>
+				<div class="right-column">
+					<h3>Select communities to apply to:</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>Community Code</th>
+								<th>Community Name</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each communityContent as |comm|}}
+								<tr {{action "selectCommunityForTerms" comm}} class="{{if comm.selectedForTerms 'active'}}">
+									<td>{{comm.description}}</td>
+									<td>{{comm.text}}</td>
+								</tr>
+							{{/each}}
+						</tbody>
+					</table>
+					<div class="select-deselect-all">
+						<div {{action "selectAllForTerms"}}>Select All</div>
+						<div {{action "deselectAllForTerms"}}>Deselect All</div>
+					</div>
+				</div>
 			</section>
 			<footer>
 				<button class="with-icon" {{action "toggleTerms"}}>{{fa-icon "check"}}Apply</button>
@@ -104,6 +154,12 @@
 						{{fa-icon "times-circle"}}
 					</div>
 				{{/if}}
+				{{#if communityFiltersApplied}}
+					<div class="filter-tag clickable" {{action "clearCommunityFilters"}}>
+						Clear community filters
+						{{fa-icon "times-circle"}}
+					</div>
+				{{/if}}
 			</div>
 			<section class="rb-detail-content">
 				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
@@ -134,21 +190,64 @@
 									</div>
 								</div>
 								<div class="filter">
-									{{input-control value=overrideFilter type="toggle" label="Overrides Only" orientation="block"}}
+									<div class="input-control">
+										<div class="label block">Community</div>
+										<div class="control block">
+											{{select-2 content=communityContent value=communityFilter placeholder="Choose community..." allowClear=true multiple=false}}
+										</div>
+									</div>
 								</div>
 								<div class="filter">
-									{{input-control value=bedsFilter type="list" label="Beds" orientation="block" content=bedsContent}}
+									{{input-control value=overrideUnitFilter type="toggle" label="Overrides Only" orientation="block"}}
 								</div>
 								<div class="filter">
-									{{input-control value=bathsFilter type="list" label="Baths" orientation="block" content=bathsContent}}
+									{{input-control value=unapprovedUnitFilter type="toggle" label="Unapproved Only" orientation="block"}}
 								</div>
 								<div class="filter">
-									{{input-control value=unitTypeFilter type="list" label="Unit Type" orientation="block" content=unitTypeContent}}
+									<div class="input-control">
+										<div class="label block">Beds</div>
+										<div class="control block">
+											{{select-2 value=bedsFilter content=bedsContent placeholder="Choose beds..." allowClear=true}}
+										</div>
+									</div>
 								</div>
 								<div class="filter">
-									{{input-control value=pmsUnitTypeFilter type="list" label="PMS Unit Type" orientation="block" content=pmsUnitTypeContent}}
+									<div class="input-control">
+										<div class="label block">Baths</div>
+										<div class="control block">
+											{{select-2 value=bathsFilter content=bathsContent placeholder="Choose baths..." allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">LRO Unit Type</div>
+										<div class="control block">
+											{{select-2 value=unitTypeFilter content=unitTypeContent placeholder="Choose LRO Unit Type..." allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">PMS Unit Type</div>
+										<div class="control block">
+											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypeContent placeholder="Choose PMS Unit Type..." allowClear=true}}
+										</div>
+									</div>
 								</div>
 							{{else}}
+								<div class="filter">
+									<div>
+										<div class="label">Avg. Increase: {{format-percent avgIncreaseMin 100}} - {{format-percent avgIncreaseMax 100}}</div>
+										{{range-slider start=avgIncreaseSliderStart range=avgIncreaseRange connect=true  step=0.5 slide="avgIncreaseSlide"}}
+									</div>
+								</div>
+								<div class="filter">
+									{{input-control value=overrideCommunityFilter type="toggle" label="Overrides Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									{{input-control value=unapprovedCommunityFilter type="toggle" label="Unapproved Only" orientation="block"}}
+								</div>
 							{{/if}}
 						</div>
 					{{else}}
@@ -255,7 +354,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{#each model.communities as |comm|}}
+								{{#each filteredCommunityContent as |comm|}}
 									{{#link-to "lro.renewals.batch.community" comm.id tagName="tr"}}
 										<td class="left">{{comm.community.name}}</td>
 										<td>{{format-commas comm.expirationCount}}</td>

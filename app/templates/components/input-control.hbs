@@ -8,7 +8,7 @@
 		{{else if isToggle}}
 			{{ios-toggle toggleOnly=true orientation=orientation switched=value}}
 		{{else if isList}}
-			{{dropdown-list content=content selectedObject=value}}
+			{{select-2 content=content value=value placeholder=placeholder allowClear=allowClear}}
 		{{else if isNumber}}
 			{{input type="number" min=config.min max=config.max step=config.step value=value}}
 		{{/if}}

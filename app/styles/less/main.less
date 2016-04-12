@@ -37,6 +37,10 @@ h2 {
 	font-size: 1.5em;
 }
 
+h3 {
+	font-size: 1.2em;
+}
+
 
 a {
 	color: @mediumBlue;
@@ -2262,19 +2266,34 @@ button {
 		}
 	}
 
+	.rb-lease-terms {
+		.ltc {
+			margin-top: @stdPadding;
+			&>div {
+				margin-left: @dblPadding;
+				vertical-align: top;
 
+				&:first-child {
+					margin-left: 0px;
+					font-weight: bold;
+				}
 
+				span {
+					vertical-align: top;
+					line-height: 2.2em;
+				}
+			}
+		}
+	}
+
+/*
 	.rb-visuals-wrapper {
 		position: relative;
 		display: block;
 		min-height: 301px;
 		margin-bottom: 20px;
 		border-bottom: @stdBorder;
-		/*padding: @dblPadding;*/
 		box-sizing: border-box;
-		/*background: white;*/
-
-
 
 		.graphs {
 			position: absolute;
@@ -2294,10 +2313,10 @@ button {
 			}
 		}
 	}
+*/
 
 
-
-	.rb-settings-wrapper {
+	/*.rb-settings-wrapper {
 		position: relative;
 		padding: 0px @stdPadding;
 		height: @rbSettingsHeight;
@@ -2308,7 +2327,7 @@ button {
 		border-top: @stdBorder;
 		border-bottom: @stdBorder;
 		background: white;
-	}
+	}*/
 
 	.rb-metrics-table {
 		width: 100%;
@@ -2396,7 +2415,7 @@ button {
 		}
 	}
 
-	.rb-community {
+	/*.rb-community {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -2405,8 +2424,6 @@ button {
 		overflow: scroll;
 
 		.rb-batch-header {
-			/*height: @headerBarHeight;*/
-			/*padding: @stdPadding;*/
 			box-sizing: border-box;
 			background: @grayBlue;
 			color: white;
@@ -2439,7 +2456,7 @@ button {
 				}
 			}
 		}
-	}
+	}*/
 }
 
 .overlay {
@@ -2567,6 +2584,10 @@ button {
 
 	.control {
 		line-height: 24px;
+		width: 100%;
+		&>div {
+			display: block;
+		}
 		.dd-list-selected {
 			color: @mediumBlue;
 			margin-bottom: 0.5*@stdPadding;
@@ -2770,5 +2791,29 @@ button {
 	i {
 		margin-left: @stdPadding;
 		color: white !important;
+	}
+}
+
+.select-deselect-all {
+	margin: @stdPadding 0;
+	&>div {
+		display: inline-block;
+		color: @mediumBlue;
+		cursor: pointer;
+
+		&:last-child {
+			&:after {
+				content: "";
+				padding: 0px;
+			}
+		}
+
+		&:after {
+			padding: 0 @stdPadding;
+			content: "|";
+			color: @gray2;
+			cursor: default;
+			font-size: 1.2em;
+		}
 	}
 }

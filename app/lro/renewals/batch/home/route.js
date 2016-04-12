@@ -1,19 +1,35 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	// model : function(params) {
-	// 	return this.store.findRecord("renewalBatch", params.batch_id);
-	// },
-	// afterModel : function(params) {
-	// 	this.store.query('renewalComm', { batch : params.batch_id });
-	// 	this.store.query('renewalUnit', { batch : params.batch_id });
-	// },
+	model : function(params, transition) {
+		return this.store.findRecord("renewalBatch", transition.params["lro.renewals.batch"].batch_id);
+	},
+	afterModel : function(params, transition) {
+		this.store.query('renewalComm', { batch : transition.params["lro.renewals.batch"].batch_id });
+		this.store.query('renewalUnit', { batch : transition.params["lro.renewals.batch"].batch_id });
+	},
 
 	setupController : function(controller, model) {
 		this._super(controller, model);
 		if( !controller.get("detailView") ) {
 			controller.set("detailView", "community");
 		}
+
+		controller.set("communityContent", Ember.ArrayProxy.create({ content : Ember.A([]) }));
+		this.store.query('renewalComm', { batch : model.get("id") }).then( (communities) => {
+			communities.forEach(function(comm) {
+				var newObj = Ember.Object.create({
+					id : comm.get("community.id")
+				});
+
+				this.store.findRecord("community", comm.get("community.id")).then( (community) => {
+					newObj.set("text", community.get("name"));
+					newObj.set("description", community.get("code"));
+				});
+
+				controller.get("communityContent").pushObject(newObj);
+			}, this);
+		});
 	},
 
 	actions : {
@@ -210,7 +226,9 @@ export default Ember.Route.extend({
 			this.controller.set("bathsFilter", null);
 			this.controller.set("unitTypeFilter", null);
 			this.controller.set("pmsUnitTypeFilter", null);
-			this.controller.set("overrideFilter", false);
+			this.controller.set("overrideUnitFilter", false);
+			this.controller.set("communityFilter", false);
+			this.controller.set("unapprovedUnitFilter", false);
 
 			this.controller.set("increaseMin", this.controller.get("model.minIncrease") * 100);
 			this.controller.set("increaseMax", this.controller.get("model.maxIncrease") * 100);
@@ -220,7 +238,38 @@ export default Ember.Route.extend({
 
 			this.controller.set("newDtmMin", this.controller.get("model.minNewDiscountToMarket") * 100);
 			this.controller.set("newDtmMax", this.controller.get("model.maxNewDiscountToMarket") * 100);
-		}
+		},
+		avgIncreaseSlide : function(val) {
+			this.controller.set("avgIncreaseMin", val[0]);
+			this.controller.set("avgIncreaseMax", val[1]);
+		},
+		clearCommunityFilters : function() {
+			this.controller.set("avgIncreaseMin", this.controller.get("avgIncreaseRange.min"));
+			this.controller.set("avgIncreaseMax", this.controller.get("avgIncreaseRange.max"));
 
+			this.controller.set("unapprovedCommunityFilter", false);
+			this.controller.set("overrideCommunityFilter", false);
+		},
+		selectAllTerms : function() {
+			this.controller.get("leaseTermCategories").forEach(function(ltc) {
+				ltc.set("isChecked", true);
+				ltc.get("terms").setEach("isChecked", true);
+			});
+		},
+		deselectAllTerms : function() {
+			this.controller.get("leaseTermCategories").forEach(function(ltc) {
+				ltc.set("isChecked", false);
+				ltc.get("terms").setEach("isChecked", false);
+			});
+		},
+		selectCommunityForTerms : function(comm) {
+			comm.toggleProperty("selectedForTerms");
+		},
+		selectAllForTerms : function() {
+			this.controller.get("communityContent").setEach("selectedForTerms", true);
+		},
+		deselectAllForTerms : function() {
+			this.controller.get("communityContent").setEach("selectedForTerms", false);
+		}
 	}
 });

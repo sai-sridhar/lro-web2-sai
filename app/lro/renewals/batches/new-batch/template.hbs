@@ -30,8 +30,10 @@
 						{{/each}}
 					</tbody>
 				</table>
-				<div {{action "selectAll"}}>Select All</div>
-				<div {{action "unselectAll"}}>Unselect All</div>
+				<div class="select-deselect-all">
+					<div {{action "selectAll"}}>Select All</div>
+					<div {{action "deselectAll"}}>Deselect All</div>
+				</div>
 			</div>
 		</section>
 		<footer>
