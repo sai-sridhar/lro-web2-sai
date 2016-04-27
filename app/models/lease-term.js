@@ -7,5 +7,5 @@ export default DS.Model.extend({
 	baseRent : attr("number"),
 	totalConcession : attr("number"),
 	effectiveRent : attr("number"),
-	newPricing : belongsTo("newPricing")
+	newPricing : belongsTo("newPricing", { async : true })
 });

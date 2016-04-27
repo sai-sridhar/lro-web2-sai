@@ -174,26 +174,26 @@
 								<div class="filter">
 									<div>
 										<div class="label">Increase: {{format-percent increaseMin 100}} - {{format-percent increaseMax 100}}</div>
-										{{range-slider start=increaseSliderStart range=increaseRange connect=true  step=0.5 slide="increaseSlide"}}
+										{{!-- {{range-slider start=increaseSliderStart range=increaseRange connect=true  step=0.5 slide="increaseSlide"}} --}}
 									</div>
 								</div>
 								<div class="filter">
 									<div>
 										<div class="label">Current DTM:<br>{{format-percent currentDtmMin 100}} - {{format-percent currentDtmMax 100}}</div>
-										{{range-slider start=currentDtmSliderStart range=currentDtmRange connect=true  step=0.5 slide="currentDtmSlide"}}
+										{{!-- {{range-slider start=currentDtmSliderStart range=currentDtmRange connect=true  step=0.5 slide="currentDtmSlide"}} --}}
 									</div>
 								</div>
 								<div class="filter">
 									<div>
 										<div class="label">New DTM:<br>{{format-percent newDtmMin 100}} - {{format-percent newDtmMax 100}}</div>
-										{{range-slider start=newDtmSliderStart range=newDtmRange connect=true  step=0.5 slide="newDtmSlide"}}
+										{{!-- {{range-slider start=newDtmSliderStart range=newDtmRange connect=true  step=0.5 slide="newDtmSlide"}} --}}
 									</div>
 								</div>
 								<div class="filter">
 									<div class="input-control">
 										<div class="label block">Community</div>
 										<div class="control block">
-											{{select-2 content=communityContent value=communityFilter placeholder="Choose community..." allowClear=true multiple=false}}
+											{{select-2 content=communityContent value=communityFilter placeholder="All" allowClear=true multiple=false}}
 										</div>
 									</div>
 								</div>
@@ -207,7 +207,7 @@
 									<div class="input-control">
 										<div class="label block">Beds</div>
 										<div class="control block">
-											{{select-2 value=bedsFilter content=bedsContent placeholder="Choose beds..." allowClear=true}}
+											{{select-2 value=bedsFilter content=bedsContent placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -215,7 +215,7 @@
 									<div class="input-control">
 										<div class="label block">Baths</div>
 										<div class="control block">
-											{{select-2 value=bathsFilter content=bathsContent placeholder="Choose baths..." allowClear=true}}
+											{{select-2 value=bathsFilter content=bathsContent placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -223,7 +223,7 @@
 									<div class="input-control">
 										<div class="label block">LRO Unit Type</div>
 										<div class="control block">
-											{{select-2 value=unitTypeFilter content=unitTypeContent placeholder="Choose LRO Unit Type..." allowClear=true}}
+											{{select-2 value=unitTypeFilter content=unitTypeContent placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -231,7 +231,7 @@
 									<div class="input-control">
 										<div class="label block">PMS Unit Type</div>
 										<div class="control block">
-											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypeContent placeholder="Choose PMS Unit Type..." allowClear=true}}
+											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypeContent placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -239,7 +239,7 @@
 								<div class="filter">
 									<div>
 										<div class="label">Avg. Increase: {{format-percent avgIncreaseMin 100}} - {{format-percent avgIncreaseMax 100}}</div>
-										{{range-slider start=avgIncreaseSliderStart range=avgIncreaseRange connect=true  step=0.5 slide="avgIncreaseSlide"}}
+										{{!-- {{range-slider start=avgIncreaseSliderStart range=avgIncreaseRange connect=true  step=0.5 slide="avgIncreaseSlide"}} --}}
 									</div>
 								</div>
 								<div class="filter">

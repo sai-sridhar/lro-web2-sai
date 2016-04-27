@@ -51,17 +51,24 @@ export default Ember.Route.extend({
 					function (isConfirm) {
 						if (isConfirm) {
 							var comms = batch.get("communities"),
-								forDelete = comms.toArray();
+								units = batch.get("units"),
+								forDeleteComms = comms.toArray(),
+								forDeleteUnits = units.toArray();
 
-							forDelete.forEach( function(comm) {
+							forDeleteComms.forEach( function(comm) {
 								comm.deleteRecord();
 								comm.save();
 								comms.removeObject(comm);
 							});
+							forDeleteUnits.forEach( function(unit) {
+								unit.deleteRecord();
+								unit.save();
+								units.removeObject(unit);
+							});
 							batch.deleteRecord();
 							batch.save().then( () => {
 								swal("Deleted!", "Your batch has been deleted.", "success");
-								self.transitionTo("lro.renewals.open");
+								self.transitionTo("lro.renewals.batches.open");
 							});
 						}
 					}

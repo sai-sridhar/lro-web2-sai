@@ -6,16 +6,20 @@
         <div class="filter-wrapper {{if showFilters 'show'}}">
             <div class="filter">
                 <div class="label">Pricing Date</div>
-                {{date-picker startDate=startDate endDate=endDate currentDate=currentDate viewportHeight="216" rowHeight="36"}}
+                {{!-- {{date-picker startDate=startDate endDate=endDate currentDate=currentDate viewportHeight="216" rowHeight="36"}} --}}
+                {{pikaday-input value=currentDate minDate=startDate maxDate=endDate placeholder="Pricing date" format=dateFormat class="calendar" firstDay=0}}
             </div>
-            {{!-- <div class="filter mobile-only">
-                <div class="label">LRO Unit Type</div>
-                <div class="selected">All</div>
-            </div> --}}
-
             <div class="filter">
-                <div class="label">PMS Unit Type</div>
-                <div class="selected">All</div>
+                <div class="label block">PMS Unit Type</div>
+                <div class="control block">
+                    {{select-2 content=pmsUnitTypeContent value=pmsUnitTypeFilter placeholder="All" allowClear=true multiple=false}}
+                </div>
+            </div>
+            <div class="filter">
+                <div class="label block">Unit Status</div>
+                <div class="control block">
+                    {{select-2 content=statusContent value=statusFilter placeholder="All" allowClear=true multiple=false}}
+                </div>
             </div>
             <div class="filter">
                 <div class="label">Max Price <span class="blue"><b>${{format-commas userPrice}}</b></span></div>

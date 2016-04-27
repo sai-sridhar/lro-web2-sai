@@ -10,11 +10,11 @@
     <div class="community-menu {{if showCommunityMenu 'open'}}">
         <div class="search-wrapper block">
             <div class="search-control full-width borderless">
-            	{{input type="search" placeholder="Search..." value=communitySearch}}
+            	{{input type="search" placeholder="Search..." value=query}}
             </div>
         </div>
         <div class="list-wrapper" {{action "toggleCommunityMenu"}}>
-            {{#each communities as |comm|}}
+            {{#each filteredCommunities as |comm|}}
                 {{#link-to "lro.pricingLeasing.community.new" comm.id tagName="div"}}
                     <div class="c-code">{{comm.code}}</div>
                     <div class="c-name">{{comm.name}}</div>

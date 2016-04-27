@@ -2,41 +2,61 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
-	listContent : Ember.ArrayProxy.create({ content : Ember.A([
-		{	name: "March 2016",
-			id: 1
-		},
-		{ 	name: "April 2016",
-			id: 2
-		},
-		{	name: "May 2016",
-			id: 3
-		},
-		{	name: "June 2016",
-			id: 4
-		},
-		{	name: "July 2016",
-			id: 5
-		},
-		{	name: "August 2016",
-			id: 6
-		},
-		{	name: "September 2016",
-			id: 7
-		},
-		{	name: "October 2016",
-			id: 8
-		},
-		{	name: "November 2016",
-			id: 9
-		},
-		{	name: "December 2016",
-			id: 10
+	dateFormat : "MMM D, YYYY",
+	selectedMonth : null,
+	startDate : null,
+	endDate : null,
+
+	startDateBegin : moment(),
+	startDateEnd : moment().add(7, "months"),
+
+	endDateBegin : moment(),
+	endDateEnd : moment().add(8, "months"),
+
+	listContent : Ember.computed(function() {
+		var content = Ember.ArrayProxy.create({ content : Ember.A([])}),
+			today = moment(),
+			month,
+			futureMonths = 8,
+			text,
+			start,
+			end;
+
+		for( var i = 0; i < futureMonths; i++ ) {
+			month = today.clone().add(i, "months");
+			text = month.format("MMMM YYYY");
+			start = month.clone().startOf("month").format(this.get("dateFormat"));
+			end = month.clone().endOf("month").format(this.get("dateFormat"));
+
+			content.pushObject(Ember.Object.create({
+				id : i,
+				text : text,
+				start : start,
+				end : end
+			}));
 		}
-	]) }),
 
-	selectedMonth : Ember.computed('month', function() {
-		return this.get("month.name");
+		return content;
+	}),
+
+	dateObserver : Ember.observer("startDate", "endDate", function() {
+		if( this.get("month") ) {
+			if( (this.get("startDate") !== this.get("month.start")) || (this.get("endDate") !== this.get("month.end")) ) {
+				console.log("month no longer matches the start or end date");
+				// this.set("month", null);
+			}
+		}
+	}),
+
+	monthObserver : Ember.observer("month", function() {
+		if( this.get("month") ) {
+			this.set("startDate", this.get("month.start"));
+			this.set("endDate", this.get("month.end"));
+			this.set("selectedMonth", this.get("month.text"));
+		} else {
+			this.set("startDate", null);
+			this.set("endDate", null);
+			this.set("selectedMonth", null);
+		}
 	})
-
 });

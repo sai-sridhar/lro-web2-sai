@@ -1,22 +1,25 @@
 import Ember from 'ember';
+import computedFilterByQuery from 'ember-cli-filter-by-query';
 
 export default Ember.Controller.extend({
 
+	dateFormat : "MMM D, YYYY",
 	communityController : Ember.inject.controller("lro.pricingLeasing.community"),
 	community : Ember.computed.reads("communityController.model"),
 
 	pricingLeasingController : Ember.inject.controller("lro.pricingLeasing"),
 	communities : Ember.computed.reads("pricingLeasingController.model"),
 
-	currentDate : moment(),
-	startDate: moment().subtract(2, "years"),
-	endDate : moment(),
+	currentDate : Date(),
+	startDate: moment().subtract(2, "years").toDate(),
+	endDate : moment().toDate(),
+	searchText : null,
 
 	priceDate : Ember.computed('currentDate', function() {
 		return Ember.String.htmlSafe( this.get('currentDate').format("YYYY-MM-DD") );
 	}),
 
-	queryParams : ["priceDate"],
+	// queryParams : ["priceDate"],
 
 	minPrice : Ember.computed('content.[]', function() {
     	return this.get("content").reduce(function( prevValue, unit ) {
@@ -69,36 +72,48 @@ export default Ember.Controller.extend({
 		return content;
     }),
 
-  	filteredContent : Ember.computed('content.[]', 'filteredUnitTypes.[]', 'userPrice', function() {
-  		var result;
-  		var self = this;
+  	filteredContent : Ember.computed('content.[]', 'filteredUnitTypes.[]', 'userPrice', "pmsUnitTypeFilter", "statusFilter", function() {
 
-		if( this.get("filteredUnitTypes.length") === 0 ) {
-			result = this.get("content").filter( function(itm) {
-				if( itm.get("effectiveRent") <= self.get("userPrice") ) {
-					return true;
-				} else {
-					return false;
+  		return this.get("content").filter(function(unit, i) {
+			var f1 = true, // unitType
+				f2 = true, // pmsUnitType
+				f3 = true, // status
+				f4 = true; // price
+
+				if( this.get("filteredUnitTypes.length") !== 0 ) {
+					if( !this.get("filteredUnitTypes").contains(unit.get("unitType")) ) {
+						f1 = false;
+					}
 				}
-			});
-		} else {
-			result = this.get("content").filter( function(itm) {
-				if( self.get("filteredUnitTypes").contains(itm.get("unitType")) && itm.get("effectiveRent") <= self.get("userPrice") ) {
-					return true;
-				} else {
-					return false;
+
+				if( this.get("pmsUnitTypeFilter") ) {
+					if( unit.get("pmsUnitType") !== this.get("pmsUnitTypeFilter.text") ) {
+						f2 = false;
+					}
 				}
-			});
-		}
-		return result;
+
+				if( this.get("statusFilter") ) {
+					if( unit.get("status") !== this.get("statusFilter.text") ) {
+						f3 = false;
+					}
+				}
+
+				if( unit.get("effectiveRent") > this.get("userPrice") ) {
+					f4 = false;
+				}
+				console.log(f1, f2, f3, f4);
+				return (f1 && f2 && f3 && f4);
+		}, this);
   	}),
 
-  	groupedContent : Ember.computed('filteredContent.[]', function() {
+  	filteredSearchedContent : computedFilterByQuery('filteredContent', ['unitNumber','status','unitType','unitCategory','pmsUnitType','amenities'], 'searchText'),
+
+  	groupedContent : Ember.computed('filteredSearchedContent.[]', function() {
 
 		var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
 		// return content;
 
-		this.get("filteredContent").forEach( function(itm) {
+		this.get("filteredSearchedContent").forEach( function(itm) {
 			var ut = itm.get("unitType");
 
 			var utObj = content.findBy("unitType", ut);
@@ -177,41 +192,42 @@ export default Ember.Controller.extend({
 		return obj;
     }),
 
-    lroUnitTypes : Ember.computed('content.[]', function() {
-    	var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
-		this.get("content").forEach( function(itm) {
-			var ut = itm.get("unitType");
+    contentObserver : Ember.observer("content.[]", function() {
 
-			var utObj = content.findBy("name", ut);
+    	Ember.run.once(this, function() {
 
-			if( utObj ) {
-				utObj.name = ut;
-			} else {
-				var newObj = Ember.Object.create({
-					name : ut
-				});
-				content.pushObject(newObj);
+			var cols = ["unitType", "pmsUnitType", "status"],
+				filters = Ember.ArrayProxy.create({ content : Ember.A([])});
+
+			for( var i = 0; i < cols.length; i++ ) {
+				filters.pushObject(
+					Ember.Object.create({
+						key : cols[i],
+						arr : Ember.ArrayProxy.create({ content : Ember.A([])}),
+						prop : cols[i] + "Content"
+					})
+				);
 			}
-		});
-		return content;
-    }),
 
-    pmsUnitTypes : Ember.computed('content.[]', function() {
-    	var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
-		this.get("content").forEach( function(itm) {
-			var ut = itm.get("pmsUnitType");
-
-			var utObj = content.findBy("name", ut);
-
-			if( utObj ) {
-				utObj.name = ut;
-			} else {
-				var newObj = Ember.Object.create({
-					name : ut
+			this.get("content").forEach(function(unit) {
+				filters.forEach(function(filter) {
+					var val = unit.get(filter.get("key"));
+					var b = filter.get("arr").findBy("text", val);
+					if( !b ) {
+						var newObj = Ember.Object.create({
+							id : val,
+							text : val
+						});
+						filter.get("arr").pushObject(newObj);
+					}
 				});
-				content.pushObject(newObj);
-			}
-		});
-		return content;
+			});
+
+			filters.forEach(function(filter) {
+				this.set(filter.get("prop"), filter.get("arr"));
+			}, this);
+
+		}); // END run once
+
     })
 });

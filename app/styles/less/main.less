@@ -70,17 +70,27 @@ input[type="number"] {
 }
 
 input {
-	/*border: none;*/
 	border-radius: none;
 	height: 2em;
-	/*width: 80%;*/
 	font-size: 1em;
-	/*padding: @stdPadding;*/
 	margin: 0 auto;
 	box-sizing: border-box;
 
 	&:focus {
 		outline: none;
+	}
+
+	&.calendar {
+		border: none;
+		color: @mediumBlue;
+		font-size: 1.4em;
+		cursor: pointer;
+		background: none;
+		height: 20px;
+		padding: 0px;
+		font-weight: 200;
+		font-family: "Avenir";
+		width: 100px;
 	}
 }
 
@@ -1745,18 +1755,49 @@ button {
 		overflow-y: scroll;
 		font-size: 1.2em;
 
-		&>div {
-			padding: @dblPadding;
-			border-bottom: @stdBorder;
-			cursor: pointer;
+		&>section {
+			box-sizing: border-box;
+			left: 0;
+			right: 0;
+		}
 
-			&:hover {
-				background: @hoverBlue;
-				color: black;
+		.search {
+			position: absolute;
+			top: 0;
+			height: 40px;
+			border-bottom: @stdBorder;
+			padding: @stdPadding @dblPadding;
+
+			input {
+				border: none;
+				width: 100%;
 			}
 		}
-		.search {
 
+		.list {
+			position: absolute;
+			top: 40px;
+			bottom: 0;
+			overflow-y: scroll;
+
+			table {
+				th {
+					color: @gray3;
+				}
+				td {
+					color: @gray2;
+				}
+			}
+			&>div {
+				padding: @dblPadding;
+				border-bottom: @stdBorder;
+				cursor: pointer;
+
+				&:hover {
+					background: @hoverBlue;
+					color: black;
+				}
+			}
 		}
 	}
 }
@@ -2086,6 +2127,7 @@ button {
 				overflow-x: hidden;
 				overflow-y: scroll;
 				top: 0;
+				padding: 0;
 
 				&::-webkit-scrollbar {
 					-webkit-appearance: none;
@@ -2574,6 +2616,7 @@ button {
 	margin-bottom: @dblPadding;
 
 	.label {
+		height: 24px;
 		&.inline {
 			width: 160px;
 			height: 24px;
@@ -2817,3 +2860,6 @@ button {
 		}
 	}
 }
+
+
+

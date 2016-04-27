@@ -6,7 +6,8 @@ var modelSchema = new Schema({
     baseRent		: Number,
     totalConcession : Number,
     effectiveRent	: Number,
-    newPricing		: String
+    newPricing : 	{ type : Schema.ObjectId, ref : 'newpricings' }
+    // newPricing		: String
 });
 
 module.exports = mongoose.model('LeaseTerm', modelSchema);

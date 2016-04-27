@@ -3,7 +3,7 @@
 		{{input type="search" placeholder="Search..." value=searchText}}
 	</div>
 	<div class="catalog-scroll {{if addingCommunity 'shorter'}}">
-		{{#each model as |community|}}
+		{{#each filteredModel as |community|}}
 			{{#link-to "lro.admin.communities.community" community.id tagName="div"}}{{community.name}}{{/link-to}}
 		{{/each}}
 	</div>

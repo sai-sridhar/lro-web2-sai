@@ -236,7 +236,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 				cDtm = this.round(unit.get("currentDiscountToMarket"), 4);
 				nDtm = this.round(unit.get("finalDiscountToMarket"), 4);
 
-
+			console.log(inc, incMin, incMax);
 			if( !(inc >= incMin && inc <= incMax) ) {
 				f1 = false;
 			}

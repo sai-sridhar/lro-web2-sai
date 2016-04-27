@@ -28,6 +28,8 @@ module.exports = function(defaults) {
   app.import("bower_components/sweetalert/dist/sweetalert.css");
   app.import("bower_components/d3/d3.min.js");
   app.import("bower_components/nouislider/src/nouislider.css");
+  app.import("bower_components/pikaday/pikaday.js");
+  app.import("bower_components/pikaday/css/pikaday.css");
 
 
   // If you need to use different assets in different

@@ -20,6 +20,7 @@ var modelSchema = new Schema({
 	baseRent 		: Number,
 	totalConcession : Number,
 	effectiveRent 	: Number,
+	leaseTerms 		: []
 });
 
 module.exports = mongoose.model('NewPricing', modelSchema);

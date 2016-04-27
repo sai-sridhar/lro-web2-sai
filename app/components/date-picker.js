@@ -58,8 +58,7 @@ export default Ember.Component.extend({
 
 	init : function() {
 		// Ensure that the dates we're passed are moment objects.
-		Ember.assert("Dates passed to infinite-calendar must be a moment objects.",
-			isMom(this.get("currentDate")) && isMom(this.get("startDate")) && isMom(this.get("endDate")) );
+		Ember.assert("Dates passed to infinite-calendar must be a moment objects.", isMom(this.get("currentDate")) && isMom(this.get("startDate")) && isMom(this.get("endDate")) );
 
 		this._super();
 		this.setupWeeks();

@@ -20,33 +20,73 @@ export default Ember.Route.extend({
 
 			// create a new renewal-batch object
 			var name = this.controller.get('batchName'),
-				month = this.controller.get('selectedMonth');
+				month = this.controller.get('selectedMonth'),
+				newBatch,
+				newRenewalComm,
+				newRenewalUnit;
 
-			var newBatch = this.store.createRecord('renewalBatch', {
+			newBatch = this.store.createRecord('renewalBatch', {
 				name : name,
 				month : month
 			});
 
-			// create the renewal-comm records
-			this.controller.get("model").forEach(function(community) {
-				if( community.selected ) {
-
-					newBatch.get("communities").addObject(self.store.createRecord("renewalComm", {
-						community : community,
-						batch : newBatch
-					}));
-				}
-			});
-
 			newBatch.save().then( () => {
-				var promises = Ember.A();
+				this.controller.get("model").forEach(function(community) {
+					if( community.selected ) {
 
-			    newBatch.get('communities').forEach(function(itm){
-			        promises.push(itm.save());
-			    });
-			    Ember.RSVP.Promise.all(promises).then(function(resolvedPromises){
-			        self.transitionTo("lro.renewals.batches.open");
-			    });
+						newRenewalComm = this.store.createRecord("renewalComm", {
+							community : community,
+							batch : newBatch
+						});
+
+						newBatch.get("communities").addObject(newRenewalComm);
+
+						// create the renewal-unit records
+						// assume all the units fit the renewal range for the moment
+						this.store.query("unit", { community : community.get("id") }).then( (units) => {
+							units.forEach(function(unit) {
+								console.log("in the units loop");
+								// Create the new Renewal Unit object
+								newRenewalUnit = this.store.createRecord("renewalUnit", {
+									renewalComm : newRenewalComm,
+									batch : newBatch,
+									unitId : unit.get("unitNumber"),
+									unitType : unit.get("unitType"),
+									pmsUnitType : unit.get("pmsUnitType"),
+									beds : unit.get("beds"),
+									baths : unit.get("baths"),
+									renewalDate : unit.get("leaseExpirationDate"),
+									resident : unit.get("leaseCurrentResident"),
+									currentLeaseTerm : unit.get("leaseCurrentTerm"),
+									currentRent : unit.get("leaseCurrentRent"),
+									cmr : unit.get("cmr"),
+									recLeaseTerm : 12,
+									recRent : unit.get("leaseCurrentRent") * 1.04,
+									finalRecRent : unit.get("leaseCurrentRent") * 1.04
+								});
+
+								// Relate the new Renewal Unit to the new Renewal Batch and Renewal Comm
+								newBatch.get("units").addObject(newRenewalUnit);
+								newRenewalComm.get("units").addObject(newRenewalUnit);
+
+							}, this);
+
+							newRenewalComm.save().then( () => {
+								var promises = Ember.A();
+
+								newRenewalComm.get("units").forEach(function(renewalUnit) {
+									promises.push(renewalUnit.save());
+								});
+
+								Ember.RSVP.Promise.all(promises).then( (resolvedPromises) => {
+									console.log("hiyo!");
+								})
+							});
+						});
+					}
+				}, this);
+
+				this.transitionTo("lro.renewals.batches.open");
 			});
 		}
 	}

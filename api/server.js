@@ -22,6 +22,7 @@ app.use(function (request, response, next) {
 var port = process.env.PORT || 8081;        // set our port
 
 var mongoose	= require('mongoose');
+var ObjectId  = mongoose.Types.ObjectId;
 var url 		= 'mongodb://api-user:letitrain@ds061345.mongolab.com:61345/rmg-lro-zion';
 // var url = 'mongodb://localhost/rmg_prod_mgmt';
 mongoose.connect(url); // connect to our database
@@ -31,6 +32,7 @@ db.once('open', function() {
   // we're connected!
   console.log("we're connected!");
 });
+
 
 // ROUTES FOR OUR API
 var router = express.Router();              // get an instance of the express Router
@@ -52,8 +54,16 @@ router.post('/token', function(request, response) {
     }
 });
 
+// Get all the models
+var Community = require('./models/community'),
+    NewPricing = require('./models/new-pricing'),
+    LeaseTerm = require('./models/lease-term'),
+    RenewalBatch = require('./models/renewal-batch'),
+    RenewalComm = require('./models/renewal-comm'),
+    RenewalUnit = require('./models/renewal-unit'),
+    Unit = require('./models/unit');
 
-var Community = require('./models/community');
+
 // on routes that end in /communities
 // ----------------------------------------------------
 router.route('/communities')
@@ -146,7 +156,6 @@ router.route('/communities/:community_id')
     });
 
 
-var NewPricing = require('./models/new-pricing');
 // on routes that end in /newPricings
 // ----------------------------------------------------
 router.route('/newPricings')
@@ -196,10 +205,22 @@ router.route('/newPricings')
 router.route('/newPricings/:new_pricing_id')
     // get the product with that id (accessed at GET http://localhost:8080/api/newPricings/:new_pricing_id)
     .get(function (request, response) {
+        var queryTerms = new ObjectId(request.params.new_pricing_id);
+        var lts = [];
+
         NewPricing.findById(request.params.new_pricing_id, function (error, newPricing) {
             if (error) response.send(error);
-            response.json({
-                newPricing : newPricing
+
+            LeaseTerm.find({newPricing : queryTerms}, "_id", function (error, leaseTerms) {
+                if (error) response.send(error);
+                for( i = 0; i < leaseTerms.length; i++ ) {
+                    lts.push(leaseTerms[i]["_id"]);
+                }
+                newPricing.leaseTerms = lts;
+
+                response.json({
+                    newPricing : newPricing
+                });
             });
         });
     })
@@ -239,7 +260,7 @@ router.route('/newPricings/:new_pricing_id')
     });
 
 
-var LeaseTerm = require('./models/lease-term');
+
 // on routes that end in /leaseTerms
 // ----------------------------------------------------
 router.route('/leaseTerms')
@@ -274,7 +295,7 @@ router.route('/leaseTerms')
         });
     });
 
-router.route('/leaseTerms/:leaseTerm_id')
+router.route('/leaseTerms/:lease_term_id')
     // get the product with that id (accessed at GET http://localhost:8080/api/newPricings/:new_pricing_id)
     .get(function (request, response) {
         LeaseTerm.findById(request.params.lease_term_id, function (error, leaseTerm) {
@@ -322,7 +343,6 @@ router.route('/leaseTerms/:leaseTerm_id')
     });
 
 
-var RenewalBatch = require('./models/renewal-batch');
 // on routes that end in /renewalBatches
 // ----------------------------------------------------
 router.route('/renewalBatches')
@@ -396,12 +416,11 @@ router.route('/renewalBatches/:renewal_batch_id')
         }, function(error, renewalBatch) {
             if (error) res.send(err);
 
-            response.json({ message: 'Successfully deleted' });
+            response.json({});
         });
     });
 
 
-var RenewalComm = require('./models/renewal-comm');
 // on routes that end in /renewalComms
 // ----------------------------------------------------
 router.route('/renewalComms')
@@ -477,7 +496,6 @@ router.route('/renewalComms/:renewal_comm_id')
     });
 
 
-var RenewalUnit = require('./models/renewal-unit');
 // on routes that end in /renewalComms
 // ----------------------------------------------------
 router.route('/renewalUnits')
@@ -485,6 +503,7 @@ router.route('/renewalUnits')
     .post(function(request, response) {
         var req = request.body.renewalUnit;
         var newObj = new RenewalUnit();      // create a new instance of the Renewal Batch model
+        console.log(req.renewalComm);
         newObj.renewalComm          = req.renewalComm;
         newObj.batch                = req.batch;
         newObj.unitId               = req.unitId;
@@ -505,8 +524,10 @@ router.route('/renewalUnits')
         newObj.notice               = req.notice;
         newObj.renewed              = req.renewed;
         newObj.undecided            = req.undecided;
-        newObj.overrideRent         = req.overrideRent;
-        newObj.overrideLeaseTerm    = req.overrideLeaseTerm;
+        newObj.userOverridePct      = req.userOverridePct;
+        newObj.userOverrideDollars  = req.userOverrideDollars;
+        newObj.userOverrideMode     = req.userOverrideMode;
+        newObj.finalRecRent         = req.finalRecRent;
 
         // response.json({ message: 'New Pricing created!' });
         // save the todo and check for errors
@@ -591,6 +612,101 @@ router.route('/renewalUnits/:renewal_unit_id')
         });
     });
 
+
+// on routes that end in /renewalComms
+// ----------------------------------------------------
+router.route('/units')
+    // create a product (accessed at POST http://localhost:8080/api/v1/units)
+    .post(function(request, response) {
+        var req = request.body.unit;
+        var newObj = new Unit();      // create a new instance of the Unit model
+        newObj.unitNumber           = req.unitNumber;
+        newObj.community            = req.community;
+        newObj.unitType             = req.unitType;
+        newObj.unitCategory         = req.unitCategory;
+        newObj.pmsUnitType          = req.pmsUnitType;
+        newObj.beds                 = req.beds;
+        newObj.baths                = req.baths;
+        newObj.status               = req.status;
+        newObj.cmr                  = req.cmr;
+        newObj.leaseStartDate       = req.leaseStartDate;
+        newObj.leaseExpirationDate  = req.leaseExpirationDate;
+        newObj.leaseCurrentRent     = req.leaseCurrentRent;
+        newObj.leaseCurrentTerm     = req.leaseCurrentTerm;
+        newObj.leaseCurrentResident  = req.leaseCurrentResident;
+
+        // save the todo and check for errors
+        newObj.save(function(error) {
+            if (error)
+                response.send(error);
+
+            response.json({ unit: newObj });
+        });
+    })
+
+    // get all the todos (accessed at GET http://localhost:8080/api/v1/units)
+    .get(function (request, response) {
+        Unit.find(request.query, function (error, units) {
+            if (error) response.send(error);
+            response.json({
+                units : units
+            });
+        });
+    });
+
+router.route('/units/:unit_id')
+    // get the product with that id (accessed at GET http://localhost:8080/api/units/:unit_id)
+    .get(function (request, response) {
+        Unit.findById(request.params.unit_id, function (error, unit) {
+            if (error) response.send(error);
+            response.json({
+                unit : unit
+            });
+        });
+    })
+    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    .put(function (request, response) {
+        var req = request.body.unit;
+
+        // use our community model to find the community we want
+        Unit.findById(request.params.unit_id, function(error, obj) {
+            if (error) response.send(error);
+
+            // update the community info
+            obj.unitNumber           = req.unitNumber;
+            obj.community            = req.community;
+            obj.unitType             = req.unitType;
+            obj.unitCategory         = req.unitCategory;
+            obj.pmsUnitType          = req.pmsUnitType;
+            obj.beds                 = req.beds;
+            obj.baths                = req.baths;
+            obj.status               = req.status;
+            obj.cmr                  = req.cmr;
+            obj.leaseExpirationDate  = req.leaseExpirationDate;
+            obj.leaseStartDate       = req.leaseStartDate;
+            obj.leaseEndDate         = req.leaseEndDate;
+            obj.leaseCurrentRent     = req.leaseCurrentRent;
+            obj.leaseCurrentTerm     = req.leaseCurrentTerm;
+            obj.leaseCurentResident  = req.leaseCurentResident;
+
+            // save the community
+            obj.save(function(error, unit) {
+                if (error) response.send(error);
+                response.json({ unit : unit });
+            });
+        });
+    })
+
+    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    .delete(function (request, response) {
+        Unit.remove({
+            _id: request.params.unit_id
+        }, function(error, unit) {
+            if (error) res.send(err);
+
+            response.json({});
+        });
+    });
 
 
 // REGISTER OUR ROUTES

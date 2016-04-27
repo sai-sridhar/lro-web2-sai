@@ -44,6 +44,10 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.contentSecurityPolicy = {
+      'style-src' : "'self' 'unsafe-inline'",
+      'connect-src' : "'self' http://localhost:8081"
+    }
 
   }
 
