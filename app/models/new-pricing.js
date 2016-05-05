@@ -1,10 +1,11 @@
 import DS from 'ember-data';
-var attr = DS.attr;
-var hasMany = DS.hasMany;
+var attr = DS.attr,
+	hasMany = DS.hasMany,
+	belongsTo = DS.belongsTo;
 
 export default DS.Model.extend({
 	unitNumber 		: attr("string"),
-	communityId 	: attr("number"),
+	community	 	: belongsTo("community", { async : true }),
 	priceDate 		: attr("string"),
 	unitType 		: attr("string"),
 	unitCategory 	: attr("string"),

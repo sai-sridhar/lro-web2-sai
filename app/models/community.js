@@ -4,6 +4,9 @@ var attr = DS.attr;
 export default DS.Model.extend({
 	name : attr("string"),
 	code : attr("string"),
+	fullName : Ember.computed("name", "code", function(){
+		return this.get("name") + " (" + this.get("code") + ")";
+	}),
 	address1 : attr("string"),
 	address2 : attr("string"),
 	city : attr("string"),
@@ -20,5 +23,5 @@ export default DS.Model.extend({
 	floors : attr("number"),
 	units : attr("number"),
 	mgmtCompany : attr("string"),
-	ownerCompany : attr("string"),
+	ownerCompany : attr("string")
 });

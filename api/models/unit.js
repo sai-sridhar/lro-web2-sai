@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var modelSchema = new Schema({
     unitNumber : String,
-    community : String,
+    community : { type : Schema.ObjectId, ref : 'communities' },
     unitType : String,
     unitCategory : String,
     pmsUnitType : String,

@@ -4,34 +4,12 @@ export default Ember.Route.extend({
 	model : function(params, transition) {
 		return this.store.findRecord("renewalBatch", transition.params["lro.renewals.batch"].batch_id);
 	},
-	afterModel : function(params, transition) {
-		this.store.query('renewalComm', { batch : transition.params["lro.renewals.batch"].batch_id });
-		this.store.query('renewalUnit', { batch : transition.params["lro.renewals.batch"].batch_id });
-	},
-
 	setupController : function(controller, model) {
 		this._super(controller, model);
 		if( !controller.get("detailView") ) {
 			controller.set("detailView", "community");
 		}
-
-		controller.set("communityContent", Ember.ArrayProxy.create({ content : Ember.A([]) }));
-		this.store.query('renewalComm', { batch : model.get("id") }).then( (communities) => {
-			communities.forEach(function(comm) {
-				var newObj = Ember.Object.create({
-					id : comm.get("community.id")
-				});
-
-				this.store.findRecord("community", comm.get("community.id")).then( (community) => {
-					newObj.set("text", community.get("name"));
-					newObj.set("description", community.get("code"));
-				});
-
-				controller.get("communityContent").pushObject(newObj);
-			}, this);
-		});
 	},
-
 	actions : {
 		deleteBatch : function() {
 			var self = this;
@@ -51,20 +29,25 @@ export default Ember.Route.extend({
 					function (isConfirm) {
 						if (isConfirm) {
 							var comms = batch.get("communities"),
-								units = batch.get("units"),
-								forDeleteComms = comms.toArray(),
-								forDeleteUnits = units.toArray();
+								// units = batch.get("units"),
+								forDeleteComms = comms.toArray();
+								// forDeleteUnits = units.toArray();
 
 							forDeleteComms.forEach( function(comm) {
+								var units = comm.get("units"),
+									forDeleteUnits = units.toArray();
+
+								forDeleteUnits.forEach( function(unit) {
+									unit.deleteRecord();
+									unit.save();
+									units.removeObject(unit);
+								});
+
 								comm.deleteRecord();
 								comm.save();
 								comms.removeObject(comm);
 							});
-							forDeleteUnits.forEach( function(unit) {
-								unit.deleteRecord();
-								unit.save();
-								units.removeObject(unit);
-							});
+
 							batch.deleteRecord();
 							batch.save().then( () => {
 								swal("Deleted!", "Your batch has been deleted.", "success");

@@ -90,7 +90,7 @@ input {
 		padding: 0px;
 		font-weight: 200;
 		font-family: "Avenir";
-		width: 100px;
+		width: 100px !important;
 	}
 }
 
@@ -2592,6 +2592,14 @@ button {
 				bottom: @dblPadding;
 				width: 46%;
 			}
+
+			.single-column {
+				top: @dblPadding;
+				left: @dblPadding;
+				bottom: @dblPadding;
+				overflow-y: scroll;
+				box-sizing: border-box;
+			}
 		}
 
 		footer {
@@ -2673,6 +2681,10 @@ button {
 					}
 				}
 			}
+		}
+
+		input {
+			width: 60%;
 		}
 	}
 }

@@ -48,11 +48,11 @@
 		<section class="rb-summary">
 			<div class="col col-25">
 				<div class="chart">
-					{{high-charts mode=chartMode content=chartData chartOptions=chartOptions}}
+					{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
 				</div>
 			</div
 			><div class="col col-40">
-				{{high-charts mode=chartMode content=detailChartData chartOptions=detailChartOptions}}
+				{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
 			</div
 			><div class="col col-20">
 				<table class="rb-metrics-table no-hover">
@@ -89,7 +89,7 @@
 				</table>
 			</div
 			><div class="col col-15">
-				{{high-charts mode=chartMode content=donutChartData chartOptions=donutChartOptions}}
+				{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
 				<div class="center">
 					<h2 class="std-bottom-margin">Overrides</h2>
 					<h1>{{format-commas model.overrideCount}}</h1>
@@ -97,9 +97,17 @@
 			</div>
 		</section>
 		<section class="rb-details">
-			<div class="tab-menu tm-4 rb-detail-tabs {{if showDetailFilters 'filters-open'}}">
-				<div {{action "toggleUnitTypeView"}} class="{{if unitTypeView 'active'}}">Unit Type View</div
-				><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
+			<div class="border-bottom">
+				<div class="tab-menu tm-4 rb-detail-tabs inline no-border {{if showDetailFilters 'filters-open'}}">
+					<div {{action "toggleUnitTypeView"}} class="{{if unitTypeView 'active'}}">Unit Type View</div
+					><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
+				</div>
+				{{#if unitFiltersApplied}}
+					<div class="filter-tag clickable" {{action "clearUnitFilters"}}>
+						Clear unit filters
+						{{fa-icon "times-circle"}}
+					</div>
+				{{/if}}
 			</div>
 			<section class="rb-detail-content">
 				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
@@ -110,7 +118,66 @@
 							<i class="fa fa-arrow-left close" {{action "closeDetailFilterPane"}}></i>
 						</div>
 						<div class="filter-content">
+							{{#if unitView}}
+								{{!-- <div class="filter">
+									<div>
+										<div class="label">Increase: {{format-percent increaseMin 100}} - {{format-percent increaseMax 100}}</div>
+										{{range-slider start=increaseSliderStart range=increaseRange connect=true  step=0.5 slide="increaseSlide"}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">Current DTM:<br>{{format-percent currentDtmMin 100}} - {{format-percent currentDtmMax 100}}</div>
+										{{range-slider start=currentDtmSliderStart range=currentDtmRange connect=true  step=0.5 slide="currentDtmSlide"}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">New DTM:<br>{{format-percent newDtmMin 100}} - {{format-percent newDtmMax 100}}</div>
+										{{range-slider start=newDtmSliderStart range=newDtmRange connect=true  step=0.5 slide="newDtmSlide"}}
+									</div>
+								</div> --}}
+								<div class="filter">
+									{{input-control value=overrideUnitFilter type="toggle" label="Overrides Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									{{input-control value=unapprovedUnitFilter type="toggle" label="Unapproved Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Beds</div>
+										<div class="control block">
+											{{select-2 value=bedsFilter content=beds placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Baths</div>
+										<div class="control block">
+											{{select-2 value=bathsFilter content=baths placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">LRO Unit Type</div>
+										<div class="control block">
+											{{select-2 value=unitTypeFilter content=unitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">PMS Unit Type</div>
+										<div class="control block">
+											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+							{{else}}
 
+							{{/if}}
 						</div>
 					{{else}}
 						<div class="filter-header" {{action "openDetailFilterPane"}}>
@@ -127,7 +194,7 @@
 									<th>Unit Type</th>
 									<th class="no-mobile">Beds</th>
 									<th class="no-mobile">Baths</th>
-									<th>Unit ID</th>
+									<th>Unit Number</th>
 									<th class="no-mobile">Resident</th>
 									<th class="no-mobile">Renewal Date</th>
 									<th class="no-mobile">Prior Term</th>
@@ -141,13 +208,13 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{#each model.units as |unit|}}
+								{{#each filteredUnitContent as |unit|}}
 									{{#link-to "lro.renewals.batch.community.unit" unit.id tagName="tr"}}
 										<td class="no-mobile">{{unit.pmsUnitType}}</td>
 										<td>{{unit.unitType}}</td>
 										<td class="no-mobile">{{format-commas unit.beds}}</td>
 										<td class="no-mobile">{{format-commas unit.baths}}</td>
-										<td>{{unit.unitId}}</td>
+										<td>{{unit.unitNumber}}</td>
 										<td class="no-mobile">{{unit.resident}}</td>
 										<td class="no-mobile">{{format-date unit.renewalDate}}</td>
 										<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
@@ -184,7 +251,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{#each unitTypes as |ut|}}
+								{{#each unitTypeContent as |ut|}}
 									<tr>
 				    					<td>{{ut.unitType}}</td>
 				    					<td>{{format-commas ut.expirationCount}}</td>

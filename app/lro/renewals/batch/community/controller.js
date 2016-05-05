@@ -1,16 +1,31 @@
 import Ember from 'ember';
+import RoundingMixin from 'zion/mixins/rounding';
 // import defaultTheme from '../themes/default-theme';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(RoundingMixin, {
+	unitTypeView : null,
+	unitView : null,
+
+	detailView : null,
+	showDetailFilters : false,
 	showParams : false,
 	showTerms : false,
-	unitTypeView : false,
-	unitView : true,
+	queryParams : ["showDetailFilters", "detailView", "showParams", "showTerms"],
 
-	unitTypes : Ember.computed("content.units.@each.finalRecRent", function() {
+	detailViewObserver : Ember.observer("detailView", function() {
+		if( this.get("detailView") === "unitType" ) {
+			this.set("unitView", false);
+			this.set("unitTypeView", true);
+		} else if( this.get("detailView") === "unit" ) {
+			this.set("unitView", true);
+			this.set("unitTypeView", false);
+		}
+	}),
+
+	unitTypeContent : Ember.computed("model.units.@each.finalRecRent", function() {
 		var content = Ember.ArrayProxy.create({ content : Ember.A([]) });
 
-		this.get("content.units").forEach( function(unit) {
+		this.get("model.units").forEach( function(unit) {
 			var unitType = unit.get("unitType");
 
 			var utObj = content.findBy("unitType", unitType);
@@ -56,65 +71,12 @@ export default Ember.Controller.extend({
 			ut.maxIncrease = ut.units.reduce(function( prevValue, unit ) {
 				return Math.max(prevValue, unit.get("userIncreasePct"));
 			}, -10000);
-		});
+		}, this);
 
 		return content;
 	}),
 
-	chartDataDtm : Ember.computed("content.units.[]", function() {
-
-		var belowMkt = 0,
-			atMkt = 0,
-			aboveMkt = 0;
-
-		this.get("content.units").forEach(function(unit) {
-			if( unit.get("currentDiscountToMarket") > 0 ) {
-				aboveMkt += 1;
-			} else if ( unit.get("currentDiscountToMarket") < 0 ) {
-				belowMkt += 1;
-			} else {
-				atMkt += 1;
-			}
-		});
-
-		return [belowMkt, atMkt, aboveMkt];
-	}),
-
-	chartDataAvgInc : Ember.computed("content.units.@each.finalRecRent", function() {
-		var belowMktSum = 0,
-			belowMktCount = 0,
-			atMktSum = 0,
-			atMktCount = 0,
-			aboveMktSum = 0,
-			aboveMktCount = 0,
-			belowMktAvg, atMktAvg, aboveMktAvg, inc, dtm;
-
-		this.get("content.units").forEach(function(unit) {
-			inc = unit.get("userIncreasePct");
-			dtm = unit.get("currentDiscountToMarket");
-			if( dtm > 0 ) {
-				aboveMktCount += 1;
-				aboveMktSum += inc;
-			} else if ( dtm < 0 ) {
-				belowMktCount += 1;
-				belowMktSum += inc;
-			} else {
-				atMktCount += 1;
-				atMktSum += inc;
-			}
-		});
-
-		belowMktAvg = Number(((belowMktSum / belowMktCount) * 100).toFixed(1));
-		atMktAvg = Number(((atMktSum / atMktCount) * 100).toFixed(1));
-		aboveMktAvg = Number(((aboveMktSum / aboveMktCount) * 100).toFixed(1));
-
-		return [belowMktAvg, atMktAvg, aboveMktAvg];
-	}),
-
-	chartMode: null, // Available options: a falsy value, 'StockChart', 'Map'.
-                           // If `mode` is not provided or is a falsy value, the chart is initialized in Charts mode.
-                           // If `mode` is a string, it is passed to Highcharts as the first argument.
-                           // When Highcharts introduces a new mode, you will be able to use it here right away.
+	chartMode: null,
 
 	chartOptions: {
 		chart: {
@@ -166,34 +128,6 @@ export default Ember.Controller.extend({
         }
   	},
 
-	chartData : Ember.computed("content.units.@each.finalRecRent", function(){
-		var content = [];
-
-		// The Unit counts by Below, At, Above Market Series
-		var counts = {
-			name : "Current Rents",
-			type : "column",
-			data : this.get("chartDataDtm")
-		};
-
-		// The Average Increase Series
-		var avgInc = {
-			name : "Avg. Increase",
-			type : "spline",
-			yAxis : 1,
-			tooltip: {
-                valueSuffix: '%'
-            },
-			data : this.get("chartDataAvgInc")
-		};
-
-		// Push the series into the array
-		content.push(counts);
-		content.push(avgInc);
-
-		return content;
-	}),
-
 	donutChartOptions : {
 		chart: {
             plotBackgroundColor: null,
@@ -234,163 +168,6 @@ export default Ember.Controller.extend({
             }
         }
 	},
-
-	donutChartData : Ember.computed("content.units.@each.approved", function() {
-
-		var data = [],
-			approved = 0,
-			unapproved = 0;
-
-		this.get("content.units").forEach(function(unit) {
-			// console.log(unit);
-			if( unit.get("approved") ) {
-				approved += 1;
-			} else {
-				unapproved += 1;
-			}
-		});
-
-		data.push({
-			name : "Approved",
-			y : approved,
-			color : "rgb(81, 188, 106)"
-		});
-
-		data.push({
-			name : "Unapproved",
-			y : unapproved,
-			color : "rgba(81, 188, 106, 0.5)"
-		});
-
-		return [{
-			type : "pie",
-			name : "Approvals",
-			innerSize : "70%",
-			data : data
-		}];
-	}),
-
-	striation0 : 0,
-	striation1 : 2,
-	striation2 : 5,
-	striation3 : 10,
-
-	chartDataCurrentDtm : Ember.computed("content.units.[]", function() {
-		var data = [0,0,0,0,0,0,0,0,0],
-			self = this,
-			dtm,
-			invDtm;
-
-		this.get("content.units").forEach(function(unit) {
-			dtm = unit.get("currentDiscountToMarket") * 100;
-			invDtm = -1 * dtm;
-			if( invDtm >= self.get("striation3") ) {
-				data[0] += 1;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
-				data[1] += 1;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
-				data[2] += 1;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
-				data[3] += 1;
-			} else if( dtm === self.get("striation0") ) {
-				data[4] += 1;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
-				data[5] += 1;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
-				data[6] += 1;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
-				data[7] += 1;
-			} else if( dtm >= self.get("striation3") ) {
-				data[8] += 1;
-			}
-		});
-
-		return data;
-	}),
-
-	chartDataNewDtm : Ember.computed("content.units.@each.finalRecRent", function() {
-		var data = [0,0,0,0,0,0,0,0,0],
-			self = this,
-			dtm,
-			invDtm;
-
-		this.get("content.units").forEach(function(unit) {
-			dtm = unit.get("finalDiscountToMarket") * 100;
-			invDtm = -1 * dtm;
-			if( invDtm >= self.get("striation3") ) {
-				data[0] += 1;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
-				data[1] += 1;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
-				data[2] += 1;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
-				data[3] += 1;
-			} else if( dtm === self.get("striation0") ) {
-				data[4] += 1;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
-				data[5] += 1;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
-				data[6] += 1;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
-				data[7] += 1;
-			} else if( dtm >= self.get("striation3") ) {
-				data[8] += 1;
-			}
-		});
-
-		return data;
-	}),
-
-	chartDataDetailAvgInc : Ember.computed("content.units.@each.finalRecRent", function() {
-		var data = [],
-			arr = [],
-			self = this,
-			inc, dtm, invDtm;
-
-		for( var i = 0; i < 9; i++ ) {
-			data[i] = { count : 0, sum : 0 };
-		}
-
-		this.get("content.units").forEach(function(unit) {
-			dtm = unit.get("currentDiscountToMarket") * 100;
-			inc = unit.get("userIncreasePct");
-			invDtm = -1 * dtm;
-			if( invDtm >= self.get("striation3") ) {
-				data[0].count += 1;
-				data[0].sum += inc;
-			} else if( invDtm >= self.get("striation2") && invDtm < self.get("striation3") ) {
-				data[1].count += 1;
-				data[1].sum += inc;
-			} else if( invDtm >= self.get("striation1") && invDtm < self.get("striation2") ) {
-				data[2].count += 1;
-				data[2].sum += inc;
-			} else if( invDtm > self.get("striation0") && invDtm < self.get("striation1") ) {
-				data[3].count += 1;
-				data[3].sum += inc;
-			} else if( dtm === self.get("striation0") ) {
-				data[4].count += 1;
-				data[4].sum += inc;
-			} else if( dtm > self.get("striation0") && dtm < self.get("striation1") ) {
-				data[5].count += 1;
-				data[5].sum += inc;
-			} else if( dtm >= self.get("striation1") && dtm < self.get("striation2") ) {
-				data[6].count += 1;
-				data[6].sum += inc;
-			} else if( dtm >= self.get("striation2") && dtm < self.get("striation3") ) {
-				data[7].count += 1;
-				data[7].sum += inc;
-			} else if( dtm >= self.get("striation3") ) {
-				data[8].count += 1;
-				data[8].sum += inc;
-			}
-		});
-
-		for( var k = 0; k < data.length; k++ ) {
-			arr[k] = Number(((data[k].sum / data[k].count) * 100).toFixed(1)) || 0;
-		}
-
-		return arr;
-	}),
 
 	detailChartOptions: {
 		chart: {
@@ -442,40 +219,151 @@ export default Ember.Controller.extend({
         }
   	},
 
-	detailChartData : Ember.computed("content.units.@each.finalRecRent", function(){
-		var content = [];
+  	unitFilterConstruct : Ember.observer("model.unitTypes", "model.pmsUnitTypes", "model.beds", "model.baths", function() {
+  		var cols = ["unitTypes", "pmsUnitTypes", "beds", "baths"];
+  		for( var i = 0; i < cols.length; i++ ) {
+  			var emberArr = Ember.ArrayProxy.create({ content : Ember.A([])});
+  			this.get("model."+cols[i]).forEach(function(itm) {
+				emberArr.pushObject(Ember.Object.create({
+					id : itm,
+					text : itm
+				}));
+			});
+			this.set(cols[i], emberArr);
+  		}
+  	}),
 
-		// The Unit counts by Below, At, Above Market Series
-		var currentCounts = {
-			name : "Current Rents",
-			type : "column",
-			data : this.get("chartDataCurrentDtm")
-		};
+  	increaseObserver : Ember.observer("model.minIncrease", "model.maxIncrease", function() {
+		this.set("increaseMin", this.get("model.minIncrease") * 100);
+		this.set("increaseMax", this.get("model.maxIncrease") * 100);
 
-		var newCounts = {
-			name : "New Rents",
-			type : "column",
-			data : this.get("chartDataNewDtm")
-		};
-
-		// The Average Increase Series
-		var avgInc = {
-			name : "Avg. Increase",
-			type : "spline",
-			yAxis : 1,
-			tooltip: {
-                valueSuffix: '%'
-            },
-			data : this.get("chartDataDetailAvgInc"),
-			zIndex : 3
-		};
-
-		// Push the series into the array
-		content.push(currentCounts);
-		content.push(avgInc);
-		content.push(newCounts);
-
-
-		return content;
+		this.set("increaseSliderStart", [this.get("increaseMin"), this.get("increaseMax")]);
+		this.set("increaseRange", {
+			min : this.get("increaseMin"),
+			max : this.get("increaseMax")
+		});
 	}),
+
+	currentDtmObserver : Ember.observer("model.minCurrentDiscountToMarket", "model.maxCurrentDiscountToMarket", function() {
+		if( !(isNaN(this.get("model.minCurrentDiscountToMarket"))) ) {
+			this.set("currentDtmMin", this.get("model.minCurrentDiscountToMarket") * 100);
+			this.set("currentDtmMax", this.get("model.maxCurrentDiscountToMarket") * 100);
+		}
+
+		this.set("currentDtmSliderStart", [this.get("currentDtmMin"), this.get("currentDtmMax")]);
+		this.set("currentDtmRange", {
+			min : this.get("currentDtmMin"),
+			max : this.get("currentDtmMax")
+		});
+	}),
+
+	newDtmObserver : Ember.observer("model.minNewDiscountToMarket", "model.maxNewDiscountToMarket", function() {
+		if( !(isNaN(this.get("model.minNewDiscountToMarket"))) ) {
+			this.set("newDtmMin", this.get("model.minNewDiscountToMarket") * 100);
+			this.set("newDtmMax", this.get("model.maxNewDiscountToMarket") * 100);
+		} else {
+			this.set("newDtmMin", -1);
+			this.set("newDtmMax", 1);
+		}
+
+		this.set("newDtmSliderStart", [this.get("newDtmMin"), this.get("newDtmMax")]);
+		this.set("newDtmRange", {
+			min : this.get("newDtmMin"),
+			max : this.get("newDtmMax")
+		});
+	}),
+
+  	filteredUnitContent : Ember.computed("increaseMin", "increaseMax", "newDtmMin", "newDtmMax", "currentDtmMin", "currentDtmMax", "bedsFilter", "bathsFilter", "unitTypeFilter", "pmsUnitTypeFilter", "overrideUnitFilter", "unapprovedUnitFilter", "model.units.@each.userIncreasePct", "model.units.@each.approved", function() {
+
+		// return this.get("model.units");
+
+		var incMin = this.round(this.get("increaseMin") / 100, 4),
+			incMax = this.round(this.get("increaseMax") / 100, 4),
+			inc,
+			cDtmMin = this.round(this.get("currentDtmMin") / 100, 4),
+			cDtmMax = this.round(this.get("currentDtmMax") / 100, 4),
+			cDtm,
+			nDtmMin = this.round(this.get("newDtmMin") / 100, 4),
+			nDtmMax = this.round(this.get("newDtmMax") / 100, 4),
+			nDtm,
+			app;
+
+		return this.get("model.units").filter(function(unit, i) {
+			var f1 = true, // increase pct
+				f2 = true, // beds
+				f3 = true, // baths
+				f4 = true, // unit type
+				f5 = true, // pms unit type
+				f6 = true, // overrides
+				f7 = true, // current discount to market
+				f8 = true, // new discount to market
+				f9 = true, // unapproved units
+
+
+				inc = this.round(unit.get("userIncreasePct"), 4);
+				cDtm = this.round(unit.get("currentDiscountToMarket"), 4);
+				nDtm = this.round(unit.get("finalDiscountToMarket"), 4);
+
+			if( !(inc >= incMin && inc <= incMax) ) {
+				f1 = false;
+			}
+
+			if( this.get("bedsFilter") ) {
+				if( this.get("bedsFilter.text") !== unit.get("beds") ) {
+					f2 = false;
+				}
+			}
+
+			if( this.get("bathsFilter") ) {
+				if( this.get("bathsFilter.text") !== unit.get("baths") ) {
+					f3 = false;
+				}
+			}
+
+			if( this.get("unitTypeFilter") ) {
+				if( this.get("unitTypeFilter.text") !== unit.get("unitType") ) {
+					f4 = false;
+				}
+			}
+
+			if( this.get("pmsUnitTypeFilter") ) {
+				if( this.get("pmsUnitTypeFilter.text") !== unit.get("pmsUnitType") ) {
+					f5 = false;
+				}
+			}
+
+			if( this.get("overrideUnitFilter") ) {
+				if( !unit.get("userOverrideMode") ) {
+					f6 = false;
+				}
+			}
+
+			if( !(cDtm >= cDtmMin && cDtm <= cDtmMax) ) {
+			 	f7 = false;
+			}
+
+			if( !(nDtm >= nDtmMin && nDtm <= nDtmMax) ) {
+			 	f8 = false;
+			}
+
+			if( this.get("unapprovedUnitFilter") ) {
+				if( unit.get("approved") ) {
+					f9 = false;
+				}
+			}
+
+		 	// console.log(f1,f2,f3,f4,f5,f6,f7,f8,f9, unit.get("id"));
+
+			return (f1 && f2 && f3 && f4 && f5 && f6 && f7 && f8 && f9);
+		}, this);
+	}),
+
+	unitFiltersApplied : Ember.computed("filteredUnitContent.length", function() {
+		if( this.get("filteredUnitContent.length") === this.get("model.units.length") ) {
+			return false;
+		} else {
+			return true;
+		}
+	}),
+
 });

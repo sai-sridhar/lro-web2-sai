@@ -1,12 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	model : function(params) {
+	model : function(params, transition) {
 		return this.store.findRecord("renewalComm", params.community_id);
 	},
-	afterModel : function(params) {
-		this.store.query('renewalUnit', { renewalComm : params.community_id });
+	setupController : function(controller, model) {
+		this._super(controller, model);
+		if( !controller.get("detailView") ) {
+			controller.set("detailView", "unitType");
+		}
 	},
+
 	actions : {
 		deleteCommunity : function() {
 			var self = this;
@@ -54,12 +58,10 @@ export default Ember.Route.extend({
 			this.controller.toggleProperty("showTerms");
 		},
 		toggleUnitTypeView : function() {
-			this.controller.set("unitTypeView", true);
-			this.controller.set("unitView", false);
+			this.controller.set("detailView", "unitType");
 		},
 		toggleUnitView : function() {
-			this.controller.set("unitView", true);
-			this.controller.set("unitTypeView", false);
+			this.controller.set("detailView", "unit");
 		},
 		openDetailFilterPane : function() {
 			this.controller.set("showDetailFilters", true);
@@ -82,7 +84,7 @@ export default Ember.Route.extend({
 				},
 				function (isConfirm) {
 					if( isConfirm ) {
-						self.controller.get("content.units").forEach(function(unit) {
+						self.controller.get("model.units").forEach(function(unit) {
 							unit.set("approved", true);
 							unit.save();
 						});
@@ -91,8 +93,8 @@ export default Ember.Route.extend({
 			);
 		},
 		approveUnitType : function(ut) {
-			var unitType = ut.get("unitType");
-			var	units = this.controller.get("content.units").filterBy("unitType", unitType);
+			var unitType = ut.get("unitType"),
+				units = this.controller.get("model.units").filterBy("unitType", unitType);
 
 			swal(
 				{  	title: "Approve?",
@@ -171,13 +173,30 @@ export default Ember.Route.extend({
 				},
 				function (isConfirm) {
 					if( isConfirm ) {
-						self.controller.get("content.units").forEach(function(unit) {
+						self.controller.get("model.units").forEach(function(unit) {
 							unit.set("approved", false);
 							unit.save();
 						});
 					}
 				}
 			);
-		}
+		},
+		clearUnitFilters : function() {
+			this.controller.set("bedsFilter", null);
+			this.controller.set("bathsFilter", null);
+			this.controller.set("unitTypeFilter", null);
+			this.controller.set("pmsUnitTypeFilter", null);
+			this.controller.set("overrideUnitFilter", false);
+			this.controller.set("unapprovedUnitFilter", false);
+
+			this.controller.set("increaseMin", this.controller.get("model.minIncrease") * 100);
+			this.controller.set("increaseMax", this.controller.get("model.maxIncrease") * 100);
+
+			this.controller.set("currentDtmMin", this.controller.get("model.minCurrentDiscountToMarket") * 100);
+			this.controller.set("currentDtmMax", this.controller.get("model.maxCurrentDiscountToMarket") * 100);
+
+			this.controller.set("newDtmMin", this.controller.get("model.minNewDiscountToMarket") * 100);
+			this.controller.set("newDtmMax", this.controller.get("model.maxNewDiscountToMarket") * 100);
+		},
 	}
 });

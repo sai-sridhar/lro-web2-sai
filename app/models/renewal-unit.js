@@ -3,8 +3,12 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
 	renewalComm : DS.belongsTo("renewalComm", { async : true }),
-	batch : DS.belongsTo("renewalBatch", { async : true }),
-	unitId : DS.attr("string"),
+	// batch : DS.belongsTo("renewalBatch", { async : true }),
+	// community : DS.belongsTo("community", { async : true }),
+	communityName : Ember.computed("renewalComm", function() {
+		return this.get("renewalComm.community.fullName");
+	}),
+	unitNumber : DS.attr("string"),
 	unitType : DS.attr("string"),
 	pmsUnitType : DS.attr("string"),
 	beds : DS.attr("number"),
@@ -68,7 +72,13 @@ export default DS.Model.extend({
 	}),
 
 	userIncreasePct : Ember.computed("finalRecRent", function() {
-		return this.get("finalRecRent") / this.get("currentRent") - 1;
+		var cr;
+		if( this.get("currentRent") === 0 ) {
+			cr = 1;
+		} else {
+			cr = this.get("currentRent");
+		}
+		return this.get("finalRecRent") / cr - 1;
 	}),
 	userIncreaseDollars : Ember.computed("finalRecRent", function() {
 		return +this.get("finalRecRent") - +this.get("currentRent");

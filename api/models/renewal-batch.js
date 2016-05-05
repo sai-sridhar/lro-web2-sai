@@ -6,7 +6,9 @@ var modelSchema = new Schema({
     startDate		: Date,
     endDate 		: Date,
     month			: String,
-    status			: String
+    status			: String,
+    communities		: [],
+    units 			: []
 });
 
 module.exports = mongoose.model('RenewalBatch', modelSchema);

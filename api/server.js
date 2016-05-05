@@ -4,7 +4,8 @@
 // call the packages we need
 var express    = require('express'),        // call express
     app        = express(),                 // define our app using express
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    moment     = require('moment');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -67,90 +68,104 @@ var Community = require('./models/community'),
 // on routes that end in /communities
 // ----------------------------------------------------
 router.route('/communities')
-    // create a product (accessed at POST http://localhost:8080/api/v1/communities)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.community;
-        var community = new Community();      // create a new instance of the Community model
-        community.name = req.name;
-        community.code = req.code;
+        var req = request.body.community,
+            newObj = new Community();
 
-        // response.json({ message: 'Product created!' });
-        // save the todo and check for errors
-        community.save(function(error, community) {
-            if (error)
-                response.send(error);
+        newObj.name = req.name;
+        newObj.code = req.code;
+        newObj.address1 = req.address1;
+        newObj.address2 = req.address2;
+        newObj.city = req.city;
+        newObj.state = req.state;
+        newObj.zip = req.zip;
+        newObj.country = req.country;
+        newObj.poc = req.poc;
+        newObj.email = req.email;
+        newObj.phone = req.phone;
+        newObj.website = req.website;
+        newObj.yearBuilt = req.yearBuilt;
+        newObj.yearRenovated = req.yearRenovated;
+        newObj.propertySize = req.propertySize;
+        newObj.floors = req.floors;
+        newObj.units = req.units;
+        newObj.mgmtCompany = req.mgmtCompany;
+        newObj.ownerCompany = req.ownerCompany;
 
-            response.json({ community : community });
+        // save the new object and check for errors
+        newObj.save(function(error) {
+            if (error) response.send(error);
+            response.json({
+                community : newObj
+            });
         });
     })
 
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/communities)
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
     .get(function (request, response) {
-        Community.find(function (error, communities) {
+        Community.find(function (error, objs) {
             if (error) response.send(error);
             response.json({
-                communities : communities
+                communities : objs
             });
         });
     });
 
 router.route('/communities/:community_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/communities/:community)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
-        Community.findById(request.params.community_id, function (error, community) {
+        Community.findById(request.params.community_id, function (error, obj) {
             if (error) response.send(error);
             response.json({
-                community : community
+                community : obj
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.community;
-        // console.log("updating a commmunity");
-        // console.log("id:", request.params.community_id);
-        // console.log(request.body);
 
-        // use our community model to find the community we want
-        Community.findById(request.params.community_id, function(error, community) {
+        // use our model to find the object we want
+        Community.findById(request.params.community_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
-            community.name = req.name;
-            community.code = req.code;
-            community.address1 = req.address1;
-            community.address2 = req.address2;
-            community.city = req.city;
-            community.state = req.state;
-            community.zip = req.zip;
-            community.country = req.country;
-            community.poc = req.poc;
-            community.email = req.email;
-            community.phone = req.phone;
-            community.website = req.website;
-            community.yearBuilt = req.yearBuilt;
-            community.yearRenovated = req.yearRenovated;
-            community.propertySize = req.propertySize;
-            community.floors = req.floors;
-            community.units = req.units;
-            community.mgmtCompany = req.mgmtCompany;
-            community.ownerCompany = req.ownerCompany;
+            // update the object info
+            obj.name = req.name;
+            obj.code = req.code;
+            obj.address1 = req.address1;
+            obj.address2 = req.address2;
+            obj.city = req.city;
+            obj.state = req.state;
+            obj.zip = req.zip;
+            obj.country = req.country;
+            obj.poc = req.poc;
+            obj.email = req.email;
+            obj.phone = req.phone;
+            obj.website = req.website;
+            obj.yearBuilt = req.yearBuilt;
+            obj.yearRenovated = req.yearRenovated;
+            obj.propertySize = req.propertySize;
+            obj.floors = req.floors;
+            obj.units = req.units;
+            obj.mgmtCompany = req.mgmtCompany;
+            obj.ownerCompany = req.ownerCompany;
 
-            // save the community
-            community.save(function(error, community) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ community : community });
+                response.json({
+                    community : obj
+                });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:objects_id)
     .delete(function (request, response) {
         Community.remove({
             _id: request.params.community_id
-        }, function(error, community) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
@@ -159,64 +174,62 @@ router.route('/communities/:community_id')
 // on routes that end in /newPricings
 // ----------------------------------------------------
 router.route('/newPricings')
-    // create a product (accessed at POST http://localhost:8080/api/v1/newPricings)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.newPricing;
-        var np = new NewPricing();      // create a new instance of the New Pricing model
-        np.communityId      = req.communityId;
-        np.unitNumber       = req.unitNumber;
-        np.priceDate        = req.priceDate;
-        np.unitType         = req.unitType;
-        np.unitCategory     = req.unitCategory;
-        np.status           = req.status;
-        np.available        = req.available;
-        np.moveout          = req.moveout;
-        np.priorRent        = req.priorRent;
-        np.sf               = req.sf;
-        np.amenities        = req.amenities;
-        np.pmsUnitType      = req.pmsUnitType;
-        np.offset           = req.offset;
-        np.amenityAmount    = req.amenityAmount;
-        np.leaseTerm        = req.leaseTerm;
-        np.baseRent         = req.baseRent;
-        np.totalConcession  = req.totalConcession;
-        np.effectiveRent    = req.effectiveRent;
+        var req = request.body.newPricing,
+            newObj = new NewPricing();
 
-        // response.json({ message: 'New Pricing created!' });
-        // save the todo and check for errors
-        np.save(function(error, newPricing) {
-            if (error)
-                response.send(error);
+        newObj.community        = req.community;
+        newObj.unitNumber       = req.unitNumber;
+        newObj.priceDate        = req.priceDate;
+        newObj.unitType         = req.unitType;
+        newObj.unitCategory     = req.unitCategory;
+        newObj.status           = req.status;
+        newObj.available        = req.available;
+        newObj.moveout          = req.moveout;
+        newObj.priorRent        = req.priorRent;
+        newObj.sf               = req.sf;
+        newObj.amenities        = req.amenities;
+        newObj.pmsUnitType      = req.pmsUnitType;
+        newObj.offset           = req.offset;
+        newObj.amenityAmount    = req.amenityAmount;
+        newObj.leaseTerm        = req.leaseTerm;
+        newObj.baseRent         = req.baseRent;
+        newObj.totalConcession  = req.totalConcession;
+        newObj.effectiveRent    = req.effectiveRent;
 
-            response.json({ newPricing : newPricing });
-        });
-    })
-
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/newPricings)
-    .get(function (request, response) {
-        NewPricing.find(request.query, function (error, newPricings) {
+        // save the object and check for errors
+        newObj.save(function(error) {
             if (error) response.send(error);
             response.json({
-                newPricings : newPricings
+                newPricing : newObj
+            });
+        });
+    })
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
+    .get(function (request, response) {
+        console.log(request.query);
+        NewPricing.find(request.query, function (error, objs) {
+            if (error) response.send(error);
+            response.json({
+                newPricings : objs
             });
         });
     });
 
 router.route('/newPricings/:new_pricing_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/newPricings/:new_pricing_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/object/:object_id)
     .get(function (request, response) {
-        var queryTerms = new ObjectId(request.params.new_pricing_id);
-        var lts = [];
+        var query = new ObjectId(request.params.new_pricing_id);
 
         NewPricing.findById(request.params.new_pricing_id, function (error, newPricing) {
             if (error) response.send(error);
 
-            LeaseTerm.find({newPricing : queryTerms}, "_id", function (error, leaseTerms) {
+            LeaseTerm.find({newPricing : query}, "_id", function (error, leaseTerms) {
                 if (error) response.send(error);
                 for( i = 0; i < leaseTerms.length; i++ ) {
-                    lts.push(leaseTerms[i]["_id"]);
+                    newPricing.leaseTerms.push(leaseTerms[i]["_id"]);
                 }
-                newPricing.leaseTerms = lts;
 
                 response.json({
                     newPricing : newPricing
@@ -224,120 +237,107 @@ router.route('/newPricings/:new_pricing_id')
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.newPricing;
-        console.log("updating a newPricing");
-        console.log("id:", request.params.new_pricing_id);
-        console.log(request.body);
 
-        // use our community model to find the community we want
-        NewPricing.findById(request.params.new_pricing_id, function(error, newPricing) {
+        // use our model to find the object we want
+        NewPricing.findById(request.params.new_pricing_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
-            newPricing.community_id = req.community_id;
-            newPricing.unit_id = req.unit_id;
+            // update the object info
+            obj.community_id = req.community_id;
+            obj.unit_id = req.unit_id;
 
-
-            // save the community
-            newPricing.save(function(error, newPricing) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ newPricing : newPricing });
+                response.json({ newPricing : obj });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         NewPricing.remove({
             _id: request.params.new_pricing_id
-        }, function(error, newPricing) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
 
 
-
 // on routes that end in /leaseTerms
 // ----------------------------------------------------
 router.route('/leaseTerms')
-    // create a product (accessed at POST http://localhost:8080/api/v1/leaseTerms)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.leaseTerm;
-        var lt = new LeaseTerm();      // create a new instance of the Lease Term model
-        lt.term             = req.term;
-        lt.baseRent         = req.baseRent;
-        lt.totalConcession  = req.totalConcession;
-        lt.effectiveRent    = req.effectiveRent;
-        lt.newPricing       = req.newPricing;
+        var req = request.body.leaseTerm,
+            newObj = new LeaseTerm();
+        newObj.term             = req.term;
+        newObj.baseRent         = req.baseRent;
+        newObj.totalConcession  = req.totalConcession;
+        newObj.effectiveRent    = req.effectiveRent;
+        newObj.newPricing       = req.newPricing;
 
-
-        // response.json({ message: 'Lease Term created!' });
-        // save the todo and check for errors
-        lt.save(function(error, leaseTerm) {
-            if (error)
-                response.send(error);
-
-            response.json({ leaseTerm : leaseTerm });
+        // save the object and check for errors
+        newObj.save(function(error) {
+            if (error) response.send(error);
+            response.json({
+                leaseTerm : newObj
+            });
         });
     })
 
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/leaseTerms)
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
     .get(function (request, response) {
-        LeaseTerm.find(request.query, function (error, leaseTerms) {
+        LeaseTerm.find(request.query, function (error, objs) {
             if (error) response.send(error);
             response.json({
-                leaseTerms : leaseTerms
+                leaseTerms : objs
             });
         });
     });
 
 router.route('/leaseTerms/:lease_term_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/newPricings/:new_pricing_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
-        LeaseTerm.findById(request.params.lease_term_id, function (error, leaseTerm) {
+        LeaseTerm.findById(request.params.lease_term_id, function (error, obj) {
             if (error) response.send(error);
             response.json({
-                leaseTerm : leaseTerm
+                leaseTerm : obj
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.leaseTerm;
-        // console.log("updating a leaseTerm");
-        // console.log("id:", request.params.lease_term_id);
-        // console.log(request.body);
 
-        // use our community model to find the community we want
-        LeaseTerm.findById(request.params.lease_term_id, function(error, leaseTerm) {
+        // use our model to find the object we want
+        LeaseTerm.findById(request.params.lease_term_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the lease term info
-            leaseTerm.term = req.term;
-            leaseTerm.baseRent = req.baseRent;
-            leaseTerm.totalConcession = req.totalConcession;
-            leaseTerm.effectiveRent = req.effectiveRent;
-            leaseTerm.newPricing = req.newPricing;
+            // update the object info
+            obj.term = req.term;
+            obj.baseRent = req.baseRent;
+            obj.totalConcession = req.totalConcession;
+            obj.effectiveRent = req.effectiveRent;
+            obj.newPricing = req.newPricing;
 
-            // save the community
-            leaseTerm.save(function(error, leaseTerm) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ leaseTerm: leaseTerm });
+                response.json({
+                    leaseTerm: obj });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         LeaseTerm.remove({
             _id: request.params.lease_term_id
-        }, function(error, leaseTerm) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
@@ -346,76 +346,81 @@ router.route('/leaseTerms/:lease_term_id')
 // on routes that end in /renewalBatches
 // ----------------------------------------------------
 router.route('/renewalBatches')
-    // create a product (accessed at POST http://localhost:8080/api/v1/renewalBatches)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.renewalBatch;
-        var newObj = new RenewalBatch();      // create a new instance of the Renewal Batch model
+        var req = request.body.renewalBatch,
+            newObj = new RenewalBatch();
         newObj.name         = req.name;
         newObj.month        = req.month;
         newObj.status       = req.status;
         newObj.startDate    = req.startDate;
         newObj.endDate      = req.endDate;
 
-        // response.json({ message: 'New Pricing created!' });
-        // save the todo and check for errors
+        // save the object and check for errors
         newObj.save(function(error) {
-            if (error)
-                response.send(error);
-
-            response.json({ renewalBatch: newObj });
-        });
-    })
-
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/renewalBatches)
-    .get(function (request, response) {
-        RenewalBatch.find(request.query, function (error, renewalBatches) {
             if (error) response.send(error);
             response.json({
-                renewalBatches : renewalBatches
+                renewalBatch: newObj
+            });
+        });
+    })
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
+    .get(function (request, response) {
+        RenewalBatch.find(request.query, function (error, objs) {
+            if (error) response.send(error);
+            response.json({
+                renewalBatches : objs
             });
         });
     });
 
 router.route('/renewalBatches/:renewal_batch_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/renewalBatches/:renewal_batch_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
+        var query = new ObjectId(request.params.renewal_batch_id);
+
         RenewalBatch.findById(request.params.renewal_batch_id, function (error, renewalBatch) {
             if (error) response.send(error);
-            response.json({
-                renewalBatch : renewalBatch
+
+            RenewalComm.find({batch : query}, "_id", function (error, comms) {
+                if (error) response.send(error);
+                for( i = 0; i < comms.length; i++ ) {
+                    renewalBatch.communities.push(comms[i]["_id"]);
+                }
+
+                response.json({
+                    renewalBatch : renewalBatch
+                });
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.renewalBatch;
-        console.log("updating a renewalBatch");
-        console.log("id:", request.params.renewal_batch_id);
-        console.log(request.body);
 
-        // use our community model to find the community we want
-        RenewalBatch.findById(request.params.renewal_batch_id, function(error, renewalBatch) {
+        // use our model to find the object we want
+        RenewalBatch.findById(request.params.renewal_batch_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
-            renewalBatch.name = req.name;
-            renewalBatch.status = req.status;
+            // update the object info
+            obj.name = req.name;
+            obj.status = req.status;
 
-            // save the community
-            renewalBatch.save(function(error) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ message: 'renewalBatch updated!' });
+                response.json({
+                    renewalBatch: obj
+                });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         RenewalBatch.remove({
             _id: request.params.renewal_batch_id
-        }, function(error, renewalBatch) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
@@ -424,73 +429,78 @@ router.route('/renewalBatches/:renewal_batch_id')
 // on routes that end in /renewalComms
 // ----------------------------------------------------
 router.route('/renewalComms')
-    // create a product (accessed at POST http://localhost:8080/api/v1/renewalComms)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.renewalComm;
-        var newObj = new RenewalComm();      // create a new instance of the Renewal Batch model
+        var req = request.body.renewalComm,
+            newObj = new RenewalComm();
         newObj.community    = req.community;
         newObj.batch        = req.batch;
 
-        // response.json({ message: 'New Pricing created!' });
-        // save the todo and check for errors
+        // save the object and check for errors
         newObj.save(function(error) {
-            if (error)
-                response.send(error);
-
-            response.json({ renewalComm: newObj });
-        });
-    })
-
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/renewalComms)
-    .get(function (request, response) {
-        RenewalComm.find(request.query, function (error, renewalComms) {
             if (error) response.send(error);
             response.json({
-                renewalComms : renewalComms
+                renewalComm: newObj
+            });
+        });
+    })
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
+    .get(function (request, response) {
+        RenewalComm.find(request.query, function (error, objs) {
+            if (error) response.send(error);
+            response.json({
+                renewalComms : objs
             });
         });
     });
 
 router.route('/renewalComms/:renewal_comm_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/renewalComms/:renewal_comm_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
+        var query = new ObjectId(request.params.renewal_comm_id);
+
         RenewalComm.findById(request.params.renewal_comm_id, function (error, renewalComm) {
             if (error) response.send(error);
-            response.json({
-                renewalComm : renewalComm
+
+            RenewalUnit.find({renewalComm : query}, "_id", function (error, units) {
+                if (error) response.send(error);
+                for( i = 0; i < units.length; i++ ) {
+                    renewalComm.units.push(units[i]["_id"]);
+                }
+
+                response.json({
+                    renewalComm : renewalComm
+                });
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.renewalComm;
-        console.log("updating a renewalComm");
-        console.log("id:", request.params.renewal_comm_id);
-        console.log(request.body);
 
-        // use our community model to find the community we want
-        RenewalComm.findById(request.params.renewal_comm_id, function(error, renewalComm) {
+        // use our model to find the object we want
+        RenewalComm.findById(request.params.renewal_comm_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
-            renewalComm.community = req.community;
-            renewalComm.batch = req.batch;
+            // update the object info
+            obj.community = req.community;
+            obj.batch = req.batch;
 
-            // save the community
-            renewalComm.save(function(error) {
-                if (error) response.send(error, renewalComm);
-                response.json({ renewalComm: renewalComm });
+            // save the object
+            obj.save(function(error) {
+                if (error) response.send(error, obj);
+                response.json({
+                    renewalComm: obj
+                });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         RenewalComm.remove({
             _id: request.params.renewal_comm_id
-        }, function(error, renewalComm) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
@@ -499,14 +509,15 @@ router.route('/renewalComms/:renewal_comm_id')
 // on routes that end in /renewalComms
 // ----------------------------------------------------
 router.route('/renewalUnits')
-    // create a product (accessed at POST http://localhost:8080/api/v1/renewalUnits)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.renewalUnit;
-        var newObj = new RenewalUnit();      // create a new instance of the Renewal Batch model
-        console.log(req.renewalComm);
-        newObj.renewalComm          = req.renewalComm;
+        var req = request.body.renewalUnit,
+            newObj = new RenewalUnit();
+
+        newObj.community            = req.community;
+        newObj.renewalComm            = req.renewalComm;
         newObj.batch                = req.batch;
-        newObj.unitId               = req.unitId;
+        newObj.unitNumber           = req.unitNumber;
         newObj.unitType             = req.unitType;
         newObj.pmsUnitType          = req.pmsUnitType;
         newObj.beds                 = req.beds;
@@ -529,48 +540,44 @@ router.route('/renewalUnits')
         newObj.userOverrideMode     = req.userOverrideMode;
         newObj.finalRecRent         = req.finalRecRent;
 
-        // response.json({ message: 'New Pricing created!' });
-        // save the todo and check for errors
+        // save the object and check for errors
         newObj.save(function(error) {
-            if (error)
-                response.send(error);
-
+            if (error) response.send(error);
             response.json({ renewalUnit: newObj });
         });
     })
-
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/renewalUnits)
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
     .get(function (request, response) {
-        RenewalUnit.find(request.query, function (error, renewalUnits) {
+        RenewalUnit.find(request.query, function (error, objs) {
             if (error) response.send(error);
             response.json({
-                renewalUnits : renewalUnits
+                renewalUnits : objs
             });
         });
     });
 
 router.route('/renewalUnits/:renewal_unit_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/renewalUnits/:renewal_unit_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
-        RenewalUnit.findById(request.params.renewal_unit_id, function (error, renewalUnit) {
+        RenewalUnit.findById(request.params.renewal_unit_id, function (error, obj) {
             if (error) response.send(error);
             response.json({
-                renewalUnit : renewalUnit
+                renewalUnit : obj
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.renewalUnit;
 
-        // use our community model to find the community we want
+        // use our model to find the object we want
         RenewalUnit.findById(request.params.renewal_unit_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
+            // update the object info
             obj.renewalComm          = req.renewalComm;
             obj.batch                = req.batch;
-            obj.unitId               = req.unitId;
+            obj.unitNumber            = req.unitNumber;
             obj.unitType             = req.unitType;
             obj.pmsUnitType          = req.pmsUnitType;
             obj.beds                 = req.beds;
@@ -593,33 +600,34 @@ router.route('/renewalUnits/:renewal_unit_id')
             obj.userOverrideMode     = req.userOverrideMode;
             obj.finalRecRent         = req.finalRecRent;
 
-            // save the community
-            obj.save(function(error, renewalUnit) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ renewalUnit: renewalUnit });
+                response.json({
+                    renewalUnit: obj
+                });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         RenewalUnit.remove({
             _id: request.params.renewal_unit_id
-        }, function(error, renewalUnit) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });
 
 
-// on routes that end in /renewalComms
+// on routes that end in /units
 // ----------------------------------------------------
 router.route('/units')
-    // create a product (accessed at POST http://localhost:8080/api/v1/units)
+    // create a new object (accessed at POST http://localhost:8080/api/v1/objects)
     .post(function(request, response) {
-        var req = request.body.unit;
-        var newObj = new Unit();      // create a new instance of the Unit model
+        var req = request.body.unit,
+            newObj = new Unit();
+
         newObj.unitNumber           = req.unitNumber;
         newObj.community            = req.community;
         newObj.unitType             = req.unitType;
@@ -635,44 +643,52 @@ router.route('/units')
         newObj.leaseCurrentTerm     = req.leaseCurrentTerm;
         newObj.leaseCurrentResident  = req.leaseCurrentResident;
 
-        // save the todo and check for errors
+        // save the object and check for errors
         newObj.save(function(error) {
-            if (error)
-                response.send(error);
-
-            response.json({ unit: newObj });
-        });
-    })
-
-    // get all the todos (accessed at GET http://localhost:8080/api/v1/units)
-    .get(function (request, response) {
-        Unit.find(request.query, function (error, units) {
             if (error) response.send(error);
             response.json({
-                units : units
+                unit: newObj
+            });
+        });
+    })
+    // get all the objects (accessed at GET http://localhost:8080/api/v1/objects)
+    .get(function (request, response) {
+        var query = request.query;
+
+        if( request.query.endDate && request.query.startDate && request.query.community )  {
+            query = {
+                community : request.query.community,
+                leaseExpirationDate : { $lte : new Date(request.query.endDate), $gte : new Date(request.query.startDate) }
+            };
+        }
+
+        Unit.find(query, function (error, objs) {
+            if (error) response.send(error);
+            response.json({
+                units : objs
             });
         });
     });
 
 router.route('/units/:unit_id')
-    // get the product with that id (accessed at GET http://localhost:8080/api/units/:unit_id)
+    // get the object with that id (accessed at GET http://localhost:8080/api/objects/:object_id)
     .get(function (request, response) {
-        Unit.findById(request.params.unit_id, function (error, unit) {
+        Unit.findById(request.params.unit_id, function (error, obj) {
             if (error) response.send(error);
             response.json({
-                unit : unit
+                unit : obj
             });
         });
     })
-    // update the community with this id (accessed at PUT http://localhost:8080/api/communities/:community_id)
+    // update the object with this id (accessed at PUT http://localhost:8080/api/objects/:object_id)
     .put(function (request, response) {
         var req = request.body.unit;
 
-        // use our community model to find the community we want
+        // use our model to find the object we want
         Unit.findById(request.params.unit_id, function(error, obj) {
             if (error) response.send(error);
 
-            // update the community info
+            // update the object info
             obj.unitNumber           = req.unitNumber;
             obj.community            = req.community;
             obj.unitType             = req.unitType;
@@ -689,21 +705,21 @@ router.route('/units/:unit_id')
             obj.leaseCurrentTerm     = req.leaseCurrentTerm;
             obj.leaseCurentResident  = req.leaseCurentResident;
 
-            // save the community
-            obj.save(function(error, unit) {
+            // save the object
+            obj.save(function(error) {
                 if (error) response.send(error);
-                response.json({ unit : unit });
+                response.json({
+                    unit : obj
+                });
             });
         });
     })
-
-    // delete the product with this id (accessed at DELETE http://localhost:8080/api/communities/:community_id)
+    // delete the object with this id (accessed at DELETE http://localhost:8080/api/objects/:object_id)
     .delete(function (request, response) {
         Unit.remove({
             _id: request.params.unit_id
-        }, function(error, unit) {
+        }, function(error, obj) {
             if (error) res.send(err);
-
             response.json({});
         });
     });

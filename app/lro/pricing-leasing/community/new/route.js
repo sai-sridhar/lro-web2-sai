@@ -4,7 +4,7 @@ export default Ember.Route.extend({
 
 	model : function(params, transition) {
 		var community_id = transition.params["lro.pricingLeasing.community"].community_id;
-		return this.store.query("newPricing", { communityId : community_id });
+		return this.store.query("newPricing", { community : community_id });
 	},
 
 	setupController : function(controller, model) {

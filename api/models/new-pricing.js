@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var modelSchema = new Schema({
-    communityId		: String,
+    community		: { type : Schema.ObjectId, ref : 'communities' },
     unitNumber 		: String,
 	priceDate 		: Date,
 	unitType 		: String,

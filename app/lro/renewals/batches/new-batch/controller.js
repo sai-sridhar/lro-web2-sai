@@ -58,5 +58,9 @@ export default Ember.Controller.extend({
 			this.set("endDate", null);
 			this.set("selectedMonth", null);
 		}
-	})
+	}),
+
+	// selectedCommunities : Ember.computed("model.@each.selected", function() {
+	// 	return this.get("model").filterBy("selected", true);
+	// })
 });

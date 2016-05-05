@@ -94,11 +94,11 @@
 		<section class="rb-summary">
 			<div class="col col-25">
 				<div class="chart">
-					{{high-charts mode=chartMode content=chartData chartOptions=chartOptions}}
+					{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
 				</div>
 			</div
 			><div class="col col-40">
-				{{high-charts mode=chartMode content=detailChartData chartOptions=detailChartOptions}}
+				{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
 			</div
 			><div class="col col-20">
 				<table class="rb-metrics-table no-hover">
@@ -135,7 +135,7 @@
 				</table>
 			</div
 			><div class="col col-15">
-				{{high-charts mode=chartMode content=donutChartData chartOptions=donutChartOptions}}
+				{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
 				<div class="center">
 					<h2 class="std-bottom-margin">Overrides</h2>
 					<h1>{{format-commas model.overrideCount}}</h1>
@@ -193,7 +193,7 @@
 									<div class="input-control">
 										<div class="label block">Community</div>
 										<div class="control block">
-											{{select-2 content=communityContent value=communityFilter placeholder="All" allowClear=true multiple=false}}
+											{{select-2 content=model.communityNames value=communityFilter placeholder="All" allowClear=true multiple=false}}
 										</div>
 									</div>
 								</div>
@@ -207,7 +207,7 @@
 									<div class="input-control">
 										<div class="label block">Beds</div>
 										<div class="control block">
-											{{select-2 value=bedsFilter content=bedsContent placeholder="All" allowClear=true}}
+											{{select-2 value=bedsFilter content=model.beds placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -215,7 +215,7 @@
 									<div class="input-control">
 										<div class="label block">Baths</div>
 										<div class="control block">
-											{{select-2 value=bathsFilter content=bathsContent placeholder="All" allowClear=true}}
+											{{select-2 value=bathsFilter content=model.baths placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -223,7 +223,7 @@
 									<div class="input-control">
 										<div class="label block">LRO Unit Type</div>
 										<div class="control block">
-											{{select-2 value=unitTypeFilter content=unitTypeContent placeholder="All" allowClear=true}}
+											{{select-2 value=unitTypeFilter content=model.unitTypes placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -231,7 +231,7 @@
 									<div class="input-control">
 										<div class="label block">PMS Unit Type</div>
 										<div class="control block">
-											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypeContent placeholder="All" allowClear=true}}
+											{{select-2 value=pmsUnitTypeFilter content=model.pmsUnitTypes placeholder="All" allowClear=true}}
 										</div>
 									</div>
 								</div>
@@ -266,7 +266,7 @@
 									<th>Unit Type</th>
 									<th class="no-mobile">Beds</th>
 									<th class="no-mobile">Baths</th>
-									<th>Unit ID</th>
+									<th>Unit Number</th>
 									<th class="no-mobile">Resident</th>
 									<th class="no-mobile">Renewal Date</th>
 									<th class="no-mobile">Prior Term</th>
@@ -280,14 +280,15 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{#each filteredUnitContent as |unit|}}
-								{{!-- {{#each model.units as |unit|}} --}}
-									{{#link-to "lro.renewals.batch.home.unit" unit.id tagName="tr"}}
+								{{!-- {{#each filteredUnitContent as |unit|}} --}}
+								{{#each model.communities as |comm|}}
+									{{#each comm.units as |unit|}}
+										{{#link-to "lro.renewals.batch.home.unit" unit.id tagName="tr"}}
 											<td class="no-mobile">{{unit.pmsUnitType}}</td>
 											<td>{{unit.unitType}}</td>
 											<td class="no-mobile">{{format-commas unit.beds}}</td>
 											<td class="no-mobile">{{format-commas unit.baths}}</td>
-											<td>{{unit.unitId}}</td>
+											<td>{{unit.unitNumber}}</td>
 											<td class="no-mobile">{{unit.resident}}</td>
 											<td class="no-mobile">{{format-date unit.renewalDate}}</td>
 											<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
@@ -305,6 +306,7 @@
 												{{/if}}
 											</td>
 										{{/link-to}}
+									{{/each}}
 								{{/each}}
 								{{!-- {{#each model.communities as |comm|}}
 									<tr>
@@ -354,7 +356,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{#each filteredCommunityContent as |comm|}}
+								{{!-- {{#each filteredCommunityContent as |comm|}} --}}
+								{{#each model.communities as |comm|}}
+								{{!-- {{#each communities as |comm|}} --}}
 									{{#link-to "lro.renewals.batch.community" comm.id tagName="tr"}}
 										<td class="left">{{comm.community.name}}</td>
 										<td>{{format-commas comm.expirationCount}}</td>
@@ -362,8 +366,8 @@
 										<td>{{format-percent comm.avgIncrease 1 1}}</td>
 										<td class="no-mobile">{{format-commas comm.avgRecLeaseTerm}}</td>
 										<td>{{format-percent comm.minIncrease 1 1}} - {{format-percent comm.maxIncrease 1 1}}</td>
-										<td class="no-mobile">{{format-percent comm.avgIncrease 1 1}}</td>
-										<td class="no-mobile">{{format-percent comm.avgIncrease 1 1}}</td>
+										<td class="no-mobile">{{format-percent comm.avgCurrentDiscountToMarket 1 1}}</td>
+										<td class="no-mobile">{{format-percent comm.avgNewDiscountToMarket 1 1}}</td>
 										<td>
 											{{#if comm.allApproved}}
 												<i class="fa fa-thumbs-o-down gray" {{action "unapproveCommunity" comm bubbles=false}}></i>
