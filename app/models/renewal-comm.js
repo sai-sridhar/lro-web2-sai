@@ -10,6 +10,12 @@ var calcSum = function(arr, prop) {
 
 export default DS.Model.extend({
 	community : DS.belongsTo("community", { async : true }),
+	communityName : Ember.computed("community", function() {
+		return this.get("community.name");
+	}),
+	communityFullName : Ember.computed("community", function() {
+		return this.get("community.fullName");
+	}),
 	batch : DS.belongsTo("renewalBatch", { async : true }),
 	units : DS.hasMany("renewalUnit", { async : true }),
 	expirationCount : Ember.computed('units.[]', function() {

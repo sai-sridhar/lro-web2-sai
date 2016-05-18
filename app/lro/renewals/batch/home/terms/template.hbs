@@ -1,0 +1,24 @@
+<div class="overlay show">
+	<div class="overlay-content w600">
+		<header>
+			<h2><b>Modify Renewal Batch Lease Terms</b></h2>
+			{{#link-to "lro.renewals.batch.home" tagName="div" class="close"}}{{fa-icon "times"}}{{/link-to}}
+		</header>
+		<section class="scroll-content">
+			<div class="single-column">
+				<section class="rb-lease-terms">
+					<h3>Select lease terms to offer:</h3>
+					{{lease-term-chooser}}
+				</section>
+				<section>
+					<h3>Select communities to apply to:</h3>
+					{{community-select2 content=model.communities selectedCommunities=selectedCommunities selectAll=true selectMultiple=true}}
+				</section>
+			</div>
+		</section>
+		<footer>
+			{{#link-to "lro.renewals.batch.home" tagName="button" class="with-icon"}}{{fa-icon "check"}}Apply{{/link-to}}
+			{{#link-to "lro.renewals.batch.home" tagName="button" class="white with-icon"}}{{fa-icon "times"}}Cancel{{/link-to}}
+		</footer>
+	</div>
+</div>

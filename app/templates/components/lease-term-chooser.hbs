@@ -1,0 +1,20 @@
+<div class="select-deselect-all">
+	<div {{action "selectAllTerms"}}>Select All</div
+	><div {{action "deselectAllTerms"}}>Deselect All</div>
+</div>
+<div>
+	{{#each leaseTermCategories as |ltc|}}
+		<div class="ltc inline">
+			<div>
+				{{check-box checked=ltc.isChecked value=ltc action="toggleLtc"}}
+				<span>{{ltc.ltc}}</span>
+			</div>
+			{{#each ltc.terms as |term|}}
+				<div>
+					{{check-box checked=term.isChecked value=ltc action="toggleLeaseTerm"}}
+					<span>{{term.text}}</span>
+				</div>
+			{{/each}}
+		</div>
+	{{/each}}
+</div>

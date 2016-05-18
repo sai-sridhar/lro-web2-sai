@@ -1,0 +1,7 @@
+{{#if selectAll}}
+	<div class="select-deselect-all">
+		<div {{action "selectAllCommunities"}}>Select All</div
+		><div {{action "deselectAllCommunities"}}>Deselect All</div>
+	</div>
+{{/if}}
+{{select-2 content=content value=selectedCommunities optionLabelPath="communityFullName" placeholder=placeholder allowClear=allowClear multiple=selectMultiple}}

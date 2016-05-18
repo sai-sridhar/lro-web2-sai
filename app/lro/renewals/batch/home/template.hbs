@@ -3,8 +3,8 @@
 		<title><h1>{{model.name}}</h1></title>
 		<div class="button-wrapper">
 			<button class="transparent" {{action "deleteBatch"}}>{{fa-icon "trash"}}</button>
-			<button class="transparent" {{action "toggleTerms"}}>Lease Terms</button>
-			<button class="transparent" {{action "toggleParams"}}>Parameters</button>
+			{{#link-to "lro.renewals.batch.home.terms" tagName="button" class="transparent"}}Lease Terms{{/link-to}}
+			{{#link-to "lro.renewals.batch.home.params" tagName="button" class="transparent"}}Parameters{{/link-to}}
 			<button class="with-icon transparent" {{action "closeBatch"}}>{{fa-icon "times"}}Close</button>	{{#if model.readyForCommit}}
 				<button class="with-icon" {{action "commitBatch"}}>{{fa-icon "check"}}Commit Batch</button>
 			{{else}}
@@ -12,84 +12,6 @@
 			{{/if}}
 		</div>
 	</section>
-	<div class="overlay {{if showParams 'show' 'hide'}}">
-		<div class="overlay-content">
-			<header>
-				<h2><b>Modify Renewal Batch Parameters</b></h2>
-				<div class="close" {{action "toggleParams"}}>{{fa-icon "times"}}</div>
-			</header>
-			<section class="scroll-content">
-			</section>
-			<footer>
-				<button class="with-icon" {{action "toggleParams"}}>{{fa-icon "check"}}Apply</button>
-				<button class="white with-icon" {{action "toggleParams"}}>{{fa-icon "times"}}Cancel</button>
-			</footer>
-		</div>
-	</div>
-	<div class="overlay {{if showTerms 'show' 'hide'}}">
-		<div class="overlay-content">
-			<header>
-				<h2><b>Modify Renewal Batch Lease Terms</b></h2>
-				<div class="close" {{action "toggleTerms"}}>{{fa-icon "times"}}</div>
-			</header>
-			<section class="scroll-content">
-				<div class="left-column">
-					<section>
-						<h3>Select lease terms to offer:</h3>
-						<div class="select-deselect-all">
-							<div {{action "selectAllTerms"}}>Select All</div
-							><div {{action "deselectAllTerms"}}>Deselect All</div>
-						</div>
-					</section>
-					<section class="rb-lease-terms">
-						{{#each leaseTermCategories as |ltc|}}
-							<div class="ltc">
-								<div>
-									{{check-box checked=ltc.isChecked value=ltc action="toggleLtc"}}
-									{{!-- <input type="checkbox" checked={{ltc.isChecked}} onclick={{action "toggleLtc" value="target.checked"}} /> --}}
-									<span>{{ltc.ltc}}</span>
-								</div>
-								{{#each ltc.terms as |term|}}
-									<div>
-										{{check-box checked=term.isChecked value=ltc action="toggleLeaseTerm"}}
-										<span>{{term.text}}</span>
-									</div>
-								{{/each}}
-							</div>
-						{{/each}}
-					</section>
-				</div>
-				<div class="vertical-divider"></div>
-				<div class="right-column">
-					<h3>Select communities to apply to:</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>Community Code</th>
-								<th>Community Name</th>
-							</tr>
-						</thead>
-						<tbody>
-							{{#each communityContent as |comm|}}
-								<tr {{action "selectCommunityForTerms" comm}} class="{{if comm.selectedForTerms 'active'}}">
-									<td>{{comm.description}}</td>
-									<td>{{comm.text}}</td>
-								</tr>
-							{{/each}}
-						</tbody>
-					</table>
-					<div class="select-deselect-all">
-						<div {{action "selectAllForTerms"}}>Select All</div>
-						<div {{action "deselectAllForTerms"}}>Deselect All</div>
-					</div>
-				</div>
-			</section>
-			<footer>
-				<button class="with-icon" {{action "toggleTerms"}}>{{fa-icon "check"}}Apply</button>
-				<button class="white with-icon" {{action "toggleTerms"}}>{{fa-icon "times"}}Cancel</button>
-			</footer>
-		</div>
-	</div>
 	<section class="batch-content">
 		<section class="rb-summary">
 			<div class="col col-25">

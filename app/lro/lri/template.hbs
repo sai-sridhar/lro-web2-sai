@@ -1,1 +1,12 @@
-{{outlet}}
+<div class="section-menu nav-3">
+	{{fa-icon "line-chart" fixedWidth=true}}
+	<div class="title single-line">LRI</div>
+	<div class="hamburger" {{action 'toggleSectionMenu'}}>
+		{{fa-icon "bars"}}
+	</div>
+	<div class="menu {{if showMenu 'show'}}">
+	</div>
+</div>
+<section class="module-content">
+	{{outlet}}
+</section>

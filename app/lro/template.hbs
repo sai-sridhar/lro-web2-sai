@@ -1,9 +1,15 @@
 <div class="page-wrap">
-	<nav></nav>
-	<div class="main-menu">
+	<nav class="nav-3"></nav>
+	<div class="main-menu nav-3">
+		<div class="hidden-button" {{action 'toggleMainMenu'}}>
+
+		</div>
+		<div class="triangle tri-right"></div>
+		{{fa-icon "caret-down" fixedWidth=true}}
+	{{!-- <div class="main-menu">
 		<div class="hamburger" {{action 'toggleMainMenu'}}>
 			<i class="fa fa-bars"></i>
-		</div>
+		</div> --}}
 		<div class="menu {{if showMenu 'show'}}">
 			{{#link-to 'lro.dashboard' tagName="div"}}
 				<div {{action "toggleMainMenu"}}>
@@ -44,5 +50,4 @@
 		</div>
 	</div>
 	{{outlet}}
-
 </div>

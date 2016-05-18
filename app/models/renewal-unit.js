@@ -6,7 +6,7 @@ export default DS.Model.extend({
 	// batch : DS.belongsTo("renewalBatch", { async : true }),
 	// community : DS.belongsTo("community", { async : true }),
 	communityName : Ember.computed("renewalComm", function() {
-		return this.get("renewalComm.community.fullName");
+		return this.get("renewalComm.communityFullName");
 	}),
 	unitNumber : DS.attr("string"),
 	unitType : DS.attr("string"),

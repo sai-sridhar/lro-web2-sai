@@ -45,8 +45,11 @@ Router.map(function() {
         });
         this.route("home", function() {
           this.route('unit', { path : "/unit/:unit_id" });
+          this.route('params');
+          this.route('terms');
         });
       });
+      this.route('settings');
     });
     this.route('lri');
     this.route('admin', function() {
@@ -68,6 +71,7 @@ Router.map(function() {
     });
     this.route('support');
   });
+
 });
 
 export default Router;

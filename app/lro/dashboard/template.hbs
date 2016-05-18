@@ -1,1 +1,28 @@
-{{outlet}}
+<div class="section-menu nav-3">
+	{{fa-icon "tachometer" fixedWidth=true}}
+	<div class="title single-line">Dashboard</div>
+	<div class="hamburger" {{action 'toggleSectionMenu'}}>
+		{{fa-icon "bars"}}
+	</div>
+	<div class="menu {{if showMenu 'show'}}">
+		{{!-- {{#link-to 'lro.admin.communities' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Communities
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.params' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Parameters
+			</div>
+		{{/link-to}}
+		{{#link-to 'lro.admin.hierarchy' tagName="div"}}
+			<div {{action 'toggleSectionMenu'}}>
+				Hierarchy
+			</div>
+		{{/link-to}} --}}
+
+	</div>
+</div>
+<section class="module-content">
+	{{outlet}}
+</section>

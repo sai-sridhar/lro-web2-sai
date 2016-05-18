@@ -19,7 +19,8 @@ module.exports = function(environment) {
     },
     contentSecurityPolicy : {
       'style-src' : "'self' 'unsafe-inline'",
-      'connect-src' : "'self' http://localhost:8081"
+      'connect-src' : "'self' https://secret-bayou-46458.herokuapp.com"
+      // 'connect-src' : "'self' http://localhost:8081"
     }
   };
 
@@ -44,10 +45,10 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.contentSecurityPolicy = {
-      'style-src' : "'self' 'unsafe-inline'",
-      'connect-src' : "'self' http://localhost:8081"
-    }
+    // ENV.contentSecurityPolicy = {
+    //   'style-src' : "'self' 'unsafe-inline'",
+    //   'connect-src' : "'self' http://localhost:8081"
+    // }
 
   }
 

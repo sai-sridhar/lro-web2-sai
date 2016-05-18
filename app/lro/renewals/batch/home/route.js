@@ -62,12 +62,6 @@ export default Ember.Route.extend({
 		closeBatch : function() {
 			this.transitionTo("lro.renewals.batches.open");
 		},
-		toggleParams : function() {
-			this.controller.toggleProperty("showParams");
-		},
-		toggleTerms : function() {
-			this.controller.toggleProperty("showTerms");
-		},
 		toggleCommunityView : function() {
 			this.controller.set("detailView", "community");
 		},
@@ -240,26 +234,6 @@ export default Ember.Route.extend({
 			this.controller.set("unapprovedCommunityFilter", false);
 			this.controller.set("overrideCommunityFilter", false);
 		},
-		selectAllTerms : function() {
-			this.controller.get("leaseTermCategories").forEach(function(ltc) {
-				ltc.set("isChecked", true);
-				ltc.get("terms").setEach("isChecked", true);
-			});
-		},
-		deselectAllTerms : function() {
-			this.controller.get("leaseTermCategories").forEach(function(ltc) {
-				ltc.set("isChecked", false);
-				ltc.get("terms").setEach("isChecked", false);
-			});
-		},
-		selectCommunityForTerms : function(comm) {
-			comm.toggleProperty("selectedForTerms");
-		},
-		selectAllForTerms : function() {
-			this.controller.get("communityContent").setEach("selectedForTerms", true);
-		},
-		deselectAllForTerms : function() {
-			this.controller.get("communityContent").setEach("selectedForTerms", false);
-		}
+
 	}
 });

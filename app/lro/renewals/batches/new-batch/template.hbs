@@ -31,29 +31,6 @@
 					<div {{action "deselectAll"}}>Deselect All</div>
 				</div>
 			</div>
-			{{!-- <div class="vertical-divider"></div>
-			<div class="right-column">
-				<table>
-					<thead>
-						<tr>
-							<th>Community Code</th>
-							<th>Community Name</th>
-						</tr>
-					</thead>
-					<tbody>
-						{{#each model as |community|}}
-							<tr {{action "selectCommunity" community}} class="{{if community.selected 'active'}}">
-								<td>{{community.code}}</td>
-								<td>{{community.name}}</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-				<div class="select-deselect-all">
-					<div {{action "selectAll"}}>Select All</div>
-					<div {{action "deselectAll"}}>Deselect All</div>
-				</div>
-			</div> --}}
 		</section>
 		<footer>
 			<button class="with-icon" {{action "createBatch"}}>{{fa-icon "check"}}Create Batch</button>
