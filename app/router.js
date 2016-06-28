@@ -35,21 +35,26 @@ Router.map(function() {
     });
     this.route('renewals', function() {
       this.route('batches', function() {
-        this.route('open');
-        this.route('committed');
-        this.route('newBatch');
-      });
-      this.route('batch', { path : "/batch/:batch_id" }, function() {
-        this.route('community', { path : "/community/:community_id" }, function() {
-          this.route('unit', { path : "/unit/:unit_id" });
+        this.route('home', function() {
+          this.route('open');
+          this.route('committed');
         });
-        this.route("home", function() {
-          this.route('unit', { path : "/unit/:unit_id" });
-          this.route('params');
-          this.route('terms');
+        this.route('newBatch');
+        this.route('batch', { path : "/:batch_id" }, function() {
+          this.route("home", function() {
+            this.route('unit', { path : "/unit/:unit_id" });
+            this.route('params');
+            this.route('terms');
+          });
+          this.route('community', { path : "/community/:community_id" }, function() {
+            this.route('unit', { path : "/unit/:unit_id" });
+            this.route('params');
+            this.route('terms');
+          });
         });
       });
       this.route('settings');
+      this.route('params');
     });
     this.route('lri');
     this.route('admin', function() {

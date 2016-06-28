@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'zion',
+    podModulePrefix: 'zion/pods',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',

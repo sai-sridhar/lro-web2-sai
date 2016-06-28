@@ -282,6 +282,11 @@ table {
 					padding: @stdPadding;
 				}
 			}
+			&.sortable {
+				th {
+					cursor: pointer;
+				}
+			}
 		}
 
 		th {
@@ -443,35 +448,21 @@ nav {
 	left: 0;
 	right: 0;
 	height: @headerBarHeight;
-	padding: @stdPadding;
 	background-color: darken(@darkBlue, 15%);
-	/*background-color: @grayBlue2;*/
-	color: white;
-	background-image: url("images/LRO_Logo_Reverse_Horizontal.png");
-	background-repeat: no-repeat;
-	background-position: 1em 50%;
-	background-size: 158px 60px;
 	box-sizing: border-box;
-	text-indent: -9999px ;
+	color: white;
+	border-bottom: @stdBorder;
 
-	&.nav-2 {
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: @headerBarHeight;
+	.logo {
+		display: inline-block;
+		position: relative;
+		width: 15em;
 		height: 100%;
-		background-color: black;
-		/*background-color: darken(@darkBlue, 15%);*/
-		background-image: url("images/Rainmaker_Drops_Color.png");
-		/*background-image: url("images/Rainmaker_Drops_Reverse.png");*/
+		/*background-color: white;*/
 		background-repeat: no-repeat;
-		background-position: 5px 5px;
-		background-size: 49px 49px;
-	}
-
-	&.nav-3 {
-		background-position: 100% 0px;
+		background-position: 1em 50%;
+		background-image: url("images/LRO_Logo_Reverse_Horizontal.png");
+		background-size: 158px 60px;
 	}
 }
 
@@ -523,7 +514,7 @@ button {
 		background-color: lighten(@buttonGreen, 10%);
 		color: lighten(@buttonGreen, 25%);
 		border: 1px solid lighten(@buttonGreen, 10%);
-		cursor: default;
+		cursor: not-allowed;
 		&:hover {
 			background-color: lighten(@buttonGreen, 10%);
 			border-color: lighten(@buttonGreen, 10%);
@@ -609,6 +600,10 @@ button {
 				color: white;
 			}
 		}
+
+		&.thick-border {
+			border: 2px solid @buttonGreen;
+		}
 	}
 
 	&.gray-border {
@@ -635,33 +630,56 @@ button {
 		}
 	}
 
+	&.round-small {
+		height: 32px;
+		width: 32px;
+		border-radius: 16px;
+		padding: 2px;
+		font-size: 1.5em;
+	}
+
 	&.slim {
 		padding: @stdPadding @dblPadding;
 	}
 }
 
+.my-account {
+	position: relative;
+	display: inline-block;
+	line-height: 5em;
+	margin-right: @dblPadding;
+
+}
+
+.online-help {
+	position: relative;
+	display: inline-block;
+	line-height: 5em;
+	margin-right: @dblPadding;
+}
+
+@triangleBorderSize: @headerBarHeight/2;
 .triangle {
-	@borderSize: @headerBarHeight/2;
 	width: 0px;
 	height: 0px;
-	border-top: @borderSize solid transparent;
-	border-bottom: @borderSize solid transparent;
-	border-right: @borderSize solid transparent;
-	border-left: @borderSize solid transparent;
+	border-top: @triangleBorderSize solid transparent;
+	border-bottom: @triangleBorderSize solid transparent;
+	border-right: @triangleBorderSize solid transparent;
+	border-left: @triangleBorderSize solid transparent;
 
 	&.tri-right {
-		border-left: @borderSize/2 solid @grayBlue;
+		border-left: @triangleBorderSize/2 solid @grayBlue;
 		display: inline-block;
 	}
 	&.tri-left {
-		border-right: @borderSize solid @grayBlue;
+		border-right: @triangleBorderSize solid @grayBlue;
 		display: inline-block;
 	}
 	&.tri-top {
-		border-bottom: @borderSize solid @grayBlue;
+		border-bottom: @triangleBorderSize solid @grayBlue;
 	}
 	&.tri-bottom {
-		border-top: @borderSize solid @grayBlue;
+		border-top: @triangleBorderSize solid @grayBlue;
 	}
 }
 
@@ -837,25 +855,19 @@ button {
 	@mainMenuWidth: 15em;
 	position: absolute;
 	top: 0;
-	left: 16em;
-	width: 4em;
+	left: 15em;
+	width: @mainMenuWidth;
 	height: @headerBarHeight;
-	/*padding: @stdPadding;*/
+	border-bottom: @stdBorder;
+	background-color: @grayBlue;
 	box-sizing: border-box;
 
-	&.nav-3 {
-		left: 0;
-		padding-left: 0;
-		width: @mainMenuWidth;
-		background-color: @grayBlue;
-
-		&>i {
-			position: absolute;
-			color: white;
-			font-size: 1.5em;
-			top: @headerBarHeight/4;
-			left: 8.5em;
-		}
+	&>i {
+		position: absolute;
+		color: white;
+		font-size: 1.5em;
+		top: @headerBarHeight/4;
+		left: 9em;
 	}
 
 	.hamburger {
@@ -871,17 +883,10 @@ button {
 	.hidden-button {
 		position: absolute;
 		top: 0;
-		width: @mainMenuWidth;
+		width: @mainMenuWidth + 1;
 		height: @headerBarHeight;
 		z-index: 9999;
-		/*border-left: @stdBorder;*/
-		/*border-right: @stdBorder;*/
 		cursor: pointer;
-		/*background-image: url("images/Rainmaker_Drops_Reverse.png");
-		background-size: 30px 36px;
-		background-repeat: no-repeat;
-		background-position: 1em 1em;*/
-
 	}
 
 	.menu {
@@ -892,6 +897,7 @@ button {
 		z-index: 50;
 		min-width: 24em;
 		border: @stdBorder;
+		border-top: none;
 		box-sizing: border-box;
 		background-color: darken(@darkBlue, 15%);
 		background-color: @grayBlue;
@@ -946,10 +952,17 @@ button {
 		}
 	}
 
-	.triangle {
+	.right-of-menu {
 		position: absolute;
 		left: @mainMenuWidth;
 	}
+
+	.left-of-menu {
+		position: absolute;
+		left: 0;
+		border-left: @triangleBorderSize/2 solid darken(@darkBlue, 15%);
+	}
+
 }
 
 .section-menu {
@@ -957,26 +970,24 @@ button {
 	top: 0;
 	height: @headerBarHeight;
 	right: 15em;
-	left: 20em;
+	left: 15em;
 	box-sizing: border-box;
+	border-bottom: @stdBorder;
 	z-index: 100;
-
-	&.nav-3 {
-		left: 0;
-	}
 
 	.title {
 		display: inline-block;
-		font-size: 1.5em;
-		padding-left: @stdPadding;
-		padding-top: 1.3*@stdPadding;
+		font-size: 1.25em;
+		padding: @dblPadding;
 		color: white;
 		height: 100%;
 		box-sizing: border-box;
 		width: 120px;
+		position: relative;
+		left: 1em;
 
 		&.single-line {
-			margin-top: 1.2em;
+			line-height: 4em;
 			vertical-align: top;
 			padding-top: 0px;
 		}
@@ -984,11 +995,10 @@ button {
 
 	&>i {
 		position: relative;
-		left: @stdPadding / 2;
-		font-size: 2.5em;
+		left: @dblPadding;
+		font-size: 2.0em;
 		color: white;
-		line-height: 2em;
-		/*margin-right: @stdPadding * 1.8;*/
+		line-height: 2.5em;
 		top: -0.075em;
 	}
 
@@ -1004,15 +1014,17 @@ button {
 
 	.menu {
 		display: inline-block;
+		/*position: absolute;*/
 		vertical-align: top;
-		margin-left: 3em;
+		margin-left: 4em;
+		box-sizing: border-box;
 
 		&>div {
 			display: inline-block;
 			position: relative;
 			padding: @stdPadding (3*@stdPadding);
 			font-size: 1.2em;
-			line-height: 3.2em;
+			line-height: 3.15em;
 			box-sizing: border-box;
 			color: white;
 			cursor: pointer;
@@ -2464,7 +2476,7 @@ button {
 	}
 
 	.rb-params {
-		&>section {
+		section {
 			margin-bottom: 2 * @dblPadding;
 		}
 	}

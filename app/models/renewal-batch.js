@@ -33,11 +33,22 @@ export default DS.Model.extend({
 	month : DS.attr("string"),
 	status : DS.attr("string", { defaultValue: "Open" }),
 	communities : DS.hasMany("renewalComm", { async : true }),
+	// ranges : DS.hasMany("renewalRange", { async : true }),
 	// units : DS.hasMany("renewalUnit", { async : true }),
 
+	isCommitted : Ember.computed("status", function() {
+		if( this.get("status") === "Committed") {
+			return true;
+		} else {
+			return false;
+		}
+	}),
 	// Rolling up data from the Renewal Community objects
 	expirationCount : Ember.computed("communities.@each.expirationCount", function() {
 		return calcSum(this.get("communities"), "expirationCount");
+	}),
+	approvalCount : Ember.computed("communities.@each.approvalCount", function() {
+		return calcSum(this.get("communities"), "approvalCount");
 	}),
 	increaseSum : Ember.computed("communities.@each.increaseSum", function() {
 		return calcSum(this.get("communities"), "increaseSum");
@@ -95,6 +106,12 @@ export default DS.Model.extend({
 	totalRecLeaseTerm : Ember.computed("communities.@each.totalRecLeaseTerm", function() {
 		return calcSum(this.get("communities"), "totalRecLeaseTerm");
 	}),
+	totalCurrentRent : Ember.computed("communities.@each.totalCurrentRent", function() {
+	  	return calcSum(this.get("communities"), "totalCurrentRent");
+	}),
+	totalCurrentLeaseTerm : Ember.computed("communities.@each.totalCurrentLeaseTerm", function() {
+	  	return calcSum(this.get("communities"), "totalCurrentLeaseTerm");
+	}),
 
 	// Averages
 	avgIncrease : Ember.computed("expirationCount", "increaseSum", function() {
@@ -104,13 +121,19 @@ export default DS.Model.extend({
 		return this.get("totalRecRent") / this.get("expirationCount");
 	}),
 	avgRecTerm : Ember.computed("totalRecLeaseTerm", "expirationCount", function() {
-		return this.get("totalRecTerm") / this.get("expirationCount");
+		return this.get("totalRecLeaseTerm") / this.get("expirationCount");
 	}),
 	avgCurrentDiscountToMarket : Ember.computed("totalCurrentDiscountToMarket", "expirationCount", function() {
 		return this.get("totalCurrentDiscountToMarket") / this.get("expirationCount");
 	}),
 	avgNewDiscountToMarket : Ember.computed("totalNewDiscountToMarket", "expirationCount", function() {
 		return this.get("totalNewDiscountToMarket") / this.get("expirationCount");
+	}),
+	avgCurrentRent : Ember.computed("totalCurrentRent", "expirationCount", function() {
+		return this.get("totalCurrentRent") / this.get("expirationCount");
+	}),
+	avgCurrentLeaseTerm : Ember.computed("totalCurrentLeaseTerm", "expirationCount", function() {
+		return this.get("totalCurrentLeaseTerm") / this.get("expirationCount");
 	}),
 
 	// Dropdown List content
@@ -398,6 +421,4 @@ export default DS.Model.extend({
 
 		return content;
 	}),
-
-
 });

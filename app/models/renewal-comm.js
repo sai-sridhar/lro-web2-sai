@@ -96,6 +96,9 @@ export default DS.Model.extend({
 			return (prev > itm.get("finalDiscountToMarket") ? prev : itm.get('finalDiscountToMarket'));
 		}, this.get("units.firstObject.finalDiscountToMarket"));
 	}),
+	approvalCount : Ember.computed("units.@each.approved", function() {
+		return calcSum(this.get("units"), "approved");
+	}),
 	allApproved : Ember.computed("units.@each.approved", function() {
 		var unapproved = this.get("units").findBy("approved", false);
 		if( unapproved ) {

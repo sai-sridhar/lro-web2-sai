@@ -1,0 +1,21 @@
+<div class="overlay show">
+	<div class="overlay-content w600">
+		<header>
+			<h2><b>Modify Renewal Batch Parameters</b></h2>
+			<div class="close" {{action "cancel"}}>{{fa-icon "times"}}</div>
+		</header>
+		<section class="scroll-content">
+			<div class="single-column rb-params">
+				{{renewal-params content=model}}
+				<section>
+					<h3>Select communities to apply to:</h3>
+					{{community-select2 content=communities selectedCommunities=selectedCommunities selectAll=true selectMultiple=true}}
+				</section>
+			</div>
+		</section>
+		<footer>
+			<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			<button class="white with-icon" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
+		</footer>
+	</div>
+</div>

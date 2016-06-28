@@ -13,7 +13,13 @@
 		<tbody>
 			{{#each belowMarketContent as |range|}}
 				<tr>
-					<td>{{input type="number" width=80 value=range.from focus-out="saveRanges"}}</td>
+					<td>
+						{{#if range.first}}
+							<span>{{range.from}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+						{{/if}}
+					</td>
 					<td class="to"> to </td>
 					<td>
 						{{#if range.to}}
@@ -25,19 +31,23 @@
 					<td>{{input type="number" width=80 value=range.bringToMktRate focus-out="saveRanges"}}</td>
 					<td>{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}</td>
 					<td>{{input type="number" width=80 value=range.maxIncrease focus-out="saveRanges"}}</td>
-					<td><span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span></td>
+					<td>
+						{{#unless range.first}}
+							<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+						{{/unless}}
+					</td>
 				</tr>
 			{{/each}}
 		</tbody>
 	</table>
 	<div class="select-deselect-all">
-		<div {{action "addRange" "below"}}>Add Range</div>
+		<div {{action "addRange" "below"}}>Add Below Market Range</div>
 	</div>
 </section>
 <section>
 	<h3>At Market Rent:</h3>
 	<label for="flat-increase">Increase %</label>
-	{{input type="number" id="flat-increase" value=atMarketContent.firstObject.minIncrease}}
+	{{input type="number" id="flat-increase" value=atMarketContent.firstObject.minIncrease focus-out="saveRanges"}}
 </section>
 <section>
 	<h3>Above Market Rent:</h3>
@@ -46,26 +56,38 @@
 			<tr>
 				<th colspan=3>% Above Market</th>
 				<th>Increase %</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			{{#each aboveMarketContent as |range|}}
 				<tr>
-					<td>{{input type="number" width=80 value=range.from}}</td>
+					<td>
+						{{#if range.first}}
+							<span>{{range.from}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+						{{/if}}
+					</td>
 					<td class="to"> to </td>
 					<td>
 						{{#if range.to}}
-							{{input type="number" width=80 value=range.to}}
+							{{input type="number" width=80 value=range.to focus-out="saveRanges"}}
 						{{else}}
 							<span>Infinity</span>
 						{{/if}}
 					</td>
-					<td>{{input type="number" width=80 value=range.minIncrease}}</td>
+					<td>{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}</td>
+					<td>
+						{{#unless range.first}}
+							<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+						{{/unless}}
+					</td>
 				</tr>
 			{{/each}}
 		</tbody>
 	</table>
 	<div class="select-deselect-all">
-		<div {{action "addRange" "below"}}>Add Range</div>
+		<div {{action "addRange" "above"}}>Add Above Market Range</div>
 	</div>
 </section>

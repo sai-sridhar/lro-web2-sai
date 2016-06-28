@@ -1,0 +1,21 @@
+<div class="overlay show">
+	<div class="overlay-content w600">
+		<header>
+			<h2><b>Modify Community Renewal Parameters</b></h2>
+			<div class="close" {{action "cancel"}}>{{fa-icon "times"}}</div>
+		</header>
+		<section class="scroll-content">
+			<div class="single-column rb-params">
+				{{renewal-params content=model}}
+				<section>
+					<h3>Select unit types to apply to:</h3>
+					{{my-select2 content=unitTypes selectedObjects=selectedUnitTypes selectAll=true selectMultiple=true placeholderPlural="Select unit types..." displayProp="unitType"}}
+				</section>
+			</div>
+		</section>
+		<footer>
+			<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			<button class="white with-icon" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
+		</footer>
+	</div>
+</div>

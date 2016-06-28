@@ -1,0 +1,56 @@
+<div class="page-wrap">
+	<nav>
+		<div class="logo"></div>
+	</nav>
+	<div class="main-menu">
+		<div class="triangle tri-right left-of-menu"></div>
+		<div class="hidden-button" {{action 'toggleMainMenu'}}></div>
+		<div class="triangle tri-right right-of-menu"></div>
+		{{fa-icon "caret-down" fixedWidth=true}}
+		<div class="menu {{if showMenu 'show'}}">
+			{{#link-to 'lro.dashboard' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "tachometer" fixedWidth=true}}
+					<name>Dashboard</name>
+				</div>
+			{{/link-to}}
+			{{#link-to "lro.pricingLeasing" tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "tint" fixedWidth=true}}
+					<name>Pricing & Leasing</name>
+				</div>
+			{{/link-to}}
+			{{#link-to "lro.renewals" tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "recycle" fixedWidth=true}}
+					<name>Renewal Manager</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.lri' tagName="div" class="no-mobile"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "line-chart" fixedWidth=true}}
+					<name>LRI</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.admin' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "cogs" fixedWidth=true}}
+					<name>Admin & Settings</name>
+				</div>
+			{{/link-to}}
+			{{#link-to 'lro.support' tagName="div"}}
+				<div {{action "toggleMainMenu"}}>
+					{{fa-icon "graduation-cap" fixedWidth=true}}
+					<name>Training & Support</name>
+				</div>
+			{{/link-to}}
+		</div>
+	</div>
+	<div class="my-account float-right">
+		<button class="round-small transparent thick-border">JT</button>
+	</div>
+	<div class="online-help float-right">
+		<button class="round-small">?</button>
+	</div>
+	{{outlet}}
+</div>

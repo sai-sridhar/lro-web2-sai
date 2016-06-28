@@ -1,0 +1,292 @@
+<div class="batch">
+	<section class="batch-header">
+	</section>
+	<section class="control-wrapper">
+		<title>
+			<h1>Community: {{model.community.name}}</h1>
+			<p>Batch: {{model.batch.name}}, {{format-date model.batch.startDate "MMM D, YYYY"}} - {{format-date model.batch.endDate "MMM D, YYYY"}}</p>
+		</title>
+		<div class="button-wrapper">
+			{{#unless model.batch.isCommitted}}
+				<button class="transparent" {{action "deleteCommunity"}}>{{fa-icon "trash"}}</button>
+				{{#link-to "lro.renewals.batches.batch.community.terms" tagName="button" class="transparent"}}Lease Terms{{/link-to}}
+				{{#link-to "lro.renewals.batches.batch.community.params" tagName="button" class="transparent"}}Parameters{{/link-to}}
+				<button class="with-icon transparent" {{action "closeCommunity"}}>{{fa-icon "chevron-left"}}Batch</button>
+				{{#if model.allApproved}}
+					<button class="with-icon red" {{action "unapproveCommunity"}}>{{fa-icon "thumbs-down"}}Unapprove All</button>
+				{{else}}
+					<button class="with-icon" {{action "approveCommunity"}}>{{fa-icon "thumbs-up"}}Approve All</button>
+				{{/if}}
+			{{else}}
+				<button class="with-icon" {{action "closeCommunity"}}>{{fa-icon "chevron-left"}}Batch</button>
+			{{/unless}}
+		</div>
+	</section>
+	<section class="batch-content">
+		<section class="rb-summary">
+			<div class="col col-25">
+				<div class="chart">
+					{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
+				</div>
+			</div
+			><div class="col col-40">
+				{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
+			</div
+			><div class="col col-20">
+				<table class="rb-metrics-table no-hover">
+					<tr style="height: 80px">
+						<td style="border: none;">
+							<div class="rb-metric-title">Average Increase</div>
+							<div class="rb-metric">{{format-percent model.avgIncrease}}</div>
+						</td>
+						<td style="border: none;">
+							<div class="rb-metric-title">Increase Range</div>
+							<div class="rb-metric">{{format-percent model.minIncrease}} - {{format-percent model.maxIncrease}}</div>
+						</td>
+					</tr>
+					<tr style="height: 80px">
+						<td style="border: none;">
+							<div class="rb-metric-title">Current Avg. DTM</div>
+							<div class="rb-metric">{{format-percent model.avgCurrentDiscountToMarket}}</div>
+						</td>
+						<td style="border: none;">
+							<div class="rb-metric-title">Current DTM Range</div>
+							<div class="rb-metric">{{format-percent model.minCurrentDiscountToMarket}} - {{format-percent model.maxCurrentDiscountToMarket}}</div>
+						</td>
+					</tr>
+					<tr style="height: 80px">
+						<td style="border: none;">
+							<div class="rb-metric-title">New Avg. DTM</div>
+							<div class="rb-metric">{{format-percent model.avgNewDiscountToMarket}}</div>
+						</td>
+						<td style="border: none;">
+							<div class="rb-metric-title">New DTM Range</div>
+							<div class="rb-metric">{{format-percent model.minNewDiscountToMarket}} - {{format-percent model.maxNewDiscountToMarket}}</div>
+						</td>
+					</tr>
+				</table>
+			</div
+			><div class="col col-15">
+				{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
+				<div class="center">
+					<h2 class="std-bottom-margin">Overrides</h2>
+					<h1>{{format-commas model.overrideCount}}</h1>
+				</div>
+			</div>
+		</section>
+		<section class="rb-details">
+			<div class="border-bottom">
+				<div class="tab-menu tm-4 rb-detail-tabs inline no-border {{if showDetailFilters 'filters-open'}}">
+					<div {{action "toggleUnitTypeView"}} class="{{if unitTypeView 'active'}}">Unit Type View</div
+					><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
+				</div>
+				{{#if unitFiltersApplied}}
+					<div class="filter-tag clickable" {{action "clearUnitFilters"}}>
+						Clear unit filters
+						{{fa-icon "times-circle"}}
+					</div>
+				{{/if}}
+				{{#if unitTypeFiltersApplied}}
+					<div class="filter-tag clickable" {{action "clearUnitTypeFilters"}}>
+						Clear unit type filters
+						{{fa-icon "times-circle"}}
+					</div>
+				{{/if}}
+			</div>
+			<section class="rb-detail-content">
+				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
+					{{#if showDetailFilters}}
+						<div class="filter-header">
+							{{fa-icon "sliders"}}
+							Filters
+							<i class="fa fa-arrow-left close" {{action "closeDetailFilterPane"}}></i>
+						</div>
+						<div class="filter-content">
+							{{#if unitView}}
+								<div class="filter">
+									<div>
+										<div class="label">Increase <br>({{format-percent model.minIncrease 1}} - {{format-percent model.maxIncrease 1}}):</div>
+										{{input type="number" value=minIncFilter}}<span>to</span>{{input type="number" value=maxIncFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">Current DTM<br>({{format-percent model.minCurrentDiscountToMarket 1}} - {{format-percent model.maxCurrentDiscountToMarket 1}}):</div>
+										{{input type="number" value=minCurrentDtmFilter}}<span>to</span>{{input type="number" value=maxCurrentDtmFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">New DTM<br>({{format-percent model.minNewDiscountToMarket 1}} - {{format-percent model.maxNewDiscountToMarket 1}}):</div>
+										{{input type="number" value=minNewDtmFilter}}<span>to</span>{{input type="number" value=maxNewDtmFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									{{input-control value=overrideUnitFilter type="toggle" label="Overrides Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									{{input-control value=unapprovedUnitFilter type="toggle" label="Unapproved Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Beds</div>
+										<div class="control block">
+											{{select-2 value=bedsFilter content=beds placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Baths</div>
+										<div class="control block">
+											{{select-2 value=bathsFilter content=baths placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">LRO Unit Type</div>
+										<div class="control block">
+											{{select-2 value=unitTypeFilter content=unitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">PMS Unit Type</div>
+										<div class="control block">
+											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+							{{else}}
+								<div class="filter">
+									<div>
+										<div class="label">Avg. Increase <br>({{format-percent avgIncreaseMin 100}} - {{format-percent avgIncreaseMax 100}}):</div>
+										{{input type="number" value=minAvgIncFilter}}<span>to</span>{{input type="number" value=maxAvgIncFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">Avg. Current DTM<br>({{format-percent avgCurrentDtmMin 100}} - {{format-percent avgCurrentDtmMax 100}}):</div>
+										{{input type="number" value=minAvgCurrentDtmFilter}}<span>to</span>{{input type="number" value=maxAvgCurrentDtmFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									<div>
+										<div class="label">Avg. New DTM<br>({{format-percent avgNewDtmMin 100}} - {{format-percent avgNewDtmMax 100}}):</div>
+										{{input type="number" value=minAvgNewDtmFilter}}<span>to</span>{{input type="number" value=maxAvgNewDtmFilter}}
+									</div>
+								</div>
+								<div class="filter">
+									{{input-control value=overrideUnitTypeFilter type="toggle" label="Overrides Only" orientation="block"}}
+								</div>
+								<div class="filter">
+									{{input-control value=unapprovedUnitTypeFilter type="toggle" label="Unapproved Only" orientation="block"}}
+								</div>
+							{{/if}}
+						</div>
+					{{else}}
+						<div class="filter-header" {{action "openDetailFilterPane"}}>
+							{{fa-icon "sliders"}}
+						</div>
+					{{/if}}
+				</div>
+				<div class="table-wrapper  {{if showDetailFilters 'filters-open'}}">
+					{{#if unitView}}
+						<table>
+							<thead>
+								<tr class="sortable">
+									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS Unit Type</th>
+									<th {{action "sortUnits" "unitType"}}>Unit Type</th>
+									<th class="no-mobile" {{action "sortUnits" "beds"}}>Beds</th>
+									<th class="no-mobile" {{action "sortUnits" "baths"}}>Baths</th>
+									<th {{action "sortUnits" "unitNumber"}}>Unit Number</th>
+									<th class="no-mobile" {{action "sortUnits" "resident"}}>Resident</th>
+									<th class="no-mobile" {{action "sortUnits" "renewalDate"}}>Renewal Date</th>
+									<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Prior Term</th>
+									<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}}>Rec Term</th>
+									<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Prior CPR</th>
+									<th {{action "sortUnits" "finalRecRent"}}>Rec CPR</th>
+									<th {{action "sortUnits" "userIncreasePct"}}>Increase %</th>
+									<th class="no-mobile" {{action "sortUnits" "cmr"}}>CMR</th>
+									<th>DTM</th>
+									{{#unless model.batch.isCommitted}}
+										<th></th>
+									{{/unless}}
+								</tr>
+							</thead>
+							<tbody>
+								{{#each hbsUnitContent as |unit|}}
+									{{#link-to "lro.renewals.batches.batch.community.unit" unit.id tagName="tr"}}
+										<td class="no-mobile">{{unit.pmsUnitType}}</td>
+										<td>{{unit.unitType}}</td>
+										<td class="no-mobile">{{format-commas unit.beds}}</td>
+										<td class="no-mobile">{{format-commas unit.baths}}</td>
+										<td>{{unit.unitNumber}}</td>
+										<td class="no-mobile">{{unit.resident}}</td>
+										<td class="no-mobile">{{format-date unit.renewalDate}}</td>
+										<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
+										<td class="no-mobile">{{format-commas unit.recLeaseTerm}}</td>
+										<td class="no-mobile">${{format-commas unit.currentRent}}</td>
+										<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+										<td class="{{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+										<td class="no-mobile">${{format-commas unit.cmr}}</td>
+										<td>{{format-percent unit.currentDiscountToMarket 1 1}} / {{format-percent unit.finalDiscountToMarket 1 1}}</td>
+										{{#unless model.batch.isCommitted}}
+											<td>
+												{{#if unit.approved}}
+													<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+												{{else}}
+													<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
+												{{/if}}
+											</td>
+										{{/unless}}
+									{{/link-to}}
+								{{/each}}
+							</tbody>
+						</table>
+					{{else}}
+						<table>
+							<thead>
+								<tr class="sortable">
+									<th {{action "sortUnitTypes" "unitType"}}>Unit Type</th>
+									<th {{action "sortUnitTypes" "expirationCount"}}>Expirations</th>
+									<th {{action "sortUnitTypes" "avgRecRent"}}>Avg Rec Rent</th>
+									<th {{action "sortUnitTypes" "avgIncrease"}}>Avg Increase</th>
+									<th {{action "sortUnitTypes" "avgRecLeaseTerm"}}>Avg Rec Term</th>
+									<th>Increase Range</th>
+									<th {{action "sortUnitTypes" "avgCurrentDtm"}}>Current Avg DTM</th>
+									<th {{action "sortUnitTypes" "avgNewDtm"}}>New Avg DTM</th>
+									{{#unless model.batch.isCommitted}}
+										<th></th>
+									{{/unless}}
+								</tr>
+							</thead>
+							<tbody>
+								{{#each hbsUnitTypeContent as |ut|}}
+									<tr>
+				    					<td>{{ut.unitType}}</td>
+				    					<td>{{format-commas ut.expirationCount}}</td>
+				    					<td>${{format-commas ut.avgRecRent}}</td>
+				    					<td>{{format-percent ut.avgIncrease}}</td>
+				    					<td>{{format-commas ut.avgRecLeaseTerm}}</td>
+				    					<td>{{format-percent ut.minIncrease}} - {{format-percent ut.maxIncrease}}</td>
+				    					<td>{{format-percent ut.avgCurrentDtm}}</td>
+				    					<td>{{format-percent ut.avgNewDtm}}</td>
+				    					{{#unless model.batch.isCommitted}}
+					    					<td {{action "approveUnitType" ut}}>
+												{{fa-icon "thumbs-o-up"}}
+					    					</td>
+					    				{{/unless}}
+				    				</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					{{/if}}
+				</div>
+			</section>
+		</section>
+	</section>
+	{{outlet}}
+</div>
