@@ -3,7 +3,7 @@
 		{{input type="search" placeholder="Search..." value=searchText}}
 	</div>
 	<div class="catalog-scroll">
-		{{#each model as |user|}}
+		{{#each arrangedContent as |user|}}
 			{{#link-to "lro.admin.users.user" user.id tagName="div"}}{{user.fullName}}{{/link-to}}
 		{{/each}}
 	</div>

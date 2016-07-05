@@ -1,17 +1,19 @@
-<div class="username">
-	{{input placeholder="Email Address" type="email" value=emailAddress autofocus=true}}
-</div>
-<div class="password">
-	{{input placeholder="Password" type="password" value=password}}
-</div>
-{{#link-to "login.forgotPassword" tagName="div" class="small-link"}}Forgot Password{{/link-to}}
-<div class="error-container">
-	{{#if loginError}}
-		Login Failed: {{loginError}}.  Please try again.
+<form {{action 'authenticate' on='submit'}}>
+	<div class="username">
+		{{input placeholder="Email Address" type="email" value=emailAddress autofocus=true}}
+	</div>
+	<div class="password">
+		{{input placeholder="Password" type="password" value=password}}
+	</div>
+	{{#link-to "login.forgotPassword" tagName="div" class="small-link"}}Forgot Password{{/link-to}}
+	<div class="error-container">
+		{{#if loginError}}
+			Login Failed: {{loginError}}.  Please try again.
+		{{/if}}
+	</div>
+	{{#if credentialsEntered}}
+		<button class="login-button width-200" type="submit"> Login </button>
+	{{else}}
+		<button class="login-button width-200 disabled">Login</button>
 	{{/if}}
-</div>
-{{#if credentialsEntered}}
-	<button class="login-button width-200" {{action "authenticate"}}> Login </button>
-{{else}}
-	<button class="login-button width-200 disabled">Login</button>
-{{/if}}
+</form>

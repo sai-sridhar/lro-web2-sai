@@ -47,7 +47,7 @@
 		</div>
 	</div>
 	<div class="my-account float-right">
-		<button class="round-small transparent thick-border" {{action "toggleUserMenu"}}>JT</button>
+		<button class="round-small transparent thick-border" {{action "toggleUserMenu"}}>{{userInitials}}</button>
 		<div class="user-menu {{if showUserMenu 'open'}}">
 			{{#if session.isAuthenticated}}
 				<div>My Account</div>

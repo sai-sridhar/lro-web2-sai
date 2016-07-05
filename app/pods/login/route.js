@@ -9,11 +9,11 @@ export default Ember.Route.extend({
 
 			this.controller.get('session').authenticate('authenticator:oauth2', identification, password).then( () => {
 				this.transitionTo('lro');
-			}, function(reason) {
-				console.log("login failed:", reason.error);
+			}, function(response) {
+				console.log("login failed:", response.error);
 				self.controllerFor("login.index").set('emailAddress', null);
 				self.controllerFor("login.index").set('password', null);
-				if( reason.error === "invalid_grant" ) {
+				if( response.error === "invalid_grant" ) {
 					self.controllerFor('login.index').set('loginError', "invalid username or password");
 				} else {
 					self.controllerFor('login.index').set('loginError', "invalid username or password");
