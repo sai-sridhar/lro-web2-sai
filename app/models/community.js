@@ -1,7 +1,8 @@
-import DS from 'ember-data';
-var attr = DS.attr;
+import Model from 'ember-data/model';
+import Ember from 'ember';
+import attr from 'ember-data/attr';
 
-export default DS.Model.extend({
+export default Model.extend({
 	name : attr("string"),
 	code : attr("string"),
 	fullName : Ember.computed("name", "code", function(){

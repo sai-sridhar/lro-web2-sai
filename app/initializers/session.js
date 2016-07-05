@@ -1,4 +1,4 @@
-export function initialize(/* application */) {
+export function initialize(container, application) {
   // application.inject('route', 'foo', 'service:foo');
 }
 

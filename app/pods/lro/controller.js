@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-	showMenu : false
+	session : Ember.inject.service('session'),
+	showMenu : false,
+	showUserMenu : false
 });

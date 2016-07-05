@@ -92,7 +92,7 @@ export default Ember.Component.extend({
 			}, 0);
 
 			if( allChecked === ltc.get("terms.length") ) {
-				ltc.set("isChecked", true)
+				ltc.set("isChecked", true);
 			} else {
 				ltc.set("isChecked", false);
 			}

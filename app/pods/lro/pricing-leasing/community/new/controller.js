@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 import computedFilterByQuery from 'ember-cli-filter-by-query';
 
 export default Ember.Controller.extend({
@@ -74,7 +75,7 @@ export default Ember.Controller.extend({
 
   	filteredContent : Ember.computed('content.[]', 'filteredUnitTypes.[]', 'userPrice', "pmsUnitTypeFilter", "statusFilter", function() {
 
-  		return this.get("content").filter(function(unit, i) {
+  		return this.get("content").filter(function(unit) {
 			var f1 = true, // unitType
 				f2 = true, // pmsUnitType
 				f3 = true, // status

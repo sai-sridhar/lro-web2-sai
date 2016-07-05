@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export function formatDate(params) {
   	var value = params[0],

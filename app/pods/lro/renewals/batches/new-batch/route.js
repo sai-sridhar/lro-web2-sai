@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 import RenewalMixin from 'zion/mixins/renewal';
 
 export default Ember.Route.extend( RenewalMixin, {
@@ -27,7 +28,7 @@ export default Ember.Route.extend( RenewalMixin, {
 				month = this.controller.get('selectedMonth'),
 				start = moment(this.controller.get('startDate')),
 				end = moment(this.controller.get('endDate')),
-				dtm, recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange, nrcRanges;
+				recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange, nrcRanges;
 
 			// Create the new renewal-batch object
 			newBatch = this.store.createRecord('renewalBatch', {

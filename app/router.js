@@ -71,7 +71,10 @@ Router.map(function() {
       });
       this.route('params');
       this.route('hierarchy');
-      this.route('users');
+      this.route('users', function() {
+        this.route('user', { path : "/:user_id" });
+        this.route('newUser', { path : "/new" });
+      });
       this.route('utilities');
     });
     this.route('support');

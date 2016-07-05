@@ -1,13 +1,6 @@
 import Ember from 'ember';
 import RoundingMixin from 'zion/mixins/rounding';
 
-var calcSum = function(arr, prop) {
-	var sum = arr.reduce(function(prev, itm) {
-		return prev + itm.get(prop);
-	}, 0);
-	return sum;
-};
-
 export default Ember.Controller.extend(RoundingMixin, {
 
 	communityView : null,
@@ -55,10 +48,9 @@ export default Ember.Controller.extend(RoundingMixin, {
 			cDtm,
 			nDtmMin = this.round(this.get("minNewDtmFilter") / 100, 4),
 			nDtmMax = this.round(this.get("maxNewDtmFilter") / 100, 4),
-			nDtm,
-			app;
+			nDtm;
 
-		return this.get("units").filter(function(unit, i) {
+		return this.get("units").filter(function(unit) {
 			var f1 = true, // increase pct
 				f2 = true, // beds
 				f3 = true, // baths

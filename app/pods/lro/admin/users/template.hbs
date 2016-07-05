@@ -1,1 +1,16 @@
-{{outlet}}
+<section class="catalog">
+	<div class="catalog-search">
+		{{input type="search" placeholder="Search..." value=searchText}}
+	</div>
+	<div class="catalog-scroll">
+		{{#each model as |user|}}
+			{{#link-to "lro.admin.users.user" user.id tagName="div"}}{{user.fullName}}{{/link-to}}
+		{{/each}}
+	</div>
+	<div class="catalog-add">
+		{{#link-to "lro.admin.users.newUser" class="with-icon" tagName="button"}}{{fa-icon "user-plus"}}Add User{{/link-to}}
+	</div>
+</section>
+<section class="item-content">
+	{{outlet}}
+</section>

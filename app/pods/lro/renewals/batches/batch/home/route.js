@@ -77,7 +77,7 @@ export default Ember.Route.extend({
 									range.deleteRecord();
 									range.save();
 									ranges.removeObject(range);
-								})
+								});
 							});
 
 							batch.deleteRecord();

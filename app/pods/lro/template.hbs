@@ -47,7 +47,13 @@
 		</div>
 	</div>
 	<div class="my-account float-right">
-		<button class="round-small transparent thick-border">JT</button>
+		<button class="round-small transparent thick-border" {{action "toggleUserMenu"}}>JT</button>
+		<div class="user-menu {{if showUserMenu 'open'}}">
+			{{#if session.isAuthenticated}}
+				<div>My Account</div>
+				<div {{action "logout"}}>Logout</div>
+			{{/if}}
+	    </div>
 	</div>
 	<div class="online-help float-right">
 		<button class="round-small">?</button>

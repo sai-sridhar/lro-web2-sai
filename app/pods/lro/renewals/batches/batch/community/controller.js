@@ -280,10 +280,9 @@ export default Ember.Controller.extend(RoundingMixin, {
 			cDtm,
 			nDtmMin = this.round(this.get("minNewDtmFilter") / 100, 4),
 			nDtmMax = this.round(this.get("maxNewDtmFilter") / 100, 4),
-			nDtm,
-			app;
+			nDtm;
 
-		return this.get("model.units").filter(function(unit, i) {
+		return this.get("model.units").filter(function(unit) {
 			var f1 = true, // increase pct
 				f2 = true, // beds
 				f3 = true, // baths
@@ -292,8 +291,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 				f6 = true, // overrides
 				f7 = true, // current discount to market
 				f8 = true, // new discount to market
-				f9 = true, // unapproved units
-
+				f9 = true; // unapproved units
 
 				inc = this.round(unit.get("userIncreasePct"), 4);
 				cDtm = this.round(unit.get("currentDiscountToMarket"), 4);

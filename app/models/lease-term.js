@@ -1,8 +1,8 @@
-import DS from 'ember-data';
-var attr = DS.attr;
-var belongsTo = DS.belongsTo;
+import Model from 'ember-data/model';
+import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
 
-export default DS.Model.extend({
+export default Model.extend({
 	term : attr("number"),
 	baseRent : attr("number"),
 	totalConcession : attr("number"),

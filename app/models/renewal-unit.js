@@ -1,32 +1,35 @@
-import DS from 'ember-data';
+import Model from 'ember-data/model';
+import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
+import { hasMany } from 'ember-data/relationships';
 import Ember from 'ember';
 
-export default DS.Model.extend({
-	renewalComm : DS.belongsTo("renewalComm", { async : true }),
-	// batch : DS.belongsTo("renewalBatch", { async : true }),
-	// community : DS.belongsTo("community", { async : true }),
+export default Model.extend({
+	renewalComm : belongsTo("renewalComm", { async : true }),
+	// batch : belongsTo("renewalBatch", { async : true }),
+	// community : belongsTo("community", { async : true }),
 	communityName : Ember.computed("renewalComm", function() {
 		return this.get("renewalComm.communityFullName");
 	}),
-	unitNumber : DS.attr("string"),
-	unitType : DS.attr("string"),
-	pmsUnitType : DS.attr("string"),
-	beds : DS.attr("number"),
-	baths : DS.attr("number"),
-	renewalDate : DS.attr("momentDate"),
-	resident : DS.attr("string"),
-	amenities : DS.attr("string"),
-	amenityAmount : DS.attr("number"),
-	currentLeaseTerm : DS.attr("number"),
-	recLeaseTerm : DS.attr("number"),
-	currentRent : DS.attr("number"),
-	recRent : DS.attr("number"),
-	cmr : DS.attr("number"),
-	approved : DS.attr("boolean"),
-	notice : DS.attr("boolean"),
-	renewed : DS.attr("boolean"),
-	undecided : DS.attr("boolean"),
-	finalRecRent : DS.attr("number"),
+	unitNumber : attr("string"),
+	unitType : attr("string"),
+	pmsUnitType : attr("string"),
+	beds : attr("number"),
+	baths : attr("number"),
+	renewalDate : attr("momentDate"),
+	resident : attr("string"),
+	amenities : attr("string"),
+	amenityAmount : attr("number"),
+	currentLeaseTerm : attr("number"),
+	recLeaseTerm : attr("number"),
+	currentRent : attr("number"),
+	recRent : attr("number"),
+	cmr : attr("number"),
+	approved : attr("boolean"),
+	notice : attr("boolean"),
+	renewed : attr("boolean"),
+	undecided : attr("boolean"),
+	finalRecRent : attr("number"),
 	lroIncreasePct : Ember.computed('currentRent', 'recRent', function() {
 		return this.get("recRent") / this.get("currentRent") - 1;
 	}),
@@ -42,10 +45,10 @@ export default DS.Model.extend({
 	finalDiscountToMarket : Ember.computed('cmr', "finalRecRent", function() {
 		return (this.get("finalRecRent") / this.get("cmr")) - 1;
 	}),
-	terms : DS.hasMany("renewalTerm", { async : true }),
-	userOverridePct : DS.attr("number"),
-	userOverrideDollars : DS.attr("number"),
-	userOverrideMode : DS.attr("string"),
+	terms : hasMany("renewalTerm", { async : true }),
+	userOverridePct : attr("number"),
+	userOverrideDollars : attr("number"),
+	userOverrideMode : attr("string"),
 
 	overrideChanged : Ember.observer("userOverridePct", "userOverrideDollars", "userOverrideMode", function() {
 		if( this.get("userOverrideMode") === "percent" ) {
@@ -63,7 +66,7 @@ export default DS.Model.extend({
 		}
 
 		if( this.get("userOverrideDollarsBoolean") ) {
-			this.set("finalRecRent", +this.get("currentRent") + +this.get("userOverrideDollars"));
+			this.set("finalRecRent", (+this.get("currentRent")) + (+this.get("userOverrideDollars")));
 		} else if( this.get("userOverridePctBoolean") ) {
 			this.set("finalRecRent", this.get("currentRent") * (1 + this.get("userOverridePct") / 100));
 		} else {

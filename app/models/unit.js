@@ -1,9 +1,10 @@
-import DS from 'ember-data';
-var attr = DS.attr;
+import Model from 'ember-data/model';
+import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
 
-export default DS.Model.extend({
+export default Model.extend({
 	unitNumber 		: attr("string"),
-	community 		: DS.belongsTo("community", { async : true }),
+	community 		: belongsTo("community", { async : true }),
 	unitType 		: attr("string"),
 	unitCategory 	: attr("string"),
 	pmsUnitType 	: attr("string"),

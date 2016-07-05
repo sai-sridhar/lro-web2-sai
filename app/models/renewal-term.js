@@ -1,9 +1,11 @@
-import DS from 'ember-data';
+import Model from 'ember-data/model';
+import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
 
-export default DS.Model.extend({
-	renewalUnit : DS.belongsTo("renewalUnit", { async : true }),
-	term : DS.attr("number"),
-	baseRent : DS.attr("number"),
-	totalConcession : DS.attr("number"),
-	effectiveRent : DS.attr("number"),
+export default Model.extend({
+	renewalUnit : belongsTo("renewalUnit", { async : true }),
+	term : attr("number"),
+	baseRent : attr("number"),
+	totalConcession : attr("number"),
+	effectiveRent : attr("number"),
 });

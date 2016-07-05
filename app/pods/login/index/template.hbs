@@ -6,10 +6,12 @@
 </div>
 {{#link-to "login.forgotPassword" tagName="div" class="small-link"}}Forgot Password{{/link-to}}
 <div class="error-container">
+	{{#if loginError}}
+		Login Failed: {{loginError}}.  Please try again.
+	{{/if}}
 </div>
 {{#if credentialsEntered}}
-    {{!-- {{#link-to "login.passwordExpired" tagName="div" class="big blue login-button button"}} Login {{/link-to}} --}}
-	{{#link-to "lro" tagName="button" class="login-button width-200"}} Login {{/link-to}}
+	<button class="login-button width-200" {{action "authenticate"}}> Login </button>
 {{else}}
 	<button class="login-button width-200 disabled">Login</button>
 {{/if}}

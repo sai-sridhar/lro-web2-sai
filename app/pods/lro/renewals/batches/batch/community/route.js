@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	model : function(params, transition) {
+	model : function(params) {
 		return this.store.findRecord("renewalComm", params.community_id);
 	},
 	setupController : function(controller, model) {

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-var empty = Ember.isEmpty;
+// var empty = Ember.isEmpty;
 
 export default Ember.Component.extend({
 	showList : false,

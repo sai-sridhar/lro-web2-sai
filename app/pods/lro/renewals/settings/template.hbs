@@ -1,1 +1,84 @@
-<h1>This is where you'll manage automated renewal batch creation settings and other renewal batch related settings</h1>
+<div class="batch-settings">
+	<section class="control-wrapper">
+		<title>
+			<h1>Renewal Batch Settings</h1>
+			<p>Last updated: 06/28/2016 by J.Trkovsky</p>
+		</title>
+		<div class="button-wrapper">
+			<button class="with-icon" {{action "saveSettings"}}>{{fa-icon "check"}}Save</button>
+		</div>
+	</section>
+	<section class="settings-content">
+		<div class="settings-wrapper">
+			<div>
+				<div class="setting">
+					<h2>Auto Generate Renewal Batches</h2>
+					<p>Allows you to have renewal batches automatically generated.  Batch size will be 1 per community.</p>
+				</div>
+				<div class="control">
+					{{ios-toggle switched=model.autoGenerateBatches}}
+				</div>
+			</div>
+			{{#if model.autoGenerateBatches}}
+				<div>
+					<div class="setting">
+						<h2>Batch Generation Frequency</h2>
+						<p>How frequently do you want your renewal batches generated?</p>
+						<ul>
+							<li><b>Daily:</b> Batches will be generated ever day.  This is what LRO has done in the past.</li>
+							<li><b>Semi-monthly:</b>  Batches will be generated the 1st and 15th and will include the first half or second half of the monthly expirations accordingly.</li>
+							<li><b>Monthly:</b>  Batches will be generated on the 1st of each month and will include full months of expirations.</li>
+						</ul>
+					</div>
+					<div class="control">
+						<select>
+							{{#each batchFrequency as |itm|}}
+								<option value={{itm.text}}>{{itm.text}}</option>
+							{{/each}}
+						</select>
+					</div>
+				</div>
+				<div>
+					<div class="setting">
+						<h2>Batch Generation Lead Time</h2>
+						<p>Expirations that are how many months out should be included in the renewal batches?</p>
+					</div>
+					<div class="control">
+						{{input type="number" min=0 max=180 value=model.batchGenLeadTime}}
+					</div>
+				</div>
+				<div>
+					<div class="setting">
+						<h2>Batch Size</h2>
+						<p>How many months of expirations should be included in the renewal batch?</p>
+					</div>
+					<div class="control">
+						{{input type="number" min=0 max=180 value=model.batchNumDaysToInclude}}
+					</div>
+				</div>
+				<div>
+					<div class="setting">
+						<h2>Auto Approve Batches</h2>
+						<p>Allows you to have all offers in a renewal batch automatically approved upon creation.</p>
+					</div>
+					<div class="control">
+						{{ios-toggle switched=model.autoApprove}}
+					</div>
+				</div>
+				{{#if model.autoApprove}}
+					<div>
+						<div class="setting">
+							<h2>Auto Commit</h2>
+							<p>Allows you to have the renewal batch automatically committed and sent to your PMS.</p>
+						</div>
+						<div class="control">
+							{{ios-toggle switched=model.autoCommit}}
+						</div>
+					</div>
+				{{/if}}
+			{{/if}}
+		</div>
+	</section>
+</div>
+
+

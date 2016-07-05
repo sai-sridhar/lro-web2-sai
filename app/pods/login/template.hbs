@@ -1,4 +1,26 @@
 <div class="login">
+	<div class="login-banner {{if bannerExpanded "expanded"}}">
+		<div class="abbreviated">
+			Welcome to the new LRO login page!  Please use your email address and new password to login.  Click <span {{action "expandBanner"}}>here</span> for more info or if you have not activated your new account.
+		</div>
+		{{#if bannerExpanded}}
+			<div class="verbose">
+				<div>
+					<p>LRO 16.8 introduces new authentication and security policies including:</p>
+					<ul class="std-top-margin">
+						<li>Email address for username</li>
+						<li>Complex passwords</li>
+						<li>Password expiration</li>
+						<li>Password re-use</li>
+						<li>Self-service password management</li>
+					</ul>
+					<p class="std-top-margin">You should have received an email to setup your new account.  If you did not receive the email, you may use the "Forgot Password" link on this page to activate your account and create your new password.</p>
+				 </div>
+				 <br>
+				<div class="clickable blue" {{action "collapseBanner"}}><b>Ok, I got it</b></div>
+			</div>
+		{{/if}}
+	</div>
     <div class="login-panel">
 		<div class="login-wrapper">
 			<div class="login-logo"></div>

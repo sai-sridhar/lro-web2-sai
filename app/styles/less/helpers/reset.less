@@ -32,7 +32,10 @@ body {
 	line-height: 1;
 }
 ol, ul {
-	list-style: none;
+	list-style-position: inside;
+	li {
+		padding-bottom: @stdPadding;
+	}
 }
 blockquote, q {
 	quotes: none;

@@ -649,6 +649,40 @@ button {
 	line-height: 5em;
 	margin-right: @dblPadding;
 
+	.user-menu {
+		border: @stdBorder;
+		z-index: 10;
+		position: absolute;
+		top: @headerBarHeight;
+		right: @stdPadding / 2;
+		background: white;
+		display: none;
+		box-sizing: border-box;
+		-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+       	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+
+		&.open {
+			display: block;
+		}
+
+		div {
+			display: block;
+			position: relative;
+			line-height: 1.5em;
+			padding: @stdPadding @dblPadding;
+			border-bottom: @stdBorder;
+			text-align: left;
+			color: @mediumBlue;
+			min-width: 100px;
+
+			&:hover {
+				background: @hoverBlue;
+				cursor: pointer;
+			}
+
+		}
+
+	}
 }
 
 .online-help {
@@ -847,7 +881,61 @@ button {
 
 			}
 		}
+	}
 
+	.login-banner {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		height: 3.5em;
+		box-sizing: border-box;
+		text-align: left;
+		/*background-color: darken(@buttonGreen, 10%);*/
+		background-color: @buttonGreen;
+		/*border-bottom: 1px solid darken(@buttonGreen, 15%);*/
+		border-bottom: 2px solid darken(@buttonGreen, 10%);
+		-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+       	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+		z-index: 500;
+
+		.abbreviated {
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 0;
+			right: 0;
+			font-size: 1.2em;
+			height: 2.8em;
+			color: white;
+			padding: @dblPadding;
+			box-sizing: border-box;
+
+			&>span {
+				text-decoration: underline;
+				font-weight: 800;
+				color: @darkBlue1;
+				cursor: pointer;
+			}
+		}
+
+		&.expanded {
+			height: 22em;
+		}
+
+		.verbose {
+			position: absolute;
+			font-size: 1.2em;
+			color: @gray2;
+			top: 1.8em;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin-top: @dblPadding;
+			padding: @dblPadding;
+			box-sizing: border-box;
+			background-color: lighten(@buttonGreen, 40%);
+		}
 	}
 }
 
@@ -1317,7 +1405,7 @@ button {
 		right: 0;
 		bottom: 0;
 		padding-right: @dblPadding;
-		overflow-y: scroll;
+		overflow-y: auto;
 		overflow-x: hidden;
 
 		&.dbl-padding {
@@ -1772,7 +1860,7 @@ button {
 		padding: @dblPadding;
 		/*min-height: 17em;*/
 
-		&.community {
+		&.community, &.user {
 			.fixed-header {
 				margin-bottom: @dblPadding;
 			}
@@ -1783,7 +1871,7 @@ button {
 				bottom: 5em;
 				left: @dblPadding;
 				right: @dblPadding;
-				overflow-y: scroll;
+				overflow-y: auto;
 			}
 
 			.fixed-footer {
@@ -1791,6 +1879,9 @@ button {
 				bottom: @dblPadding;
 				left: @dblPadding;
 				right: @dblPadding;
+				&>button {
+					margin-left: @dblPadding;
+				}
 			}
 		}
 	}
@@ -2266,7 +2357,7 @@ button {
 				width: 100%;
 				overflow: auto;
 				overflow-x: hidden;
-				overflow-y: scroll;
+				overflow-y: auto;
 				top: 0;
 				padding: 0;
 
@@ -2374,29 +2465,68 @@ button {
 			    bottom: 0;
 			    right: 0;
 			    left: 0;
-			    overflow-y: scroll;
+			    overflow-y: auto;
 		}
 	}
 
 	.new-batch {
 	}
 
-	.batch {
+	.batch, .batch-settings {
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		left: 0;
 
-		.batch-content {
+		.batch-content, .settings-content {
 			position: absolute;
 			top: @toolbarHeight;
 			bottom: 0;
 			left: 0;
 			right: 0;
-			overflow-y: scroll;
+			overflow-y: auto;
 			border-top: @stdBorder;
 			box-sizing: border-box;
+
+			.settings-wrapper {
+				margin: 0px auto;
+				width: 80%;
+				border: @stdBorder;
+				border-top: 0px;
+				height: 100%;
+				padding: @dblPadding;
+				box-sizing: border-box;
+				background-color: white;
+				&>div {
+					position: relative;
+					border-bottom: @stdBorder;
+					.setting {
+						padding: @dblPadding;
+						position: relative;
+						display: inline-block;
+						vertical-align: top;
+						width: 80%;
+						box-sizing: border-box;
+						p {
+							padding-top: @stdPadding;
+						}
+						ul {
+							padding-top: @stdPadding;
+						}
+					}
+					.control {
+						display: inline-block;
+						position: relative;
+						padding: @dblPadding;
+						margin-left: @dblPadding;
+						box-sizing: border-box;
+						vertical-align: top;
+						text-align: right;
+						width: 15%;
+					}
+				}
+			}
 		}
 	}
 
@@ -2429,7 +2559,7 @@ button {
 			/*top: 33px;*/
 			left: 0;
 			height: 100%;
-			overflow-y: scroll;
+			overflow-y: auto;
 
 			.table-wrapper {
 				position: relative;
@@ -2633,7 +2763,7 @@ button {
 			left: 0;
 			right: 0;
 			bottom: @olFooterHeight;
-			overflow-y: scroll;
+			overflow-y: auto;
 			padding: @dblPadding;
 			box-sizing: border-box;
 
@@ -2667,7 +2797,7 @@ button {
 				top: @dblPadding;
 				left: @dblPadding;
 				bottom: @dblPadding;
-				overflow-y: scroll;
+				overflow-y: auto;
 				box-sizing: border-box;
 			}
 		}
@@ -2826,7 +2956,7 @@ button {
 		position: absolute;
 		display: block;
 		background: white;
-		overflow-y: scroll;
+		overflow-y: auto;
 		top: 33px;
 		bottom: 0;
 		left: 0;

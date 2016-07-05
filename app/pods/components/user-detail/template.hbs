@@ -1,0 +1,50 @@
+<div class="fixed-header">
+	<section class="header">
+		<h2>
+			{{#if isNewUser}}
+				New User
+			{{else}}
+				{{model.fullName}}
+			{{/if}}
+		</h2>
+	</section>
+</div>
+<div class="scroll-content">
+	<section class="two-col">
+		<div>
+			<p>
+				<div class="label">First Name</div>
+				{{input value=model.firstName}}
+			</p>
+			<p>
+				<div class="label">Last Name</div>
+				{{input value=model.lastName}}
+			</p>
+			<p>
+				<div class="label">Email (User ID)</div>
+				{{input value=model.email}}
+			</p>
+			<p>
+				<div class="label">Password</div>
+				{{input type="password" value=model.password}}
+			</p>
+		</div>
+
+	</section>
+</div>
+<div class="fixed-footer">
+	<button {{action "saveUser"}} class="with-icon float-right">
+		{{fa-icon "check"}}
+		Save
+	</button>
+	<button {{action "cancel"}} class="with-icon float-right transparent">
+		{{fa-icon "times"}}
+		Cancel
+	</button>
+	{{#unless isNewUser}}
+		<button {{action "deleteUser"}} class="float-right transparent">
+			{{fa-icon "trash-o"}}
+		</button>
+	{{/unless}}
+</div>
+

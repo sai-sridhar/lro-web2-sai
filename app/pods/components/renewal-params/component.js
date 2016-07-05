@@ -22,7 +22,7 @@ export default Ember.Component.extend({
 
 	actions : {
 		addRange : function(type) {
-			var len, from, to, newRange, lastRange, arr,
+			var len, from, newRange, lastRange, arr,
 				store = this.get('store'),
 				fo = this.get("content.firstObject");
 
@@ -75,7 +75,7 @@ export default Ember.Component.extend({
 				arr = this.get("aboveMarketContent");
 			}
 
-			len = arr.get("length")
+			len = arr.get("length");
 
 			// check to see if the range is the last
 			if( range === arr.get("lastObject") ) {
@@ -91,8 +91,7 @@ export default Ember.Component.extend({
 		saveRanges : function() {
 			this.get("content").forEach(function(range) {
 				range.save();
-			})
-
+			});
 		}
 	}
 });
