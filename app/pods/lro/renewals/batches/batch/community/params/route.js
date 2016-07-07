@@ -4,7 +4,6 @@ import RenewalMixin from 'zion/mixins/renewal';
 export default Ember.Route.extend( RenewalMixin, {
 
 	model : function(params, transition) {
-		console.log(transition.params);
 		var batch_id = transition.params["lro.renewals.batches.batch"].batch_id,
 			community_id = transition.params["lro.renewals.batches.batch.community"].community_id;
 		return this.store.query("renewalRange", { batch : batch_id, isRenewalComm : true, renewalComm : community_id });

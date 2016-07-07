@@ -102,7 +102,7 @@ export default Ember.Controller.extend({
 				if( unit.get("effectiveRent") > this.get("userPrice") ) {
 					f4 = false;
 				}
-				console.log(f1, f2, f3, f4);
+				// console.log(f1, f2, f3, f4);
 				return (f1 && f2 && f3 && f4);
 		}, this);
   	}),
