@@ -174,11 +174,12 @@ export default Ember.Route.extend({
 				}
 			);
 		},
-		unapproveCommunity : function() {
-			var self = this;
+		unapproveUnitType : function(ut) {
+			var unitType = ut.get("unitType"),
+				units = this.controller.get("model.units").filterBy("unitType", unitType);
 			swal(
 				{  	title: "Unapprove?",
-					text: "Unapprove all renewal offers?",
+					text: "Unapprove all renewal offers for unit type " + unitType + "?",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#51bc6a",
@@ -189,7 +190,7 @@ export default Ember.Route.extend({
 				},
 				function (isConfirm) {
 					if( isConfirm ) {
-						self.controller.get("model.units").forEach(function(unit) {
+						units.forEach(function(unit) {
 							unit.set("approved", false);
 							unit.save();
 						});
@@ -259,6 +260,64 @@ export default Ember.Route.extend({
 				direction = "asc";
 			}
 			this.controller.set("unitTypeSortBy", [ prop+":"+direction]);
+		},
+		approveFilteredUnits : function() {
+			let units = Ember.ArrayProxy.create({ content : Ember.A([]) }),
+				length = this.controller.get("filteredUnitContent.length");
+			this.controller.get("filteredUnitContent").forEach(function(unit) {
+				units.pushObject(unit);
+			});
+
+			swal(
+				{  	title: "Approve?",
+					text: "Approve renewal offers for " + length + " units?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#51bc6a",
+					confirmButtonText: "Yes, approve",
+					cancelButtonText: "No, cancel",
+					closeOnConfirm: true,
+					closeOnCancel: true
+				},
+				function (isConfirm) {
+					if( isConfirm ) {
+						units.forEach(function(unit) {
+							unit.set("approved", true);
+							unit.save();
+						});
+					}
+				}
+			);
+		},
+		approveFilteredUnitTypes : function() {
+			let units = Ember.ArrayProxy.create({ content : Ember.A([]) }),
+				length = this.controller.get("filteredUnitTypeContent.length");
+			this.controller.get("filteredUnitTypeContent").forEach(function(ut) {
+				ut.get("units").forEach(function(unit) {
+					units.pushObject(unit);
+				});
+			});
+
+			swal(
+				{  	title: "Approve?",
+					text: "Approve renewal offers for " + length + " unit types?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#51bc6a",
+					confirmButtonText: "Yes, approve all",
+					cancelButtonText: "No, cancel",
+					closeOnConfirm: true,
+					closeOnCancel: true
+				},
+				function (isConfirm) {
+					if( isConfirm ) {
+						units.forEach(function(unit) {
+							unit.set("approved", true);
+							unit.save();
+						});
+					}
+				}
+			);
 		}
 	}
 });

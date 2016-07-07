@@ -14,9 +14,9 @@
 				<div class="input-control">
 					<p>or</p>
 					<div class="control">
-						{{pikaday-input value=startDate minDate=startDateBegin maxDate=startDateEnd placeholder="Start date" format=dateFormat class="calendar"}}
+						{{pikaday-input onSelection=(action 'changeStartDate') value=startDate minDate=startDateBegin maxDate=startDateEnd placeholder="Start date" format=dateFormat class="calendar"}}
 						<span>to</span>
-						{{pikaday-input value=endDate minDate=endDateBegin maxDate=endDateEnd placeholder="End date" format=dateFormat class="calendar"}}
+						{{pikaday-input onSelection=(action 'changeEndDate') value=endDate minDate=endDateBegin maxDate=endDateEnd placeholder="End date" format=dateFormat class="calendar"}}
 					</div>
 				</div>
 

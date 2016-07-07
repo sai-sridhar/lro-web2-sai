@@ -2546,11 +2546,21 @@ button {
 		margin-bottom: 20px;
 		border-bottom: @stdBorder;
 
-		.rb-detail-tabs {
-			padding-left: 36px;
+		.rb-detail-nav {
+			border-bottom: @stdBorder;
+			height: 3.5em;
 
-			&.filters-open {
-				padding-left: @filterPanelWidth;
+			.rb-detail-tabs {
+				padding-left: 36px;
+				height: 100%;
+				&>div {
+					height: 100%;
+					line-height: 2.5em;
+				}
+
+				&.filters-open {
+					padding-left: @filterPanelWidth;
+				}
 			}
 		}
 

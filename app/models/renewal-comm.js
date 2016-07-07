@@ -9,6 +9,9 @@ export default Model.extend(AggregationMixin, {
 	communityName : Ember.computed("community", function() {
 		return this.get("community.name");
 	}),
+	communityCode : Ember.computed("community", function() {
+		return this.get("community.code");
+	}),
 	communityFullName : Ember.computed("community", function() {
 		return this.get("community.fullName");
 	}),

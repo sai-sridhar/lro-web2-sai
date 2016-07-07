@@ -9,7 +9,10 @@ export default Model.extend({
 	// batch : belongsTo("renewalBatch", { async : true }),
 	// community : belongsTo("community", { async : true }),
 	communityName : Ember.computed("renewalComm", function() {
-		return this.get("renewalComm.communityFullName");
+		return this.get("renewalComm.communityName");
+	}),
+	communityCode : Ember.computed("renewalComm", function() {
+		return this.get("renewalComm.communityCode");
 	}),
 	unitNumber : attr("string"),
 	unitType : attr("string"),

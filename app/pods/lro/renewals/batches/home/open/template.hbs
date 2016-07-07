@@ -12,7 +12,7 @@
 					<th class="no-mobile">Avg. Rec. Term</th>
 					<th class="no-mobile">Avg. Prior Rent</th>
 					<th class="no-mobile">Avg. Prior Term</th>
-					<th class="no-mobile">Last Modified</th>
+					<th class="no-mobile">Created By</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,7 +27,7 @@
 						<td class="no-mobile">{{format-commas batch.avgRecTerm}}</td>
 						<td class="no-mobile">${{format-commas batch.avgCurrentRent}}</td>
 						<td class="no-mobile">{{format-commas batch.avgCurrentLeaseTerm}}</td>
-						<td class="no-mobile">{{batch.modifiedDate}}<br>{{batch.modifiedBy}}</td>
+						<td class="no-mobile">{{batch.createdBy.firstInitial}}. {{batch.createdBy.lastName}}</td>
 					{{/link-to}}
 				{{/each}}
 			</tbody>

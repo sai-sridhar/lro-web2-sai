@@ -303,6 +303,64 @@ export default Ember.Route.extend({
 				direction = "asc";
 			}
 			this.controller.set("communitySortBy", [ prop+":"+direction]);
+		},
+		approveFilteredUnits : function() {
+			let units = Ember.ArrayProxy.create({ content : Ember.A([]) }),
+				length = this.controller.get("filteredUnitContent.length");
+			this.controller.get("filteredUnitContent").forEach(function(unit) {
+				units.pushObject(unit);
+			});
+
+			swal(
+				{  	title: "Approve?",
+					text: "Approve renewal offers for " + length + " units?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#51bc6a",
+					confirmButtonText: "Yes, approve",
+					cancelButtonText: "No, cancel",
+					closeOnConfirm: true,
+					closeOnCancel: true
+				},
+				function (isConfirm) {
+					if( isConfirm ) {
+						units.forEach(function(unit) {
+							unit.set("approved", true);
+							unit.save();
+						});
+					}
+				}
+			);
+		},
+		approveFilteredCommunities : function() {
+			let units = Ember.ArrayProxy.create({ content : Ember.A([]) }),
+				length = this.controller.get("filteredCommunityContent.length");
+			this.controller.get("filteredCommunityContent").forEach(function(comm) {
+				comm.get("units").forEach(function(unit) {
+					units.pushObject(unit);
+				});
+			});
+
+			swal(
+				{  	title: "Approve?",
+					text: "Approve renewal offers for " + length + " communities?",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#51bc6a",
+					confirmButtonText: "Yes, approve all",
+					cancelButtonText: "No, cancel",
+					closeOnConfirm: true,
+					closeOnCancel: true
+				},
+				function (isConfirm) {
+					if( isConfirm ) {
+						units.forEach(function(unit) {
+							unit.set("approved", true);
+							unit.save();
+						});
+					}
+				}
+			);
 		}
 	}
 });

@@ -73,7 +73,7 @@
 			</div>
 		</section>
 		<section class="rb-details">
-			<div class="border-bottom">
+			<div class="rb-detail-nav">
 				<div class="tab-menu tm-4 rb-detail-tabs inline no-border {{if showDetailFilters 'filters-open'}}">
 					<div {{action "toggleCommunityView"}} class="{{if communityView 'active'}}">Community View</div
 					><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
@@ -89,6 +89,11 @@
 						Clear community filters
 						{{fa-icon "times-circle"}}
 					</div>
+				{{/if}}
+				{{#if unitView}}
+					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
+				{{else}}
+					<button class="with-icon float-right std-right-margin" {{action "approveFilteredCommunities"}}>{{fa-icon "thumbs-up"}}Approve Filtered Communities</button>
 				{{/if}}
 			</div>
 			<section class="rb-detail-content">
@@ -211,7 +216,8 @@
 						<table>
 							<thead>
 								<tr class="sortable">
-									<th {{action "sortUnits" "communityName"}}>Community</th>
+									<th {{action "sortUnits" "communityName"}}>Code</th>
+									<th {{action "sortUnits" "communityCode"}}>Community Name</th>
 									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS Unit Type</th>
 									<th {{action "sortUnits" "unitType"}}>Unit Type</th>
 									<th class="no-mobile" {{action "sortUnits" "beds"}}>Beds</th>
@@ -233,6 +239,7 @@
 							<tbody>
 								{{#each hbsUnitContent as |unit|}}
 									{{#link-to "lro.renewals.batches.batch.home.unit" unit.id tagName="tr"}}
+										<td>{{unit.communityCode}}</td>
 										<td class="no-mobile">{{unit.communityName}}</td>
 										<td class="no-mobile">{{unit.pmsUnitType}}</td>
 										<td>{{unit.unitType}}</td>
@@ -246,7 +253,7 @@
 										<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
 										<td class="{{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
 										<td class="no-mobile">${{format-commas unit.cmr}}</td>
-										<td>{{format-percent unit.currentDiscountToMarket 1 1}} / {{format-percent unit.finalDiscountToMarket 1 1}}</td>
+										<td>{{format-percent unit.currentDiscountToMarket 1 1}} -> {{format-percent unit.finalDiscountToMarket 1 1}}</td>
 										{{#unless model.isCommitted}}
 											<td>
 												{{#if unit.approved}}
@@ -264,7 +271,8 @@
 						<table>
 							<thead>
 								<tr class="sortable">
-									<th {{action "sortCommunities" "communityFullName"}}>Community</th>
+									<th {{action "sortCommunities" "communityCode"}}>Code</th>
+									<th {{action "sortCommunities" "communityName"}}>Community Name</th>
 									<th {{action "sortCommunities" "expirationCount"}}>Expirations</th>
 									<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Rec Rent</th>
 									<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase</th>
@@ -280,7 +288,8 @@
 							<tbody>
 								{{#each hbsCommunityContent as |comm|}}
 									{{#link-to "lro.renewals.batches.batch.community" comm.id tagName="tr"}}
-										<td class="left">{{comm.communityFullName}}</td>
+										<td class="left">{{comm.communityCode}}</td>
+										<td class="left">{{comm.communityName}}</td>
 										<td>{{format-commas comm.expirationCount}}</td>
 										<td class="no-mobile">${{format-commas comm.avgRecRent}}</td>
 										<td>{{format-percent comm.avgIncrease 1 1}}</td>

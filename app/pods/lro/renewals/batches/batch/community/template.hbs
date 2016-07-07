@@ -75,7 +75,7 @@
 			</div>
 		</section>
 		<section class="rb-details">
-			<div class="border-bottom">
+			<div class="rb-detail-nav">
 				<div class="tab-menu tm-4 rb-detail-tabs inline no-border {{if showDetailFilters 'filters-open'}}">
 					<div {{action "toggleUnitTypeView"}} class="{{if unitTypeView 'active'}}">Unit Type View</div
 					><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
@@ -91,6 +91,11 @@
 						Clear unit type filters
 						{{fa-icon "times-circle"}}
 					</div>
+				{{/if}}
+				{{#if unitView}}
+					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
+				{{else}}
+					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnitTypes"}}>{{fa-icon "thumbs-up"}}Approve Filtered Unit Types</button>
 				{{/if}}
 			</div>
 			<section class="rb-detail-content">
@@ -275,9 +280,13 @@
 				    					<td>{{format-percent ut.avgCurrentDtm}}</td>
 				    					<td>{{format-percent ut.avgNewDtm}}</td>
 				    					{{#unless model.batch.isCommitted}}
-					    					<td {{action "approveUnitType" ut}}>
-												{{fa-icon "thumbs-o-up"}}
-					    					</td>
+				    						<td>
+					    						{{#if ut.allApproved}}
+													<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnitType" ut bubbles=false}}></i>
+												{{else}}
+													<i class="fa fa-thumbs-o-up" {{action "approveUnitType" ut bubbles=false}}></i>
+												{{/if}}
+											</td>
 					    				{{/unless}}
 				    				</tr>
 								{{/each}}

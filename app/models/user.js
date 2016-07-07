@@ -10,5 +10,11 @@ export default Model.extend({
 	lastName : attr("string"),
 	fullName : Ember.computed("firstName", "lastName", function() {
 		return this.get("firstName") + " " + this.get("lastName");
+	}),
+	firstInitial : Ember.computed("firstName", function() {
+		return this.get('firstName') ? this.get("firstName").charAt(0) : null;
+	}),
+	lastInitial : Ember.computed("lastName", function() {
+		return this.get('lastName') ? this.get("lastName").charAt(0) : null;
 	})
 });

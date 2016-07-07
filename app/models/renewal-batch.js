@@ -1,6 +1,7 @@
 import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
 import { hasMany } from 'ember-data/relationships';
+import { belongsTo } from 'ember-data/relationships';
 import Ember from 'ember';
 import AggregationMixin from 'zion/mixins/aggregation';
 
@@ -28,6 +29,7 @@ export default Model.extend(AggregationMixin, {
 	endDate : attr("momentDate"),
 	month : attr("string"),
 	status : attr("string", { defaultValue: "Open" }),
+	createdBy : belongsTo("user", { async : true }),
 	communities : hasMany("renewalComm", { async : true }),
 	// ranges : hasMany("renewalRange", { async : true }),
 	// units : hasMany("renewalUnit", { async : true }),
