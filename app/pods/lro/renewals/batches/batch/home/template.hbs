@@ -236,12 +236,12 @@
 									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS</th>
 									<th {{action "sortUnits" "unitType"}} class="border-right">LRO</th>
 									<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current</th>
-									<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}} class="border-right">New</th>
+									<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}} class="border-right">Offer</th>
 									<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current</th>
-									<th {{action "sortUnits" "finalRecRent"}}>New</th>
+									<th {{action "sortUnits" "finalRecRent"}}>Offer</th>
 									<th class="no-mobile" {{action "sortUnits" "cmr"}} class="border-right">Market</th>
-									<th {{action "sortUnits" "finalDiscountToMarket"}}>Current</th>
-									<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">New</th>
+									<th {{action "sortUnits" "currentDiscountToMarket"}}>Current</th>
+									<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -283,12 +283,12 @@
 									<th {{action "sortCommunities" "communityCode"}}>Code</th>
 									<th {{action "sortCommunities" "communityName"}}>Community Name</th>
 									<th {{action "sortCommunities" "expirationCount"}}>Expirations</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Rec Rent</th>
+									<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Offer Rent</th>
 									<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgRecLeaseTerm"}}>Avg Rec Term</th>
+									<th class="no-mobile" {{action "sortCommunities" "avgRecLeaseTerm"}}>Avg Offer Term</th>
 									<th>Increase Range</th>
 									<th class="no-mobile" {{action "sortCommunities" "avgCurrentDiscountToMarket"}}>Current Avg DTM</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgNewDiscountToMarket"}}>New Avg DTM</th>
+									<th class="no-mobile" {{action "sortCommunities" "avgNewDiscountToMarket"}}>Offer Avg DTM</th>
 									{{#unless model.isCommitted}}
 										<th></th>
 									{{/unless}}

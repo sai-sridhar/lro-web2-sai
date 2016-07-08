@@ -220,12 +220,12 @@
 									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS</th>
 									<th {{action "sortUnits" "unitType"}} class="border-right">LRO</th>
 									<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current</th>
-									<th class="no-mobile border-right" {{action "sortUnits" "recLeaseTerm"}}>New</th>
+									<th class="no-mobile border-right" {{action "sortUnits" "recLeaseTerm"}}>Offer</th>
 									<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current</th>
-									<th {{action "sortUnits" "finalRecRent"}}>New</th>
+									<th {{action "sortUnits" "finalRecRent"}}>Offer</th>
 									<th class="no-mobile border-right" {{action "sortUnits" "cmr"}}>Market</th>
-									<th>Current</th>
-									<th class="border-right">New</th>
+									<th {{action "sortUnits" "currentDiscountToMarket"}}>Current</th>
+									<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -265,12 +265,12 @@
 								<tr class="sortable border-right">
 									<th {{action "sortUnitTypes" "unitType"}}>Unit Type</th>
 									<th {{action "sortUnitTypes" "expirationCount"}}>Expirations</th>
-									<th {{action "sortUnitTypes" "avgRecRent"}}>Avg Rec Rent</th>
+									<th {{action "sortUnitTypes" "avgRecRent"}}>Avg Offer Rent</th>
 									<th {{action "sortUnitTypes" "avgIncrease"}}>Avg Increase</th>
-									<th {{action "sortUnitTypes" "avgRecLeaseTerm"}}>Avg Rec Term</th>
+									<th {{action "sortUnitTypes" "avgRecLeaseTerm"}}>Avg Offer Term</th>
 									<th>Increase Range</th>
-									<th {{action "sortUnitTypes" "avgCurrentDtm"}}>Current Avg DTM</th>
-									<th {{action "sortUnitTypes" "avgNewDtm"}}>New Avg DTM</th>
+									<th {{action "sortUnitTypes" "avgCurrentDtm"}}>Avg Current DTM</th>
+									<th {{action "sortUnitTypes" "avgNewDtm"}}>Avg Offer DTM</th>
 									{{#unless model.batch.isCommitted}}
 										<th></th>
 									{{/unless}}

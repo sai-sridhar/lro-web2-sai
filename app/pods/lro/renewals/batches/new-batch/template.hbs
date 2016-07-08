@@ -33,7 +33,11 @@
 			</div>
 		</section>
 		<footer>
-			<button class="with-icon" {{action "createBatch"}}>{{fa-icon "check"}}Create Batch</button>
+			{{#if canCreateBatch}}
+				<button class="with-icon" {{action "createBatch"}}>{{fa-icon "check"}}Create Batch</button>
+			{{else}}
+				<button class="with-icon disabled">{{fa-icon "check"}}Create Batch</button>
+			{{/if}}
 			{{#link-to "lro.renewals.batches.home.open" tagName="button" class="white with-icon"}}
 				{{fa-icon "times"}}
 				Cancel

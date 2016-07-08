@@ -71,7 +71,6 @@ export default Ember.Route.extend({
 							});
 
 							self.store.query("renewalRange", { batch : batch.get("id") }).then( (ranges) => {
-								console.log(ranges.get("length"));
 								var forDeleteRanges = ranges.toArray();
 								forDeleteRanges.forEach(function(range) {
 									range.deleteRecord();

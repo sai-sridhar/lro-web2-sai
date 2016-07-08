@@ -51,6 +51,20 @@ export default Ember.Controller.extend({
 		}
 	}),
 
+	canCreateBatch : Ember.computed("startDate", "endDate", "batchName", "selectedCommunities.length", function() {
+		// first, perform validation
+		// 1. Must have a batch name
+		// 2. Must have start and end dates
+		// 3. Start date must be before end date
+		// 4. Must select at least 1 community
+		if( this.get("batchName") && this.get("startDate") && this.get("endDate") && this.get("selectedCommunities.length") ) {
+			if( this.get("startDate") < this.get("endDate") ) {
+				return true;
+			}
+		}
+		return false;
+	}),
+
 	actions : {
 		changeStartDate : function(value) {
 			this.set("startDate", moment(value).toDate());
