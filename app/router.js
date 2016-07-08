@@ -78,6 +78,7 @@ Router.map(function() {
       this.route('utilities');
     });
     this.route('support');
+    this.route('loading');
   });
 
 });
