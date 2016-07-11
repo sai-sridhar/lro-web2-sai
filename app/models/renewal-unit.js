@@ -6,6 +6,7 @@ import Ember from 'ember';
 
 export default Model.extend({
 	renewalComm : belongsTo("renewalComm", { async : true }),
+	renewalRange : belongsTo("renewalRange", { async : true }),
 	// batch : belongsTo("renewalBatch", { async : true }),
 	// community : belongsTo("community", { async : true }),
 	communityName : Ember.computed("renewalComm", function() {

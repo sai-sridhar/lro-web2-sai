@@ -2,6 +2,20 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
+	isBelow : Ember.computed("model.renewalRange.type", function() {
+		return (this.get("model.renewalRange.type") === "below") ? true : false;
+	}),
+	isAt : Ember.computed("model.renewalRange.type", function() {
+		return (this.get("model.renewalRange.type") === "at") ? true : false;
+	}),
+	isAbove : Ember.computed("model.renewalRange.type", function() {
+		return (this.get("model.renewalRange.type") === "above") ? true : false;
+	}),
+
+	rangeType : Ember.computed("model.renewalRange.type", function() {
+		let type = this.get("model.renewalRange.type");
+		return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() + " market";
+	}),
 	actions : {
 		close : function() {
 			this.sendAction("close");

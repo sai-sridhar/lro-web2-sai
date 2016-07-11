@@ -27,7 +27,7 @@ export default Ember.Route.extend( RenewalMixin, {
 				month = this.controller.get('selectedMonth'),
 				start = moment(this.controller.get('startDate')),
 				end = moment(this.controller.get('endDate')),
-				recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange, nrcRanges;
+				nrcRanges, recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange;
 
 			// Create the new renewal-batch object
 			this.store.findRecord("user", this.controller.get("user._id")).then( (user) => {
@@ -99,40 +99,41 @@ export default Ember.Route.extend( RenewalMixin, {
 									});
 									newRenewalRange.save();
 								}, this);
-							});
 
-							// Get all the units for the community which are expiring within the selected date range
-							this.store.query("unit", { community : community.get("id"), startDate : start.format("YYYY-MM-DD"), endDate : end.format("YYYY-MM-DD") }).then( (units) => {
-								// Loop through the units
-								units.forEach(function(unit) {
+								// Get all the units for the community which are expiring within the selected date range
+								this.store.query("unit", { community : community.get("id"), startDate : start.format("YYYY-MM-DD"), endDate : end.format("YYYY-MM-DD") }).then( (units) => {
+									// Loop through the units
+									units.forEach(function(unit) {
 
-									// Create the new renewal-unit object
-									newRenewalUnit = this.store.createRecord("renewalUnit", {
-										renewalComm : nrc,
-										unitNumber : unit.get("unitNumber"),
-										unitType : unit.get("unitType"),
-										pmsUnitType : unit.get("pmsUnitType"),
-										beds : unit.get("beds"),
-										baths : unit.get("baths"),
-										renewalDate : unit.get("leaseExpirationDate"),
-										resident : unit.get("leaseCurrentResident"),
-										currentLeaseTerm : unit.get("leaseCurrentTerm"),
-										currentRent : unit.get("leaseCurrentRent"),
-										cmr : unit.get("cmr"),
-										recLeaseTerm : 12
-									});
+										// Create the new renewal-unit object
+										newRenewalUnit = this.store.createRecord("renewalUnit", {
+											renewalComm : nrc,
+											unitNumber : unit.get("unitNumber"),
+											unitType : unit.get("unitType"),
+											pmsUnitType : unit.get("pmsUnitType"),
+											beds : unit.get("beds"),
+											baths : unit.get("baths"),
+											renewalDate : unit.get("leaseExpirationDate"),
+											resident : unit.get("leaseCurrentResident"),
+											currentLeaseTerm : unit.get("leaseCurrentTerm"),
+											currentRent : unit.get("leaseCurrentRent"),
+											cmr : unit.get("cmr"),
+											recLeaseTerm : 12
+										});
 
-									// Calculate the recRent
-									// Are there a unit type renewal ranges?  Assume no for the moment.
-									// If not, use the community renewal ranges
-									recRent = this.calcRenewalOffer(newRenewalUnit, nrcRanges);
-									newRenewalUnit.set("recRent", recRent);
-									newRenewalUnit.set("finalRecRent", recRent);
+										// Calculate the recRent
+										// Are there a unit type renewal ranges?  Assume no for the moment.
+										// If not, use the community renewal ranges
+										recRent = this.calcRenewalOffer(newRenewalUnit, nrcRanges);
+										newRenewalUnit.set("recRent", recRent.offer);
+										newRenewalUnit.set("finalRecRent", recRent.offer);
+										newRenewalUnit.set("renewalRange", recRent.range);
 
-									// Relate the new Renewal Unit to the new Renewal Batch and Renewal Comm
-									nrc.get("units").addObject(newRenewalUnit);
-									newRenewalUnit.save();
-								}, this);
+										// Relate the new Renewal Unit to the new Renewal Batch and Renewal Comm
+										nrc.get("units").addObject(newRenewalUnit);
+										newRenewalUnit.save();
+									}, this);
+								});
 							});
 						});
 					}, this);

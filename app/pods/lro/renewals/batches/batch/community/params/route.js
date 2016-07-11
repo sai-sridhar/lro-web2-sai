@@ -4,7 +4,7 @@ import RenewalMixin from 'zion/mixins/renewal';
 export default Ember.Route.extend( RenewalMixin, {
 
 	model : function(params, transition) {
-		var batch_id = transition.params["lro.renewals.batches.batch"].batch_id,
+		let batch_id = transition.params["lro.renewals.batches.batch"].batch_id,
 			community_id = transition.params["lro.renewals.batches.batch.community"].community_id;
 		return this.store.query("renewalRange", { batch : batch_id, isRenewalComm : true, renewalComm : community_id });
 	},
@@ -13,7 +13,7 @@ export default Ember.Route.extend( RenewalMixin, {
 			this.refresh();
 		},
 		apply : function() {
-			var renewalUnits, recRent;
+			let renewalUnits, recRent;
 			// Loop through the selected unit types
 			this.controller.get("selectedUnitTypes").forEach(function(ut) {
 				// Get all the renewal units for the unit type, filtering for unapproved
@@ -22,8 +22,9 @@ export default Ember.Route.extend( RenewalMixin, {
 				// Apply the logic to calculate the new recRent, save
 				renewalUnits.forEach(function(rUnit) {
 					recRent = this.calcRenewalOffer(rUnit, this.controller.get("model"));
-					rUnit.set("recRent", recRent);
-					rUnit.set("finalRecRent", recRent);
+					rUnit.set("recRent", recRent.offer);
+					rUnit.set("finalRecRent", recRent.offer);
+					rUnit.set("renewalRange", recRent.range);
 					rUnit.save();
 				}, this);
 			}, this);

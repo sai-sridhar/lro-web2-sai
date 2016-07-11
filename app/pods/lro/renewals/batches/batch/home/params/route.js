@@ -21,8 +21,9 @@ export default Ember.Route.extend( RenewalMixin, {
 				// Apply the logic to calculate the new recRent, save
 				renewalUnits.forEach(function(rUnit) {
 					recRent = this.calcRenewalOffer(rUnit, this.controller.get("model"));
-					rUnit.set("recRent", recRent);
-					rUnit.set("finalRecRent", recRent);
+					rUnit.set("recRent", recRent.offer);
+					rUnit.set("finalRecRent", recRent.offer);
+					rUnit.set("renewalRange", recRent.range);
 					rUnit.save();
 				}, this);
 			}, this);

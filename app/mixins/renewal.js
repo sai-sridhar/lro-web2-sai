@@ -17,14 +17,9 @@ export default Ember.Mixin.create({
 		filtRanges = renewalRanges.filterBy("type", type).sortBy("from");
 		absDtm = Math.abs(dtm);
 
-		// console.log("currentRent", offer);
-		// console.log("type:", type);
-		// console.log("absDtm:", absDtm);
-		// console.log(filtRanges.get("firstObject"));
-
 		if( type === "at" ) {
-			// console.log("in the at mkt offer calc");
 			offer = offer * (1 + (filtRanges.get("firstObject.minIncrease") / 100));
+			range = filtRanges.get("firstObject");
 		} else {
 			range = null;
 			filtRanges.forEach(function(r) {
@@ -36,17 +31,11 @@ export default Ember.Mixin.create({
 			});
 			if( range ) {
 				if( type === "above" ) {
-					// console.log("in the above mkt offer calc");
 					offer = offer * (1 + (range.get("minIncrease") / 100));
 				} else if( type === "below" ) {
-					// console.log("in the below mkt offer calc");
 					mktDiff = renewalUnit.get("cmr") - offer;
-					// console.log("mktDiff:", mktDiff);
-					// console.log("bringToMktRate:", range.get("bringToMktRate"));
 					grossPotlInc = mktDiff * (range.get("bringToMktRate") / 100);
-					// console.log("grossPotlInc:", grossPotlInc);
 					potlIncPct = (grossPotlInc / offer) * 100;
-					// console.log("potlIncPct:", potlIncPct);
 					if( potlIncPct < range.get("minIncrease") ) {
 						offer = offer * (1 + (range.get("minIncrease") / 100));
 					} else if( potlIncPct > range.get("maxIncrease") ) {
@@ -57,7 +46,9 @@ export default Ember.Mixin.create({
 				}
 			}
 		}
-		// console.log("offer:", offer);
-		return offer;
+		return {
+			offer : offer,
+			range : range
+		};
 	}
 });
