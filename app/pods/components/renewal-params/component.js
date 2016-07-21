@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
+
 export default Ember.Component.extend({
 
 	store : Ember.inject.service(),
 
 	belowMarketContent : Ember.computed("content.[]", function() {
-		var r = this.get("content").filterBy("type", "below").sortBy("from");
+		let r = this.get("content").filterBy("type", "below").sortBy("from");
 		r.set("firstObject.first", true);
 		return r;
 	}),
@@ -13,7 +14,7 @@ export default Ember.Component.extend({
 		return this.get("content").filterBy("type", "at");
 	}),
 	aboveMarketContent : Ember.computed("content.[]", function() {
-		var r = this.get("content").filterBy("type", "above").sortBy("from");
+		let r = this.get("content").filterBy("type", "above").sortBy("from");
 		r.set("firstObject.first", true);
 		return r;
 	}),
@@ -22,7 +23,7 @@ export default Ember.Component.extend({
 
 	actions : {
 		addRange : function(type) {
-			var len, from, newRange, lastRange, arr,
+			let len, from, newRange, lastRange, arr,
 				store = this.get('store'),
 				fo = this.get("content.firstObject");
 
@@ -65,7 +66,7 @@ export default Ember.Component.extend({
 		},
 		deleteRange : function(range) {
 			// Get the range type
-			var type = range.get("type"),
+			let type = range.get("type"),
 				len, arr, newLastRange;
 
 			// Set the target array

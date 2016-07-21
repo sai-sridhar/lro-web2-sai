@@ -1,6 +1,7 @@
 import Model from 'ember-data/model';
 import Ember from 'ember';
 import attr from 'ember-data/attr';
+import { hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
 	name : attr("string"),
@@ -24,5 +25,6 @@ export default Model.extend({
 	floors : attr("number"),
 	units : attr("number"),
 	mgmtCompany : attr("string"),
-	ownerCompany : attr("string")
+	ownerCompany : attr("string"),
+	unitTypes : hasMany("unitType", { async : true })
 });

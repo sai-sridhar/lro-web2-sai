@@ -1,0 +1,39 @@
+<div class="post">
+	<div class="created-by">
+		<div class="avatar">
+			<button class="user-avatar small-avatar no-hover">{{model.createdBy.initials}}</button>
+		</div>
+		<div class="creator">
+			<span>{{model.createdBy.fullName}}</span>
+			<span class="date-created">Posted: {{model.formattedDate}}</span>
+		</div>
+	</div
+	><div class="post-content">
+		<div class="post-body">{{model.post}}</div>
+		<div class="post-commenting">
+			<span class={{if model.comments.length 'blue clickable'}} {{action "toggleComments"}}>{{model.comments.length}} {{model.commentString}}</span>
+			<span class="blue clickable dbl-left-margin" {{action "initAddComment"}}>Add comment</span>
+			{{#if iCreated}}
+				<span class="blue clickable float-right" {{action "deletePost"}}>{{fa-icon "trash-o"}}</span>
+			{{/if}}
+		</div>
+		{{#if addingComment}}
+			<div class="new-comment">
+				<form {{action "addComment" model on='submit'}}>
+					{{textarea value=newComment rows=3 placeholder="New comment..."}}
+					<div class="save-comment">
+						<button type="submit" class="with-icon">{{fa-icon "check"}}Save</button>
+						<button {{action "cancelAddComment"}} class="transparent with-icon">{{fa-icon "times"}}Cancel</button>
+					</div>
+				</form>
+			</div>
+		{{/if}}
+		{{#if showComments}}
+			<div class="comments-wrapper">
+				{{#each model.sortedComments as |comment|}}
+					{{post-comment model=comment user=user}}
+				{{/each}}
+			</div>
+		{{/if}}
+	</div>
+</div>

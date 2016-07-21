@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import RenewalMixin from 'zion/mixins/renewal';
 
-export default Ember.Route.extend( RenewalMixin, {
+export default Ember.Route.extend(RenewalMixin, {
 
 	model : function(params, transition) {
 		let batch_id = transition.params["lro.renewals.batches.batch"].batch_id,

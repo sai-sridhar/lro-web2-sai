@@ -644,6 +644,39 @@ button {
 		font-size: 1.5em;
 	}
 
+	&.user-avatar {
+		height: 2.5em;
+		width: 2.5em;
+		border-radius: 2em;
+		padding: 2px;
+		font-size: 1.5em;
+		border: 2px solid @buttonGreen;
+		background: none;
+		color: @buttonGreen;
+
+		&.small-avatar {
+			height: 3em;
+			width: 3em;
+			border-radius: 1.5em;
+			padding: 2px;
+			font-size: 1.0em;
+		}
+
+		&.no-hover {
+			&:hover {
+				background: none !important;
+				border: 2px solid @buttonGreen !important;
+				color: @buttonGreen !important;
+				cursor: default !important;
+			}
+		}
+
+		&:hover {
+			background: @buttonGreen;
+			color: white;
+		};
+	}
+
 	&.slim {
 		padding: @stdPadding @dblPadding;
 	}
@@ -1638,6 +1671,136 @@ button {
 	}
 }
 
+.content-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+
+    &.has-toolbar {
+    	top: @toolbarHeight;
+    }
+}
+
+.posts-wrapper {
+	margin: 0px auto;
+	width: 80%;
+	border: @stdBorder;
+	border-top: 0px;
+	padding: @dblPadding;
+	box-sizing: border-box;
+	background-color: white;
+	&>div {  /*ember view for feedback-post component*/
+
+		&>div {
+			position: relative;
+			border-bottom: @stdBorder;
+			padding: @dblPadding;
+
+			&.post {
+				font-size: 1.2em;
+				min-height: 3em;
+				&>div {
+					display: inline-block;
+					vertical-align: top;
+				}
+				.created-by {
+					width: 20%;
+					.avatar {
+						display: inline-block;
+						vertical-align: top;
+					}
+					.creator {
+						display: inline-block;
+						margin-left: @stdPadding;
+						span {
+							padding-top: @stdPadding;
+							display: block;
+						}
+						.date-created{
+							font-size: .8em;
+							color: @gray3;
+						}
+					}
+				}
+				.post-content {
+					width: 80%;
+					.post-commenting {
+						margin-top: @dblPadding;
+						color: @gray3;
+						font-size: .8em;
+						vertical-align: bottom;
+					}
+
+					.new-comment {
+						textarea {
+							width: 100%;
+							font-size: 1.0em;
+							border: @stdBorder;
+							&:focus {
+								outline: none;
+							}
+						}
+						.save-comment {
+							height: 3em;
+							width: 100%;
+							padding: @stdPadding;
+							&>button {
+								float: right;
+								margin-left: @dblPadding;
+							}
+						}
+					}
+
+					.comments-wrapper {
+						margin-top: @stdPadding;
+						&>div {
+							font-size: 0.9em;
+							padding: @dblPadding;
+							box-sizing: border-box;
+							border-bottom: @stdBorder;
+							&:last-of-type {
+								border-bottom: none;
+							}
+							span {
+								display: block;
+
+								&.creator {
+									/*font-size: 0.8em;*/
+									color: @gray3;
+									margin-bottom: @stdPadding;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.new-post {
+		textarea {
+			width: 100%;
+			font-size: 1.2em;
+			border: @stdBorder;
+			&:focus {
+				outline: none;
+			}
+		}
+		.save-post {
+			height: 3em;
+			width: 100%;
+			padding: @stdPadding;
+			&>button {
+				float: right;
+				margin-left: @dblPadding;
+			}
+		}
+	}
+}
+
 .community-select-wrapper {
 	display: inline-block;
 	vertical-align: top;
@@ -1810,7 +1973,7 @@ button {
 
 	.catalog-scroll {
 		position: absolute;
-		top: 3em;
+		top: 3.2em;
 		left: 0;
 		right: 0;
 		bottom: @headerBarHeight * 1.1;
@@ -1820,6 +1983,10 @@ button {
 
 		&.shorter {
 			bottom: @headerBarHeight * 3;
+		}
+
+		&.no-add {
+			bottom: 0;
 		}
 
 		&>div {
@@ -1951,6 +2118,7 @@ button {
 		width: 50%;
 		padding-right: 2 * @dblPadding;
 		vertical-align: top;
+		height: 100%;
 
 		&>p {
 			margin-bottom: @dblPadding;
@@ -2712,8 +2880,6 @@ button {
 			}
 		}
 	}
-
-
 }
 
 .overlay {

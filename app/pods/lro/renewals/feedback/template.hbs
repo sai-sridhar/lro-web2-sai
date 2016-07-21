@@ -1,0 +1,28 @@
+<div class="control-wrapper center">
+	<div style="width: 80%; text-align: left;">
+		<button {{action "initAddPost"}}>Add Post</button>
+	</div>
+</div>
+<div class="content-wrapper has-toolbar">
+	<section class="posts-wrapper">
+		{{#if addingPost}}
+			<div class="new-post">
+				<form {{action "addPost" on='submit'}}>
+					{{textarea value=newPost rows=4 placeholder="New post..."}}
+					<div class="save-post">
+						<button type="submit" class="with-icon">{{fa-icon "check"}}Save</button>
+						<button {{action "cancelAddPost"}} class="transparent with-icon">{{fa-icon "times"}}Cancel</button>
+					</div>
+				</form>
+			</div>
+		{{/if}}
+		{{#if sortedPosts.length}}
+			{{#each sortedPosts as |post|}}
+				{{feedback-post model=post user=user}}
+			{{/each}}
+		{{else}}
+			<h2 class="center italic gray"> There are currently no Renewal Manager posts. </h2>
+		{{/if}}
+	</section>
+</div>
+

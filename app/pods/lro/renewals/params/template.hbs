@@ -1,1 +1,26 @@
-<h1> This is where you will manage default renewal parameters for your portfolio</h1>
+<section class="catalog">
+	<div class="catalog-search">
+		{{input type="search" placeholder="Search..." value=searchText}}
+	</div>
+	<div class="catalog-scroll no-add">
+		<table>
+			<thead>
+				<tr>
+					<th class="left clickable" {{action "sort" "code"}}>Code</th>
+					<th class="left clickable" {{action "sort" "name"}}>Community Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each arrangedContent as |comm|}}
+					{{#link-to "lro.renewals.params.community" comm.id tagName="tr"}}
+						<td class="left">{{comm.code}}</td>
+						<td class="left">{{comm.name}}</td>
+					{{/link-to}}
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</section>
+<section class="item-content">
+	{{outlet}}
+</section>

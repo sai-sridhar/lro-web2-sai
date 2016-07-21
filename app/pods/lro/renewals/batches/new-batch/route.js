@@ -1,8 +1,7 @@
 import Ember from 'ember';
-import moment from 'moment';
 import RenewalMixin from 'zion/mixins/renewal';
 
-export default Ember.Route.extend( RenewalMixin, {
+export default Ember.Route.extend(RenewalMixin, {
 	model : function() {
 		return this.store.findAll("community");
 	},
@@ -27,7 +26,7 @@ export default Ember.Route.extend( RenewalMixin, {
 				month = this.controller.get('selectedMonth'),
 				start = moment(this.controller.get('startDate')),
 				end = moment(this.controller.get('endDate')),
-				nrcRanges, recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange;
+				nrcRanges, recRent, newBatch, newRenewalComm, newRenewalUnit, newRenewalRange, ut, communityId;
 
 			// Create the new renewal-batch object
 			this.store.findRecord("user", this.controller.get("user._id")).then( (user) => {
@@ -122,16 +121,25 @@ export default Ember.Route.extend( RenewalMixin, {
 										});
 
 										// Calculate the recRent
-										// Are there a unit type renewal ranges?  Assume no for the moment.
+										// Are there a unit type renewal ranges?
 										// If not, use the community renewal ranges
-										recRent = this.calcRenewalOffer(newRenewalUnit, nrcRanges);
-										newRenewalUnit.set("recRent", recRent.offer);
-										newRenewalUnit.set("finalRecRent", recRent.offer);
-										newRenewalUnit.set("renewalRange", recRent.range);
-
-										// Relate the new Renewal Unit to the new Renewal Batch and Renewal Comm
 										nrc.get("units").addObject(newRenewalUnit);
-										newRenewalUnit.save();
+										newRenewalUnit.save().then( (nru) => {
+											ut = nru.get("unitType");
+											communityId = nru.get("renewalComm.community.id");
+											this.store.query("renewalRange", { community : communityId, unitType : ut, isUnitType : true }).then( (utRanges) => {
+												if( utRanges.length ) {
+													recRent = this.calcRenewalOffer(nru, utRanges);
+												} else {
+													recRent = this.calcRenewalOffer(nru, nrcRanges);
+												}
+
+												nru.set("recRent", recRent.offer);
+												nru.set("finalRecRent", recRent.offer);
+												nru.set("renewalRange", recRent.range);
+												nru.save();
+											});
+										});
 									}, this);
 								});
 							});

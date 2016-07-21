@@ -44,12 +44,13 @@
 		<div {{action "addRange" "below"}}>Add Below Market Range</div>
 	</div>
 </section>
-<section>
+<section class="dbl-top-margin">
 	<h3>At Market Rent:</h3>
+	<br>
 	<label for="flat-increase">Increase %</label>
 	{{input type="number" id="flat-increase" value=atMarketContent.firstObject.minIncrease focus-out="saveRanges"}}
 </section>
-<section>
+<section class="dbl-top-margin">
 	<h3>Above Market Rent:</h3>
 	<table class="style-a">
 		<thead>

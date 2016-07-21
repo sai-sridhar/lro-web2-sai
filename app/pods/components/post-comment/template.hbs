@@ -1,0 +1,9 @@
+<div>
+	<span class="creator">
+		{{#if iCreated}}
+			<i class="fa fa-trash-o std-right-margin" {{action "deleteComment"}}></i>
+		{{/if}}
+		{{model.createdBy.fullName}} - {{model.formattedDate}}:
+	</span>
+	<span>{{model.comment}}</span>
+</div>

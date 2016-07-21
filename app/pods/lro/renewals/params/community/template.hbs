@@ -1,0 +1,17 @@
+<section class="two-col">
+	<div>
+		<h2>{{model.firstObject.community.fullName}} Community Renewal Parameters</h2>
+		<br>
+		<div class="dbl-top-margin">
+			{{renewal-params content=model}}
+		</div>
+	</div
+	><div class="border-left dbl-left-padding dbl-right-padding">
+		<h2>Unit Type Renewal Parameters</h2>
+		<br>
+		{{select-2 content=unitTypes value=selectedUnitType optionLabelPath="name" placeholder="Select unit type..." allowClear=false multiple=false}}
+		<br>
+		{{outlet}}
+	</div>
+</section>
+

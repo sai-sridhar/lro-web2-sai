@@ -2,6 +2,7 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Controller.extend({
+	offerCalculator : Ember.inject.service("renewal-offer"),
 
 	lroController : Ember.inject.controller("lro"),
 	user : Ember.computed.reads("lroController.user"),

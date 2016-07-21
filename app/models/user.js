@@ -16,5 +16,8 @@ export default Model.extend({
 	}),
 	lastInitial : Ember.computed("lastName", function() {
 		return this.get('lastName') ? this.get("lastName").charAt(0) : null;
+	}),
+	initials : Ember.computed("firstInitial", "lastInitial", function() {
+		return this.get("firstInitial") + this.get("lastInitial");
 	})
 });

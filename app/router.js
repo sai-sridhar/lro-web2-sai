@@ -54,7 +54,13 @@ Router.map(function() {
         });
       });
       this.route('settings');
-      this.route('params');
+      this.route('params', function() {
+        this.route('community', { path : "/community/:community_id" }, function() {
+          this.route('unitType', { path : "/:unit_type" });
+        });
+      });
+      this.route('feedback', function() {
+      });
     });
     this.route('lri');
     this.route('admin', function() {
