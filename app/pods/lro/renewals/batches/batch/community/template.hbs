@@ -199,107 +199,178 @@
 				</div>
 				<div class="table-wrapper  {{if showDetailFilters 'filters-open'}}">
 					{{#if unitView}}
-						<table>
-							<thead>
-								<tr class="border-right">
-									<th colspan=2>Unit Type</th>
-									<th rowspan=2 {{action "sortUnits" "beds"}}>Beds</th>
-									<th rowspan=2 {{action "sortUnits" "baths"}}>Baths</th>
-									<th rowspan=2 {{action "sortUnits" "unitNumber"}}>Unit Number</th>
-									<th rowspan=2 {{action "sortUnits" "resident"}}>Resident</th>
-									<th rowspan=2 {{action "sortUnits" "renewalDate"}}>Renewal Date</th>
-									<th colspan=2>Lease Term</th>
-									<th colspan=3>Effective Rent</th>
-									<th rowspan=2 {{action "sortUnits" "userIncreasePct"}}>Increase %</th>
-									<th colspan=2>Discount to Market</th>
-									{{#unless model.batch.isCommitted}}
-										<th rowspan=2></th>
-									{{/unless}}
-								</tr>
-								<tr class="sortable">
-									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS</th>
-									<th {{action "sortUnits" "unitType"}} class="border-right">LRO</th>
-									<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current</th>
-									<th class="no-mobile border-right" {{action "sortUnits" "recLeaseTerm"}}>Offer</th>
-									<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current</th>
-									<th {{action "sortUnits" "finalRecRent"}}>Offer</th>
-									<th class="no-mobile border-right" {{action "sortUnits" "cmr"}}>Market</th>
-									<th {{action "sortUnits" "currentDiscountToMarket"}}>Current</th>
-									<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{#each hbsUnitContent as |unit|}}
-									{{#link-to "lro.renewals.batches.batch.community.unit" unit.id tagName="tr"}}
-										<td class="no-mobile">{{unit.pmsUnitType}}</td>
-										<td class="border-right">{{unit.unitType}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.beds}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.baths}}</td>
-										<td class="border-right">{{unit.unitNumber}}</td>
-										<td class="no-mobile border-right">{{unit.resident}}</td>
-										<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
-										<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
-										<td class="no-mobile">${{format-commas unit.currentRent}}</td>
-										<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
-										<td class="no-mobile border-right">${{format-commas unit.cmr}}</td>
-										<td class="border-right {{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
-										<td>{{format-percent unit.currentDiscountToMarket 1 1}}</td>
-										<td class="border-right">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
-										{{#unless model.batch.isCommitted}}
-											<td>
-												{{#if unit.approved}}
-													<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
-												{{else}}
-													<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
-												{{/if}}
-											</td>
-										{{/unless}}
-									{{/link-to}}
-								{{/each}}
-							</tbody>
-						</table>
+						<section class="table dbl-head-rows renewal-details">
+							<div class="table-container">
+								<table class="sticky-headers">
+									<thead>
+										<tr class="border-right">
+											<th colspan=2 class="border-bottom">Unit Type
+												<div>Unit Type</div>
+											</th>
+											<th {{action "sortUnits" "beds"}}>Beds
+												<div>Beds</div>
+											</th>
+											<th {{action "sortUnits" "baths"}}>Baths
+												<div>Baths</div>
+											</th>
+											<th {{action "sortUnits" "unitNumber"}}>Unit
+												<div>Unit</div>
+											</th>
+											<th {{action "sortUnits" "resident"}}>Resident
+												<div>Resident</div>
+											</th>
+											<th {{action "sortUnits" "renewalDate"}}>Renewal Date
+												<div>Renewal Date</div>
+											</th>
+											<th colspan=2>Lease Term
+												<div>Lease Term</div>
+											</th>
+											<th colspan=3>Effective Rent
+												<div>Effective Rent</div>
+											</th>
+											<th {{action "sortUnits" "userIncreasePct"}}>Increase %
+												<div>Increase %</div>
+											</th>
+											<th colspan=2>Discount to Market
+												<div>Discount to Market</div>
+											</th>
+											{{#unless model.isCommitted}}
+												<th></th>
+											{{/unless}}
+										</tr>
+										<tr class="sortable">
+											<th {{action "sortUnits" "pmsUnitType"}}>PMS
+												<div>PMS</div>
+											</th>
+											<th {{action "sortUnits" "unitType"}} class="border-right">LRO
+												<div>LRO</div>
+											</th>
+											<th>Beds<div></div></th>
+											<th>Baths<div></div></th>
+											<th>Unit Number<div></div></th>
+											<th>Resident<div></div></th>
+											<th>Renewal Date<div></div></th>
+											<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current
+												<div>Current</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}} class="border-right">Offer
+												<div>Offer</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current
+												<div>Current</div>
+											</th>
+											<th {{action "sortUnits" "finalRecRent"}}>Offer
+												<div>Offer</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "cmr"}} class="border-right">Market
+												<div>Market</div>
+											</th>
+											<th>Increase %<div></div></th>
+											<th {{action "sortUnits" "currentDiscountToMarket"}}>Current
+												<div>Current</div>
+											</th>
+											<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer
+												<div>Offer</div>
+											</th>
+											{{#unless model.isCommitted}}
+												<th><div></div></th>
+											{{/unless}}
+										</tr>
+									</thead>
+									<tbody>
+										{{#each hbsUnitContent as |unit|}}
+											{{#link-to "lro.renewals.batches.batch.community.unit" unit.id tagName="tr"}}
+												<td class="no-mobile">{{unit.pmsUnitType}}</td>
+												<td class="border-right">{{unit.unitType}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.beds}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.baths}}</td>
+												<td class="border-right">{{unit.unitNumber}}</td>
+												<td class="no-mobile border-right">{{unit.resident}}</td>
+												<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
+												<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
+												<td class="no-mobile">${{format-commas unit.currentRent}}</td>
+												<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+												<td class="no-mobile border-right">${{format-commas unit.cmr}}</td>
+												<td class="border-right {{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+												<td>{{format-percent unit.currentDiscountToMarket 1 1}}</td>
+												<td class="border-right">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
+												{{#unless model.batch.isCommitted}}
+													<td>
+														{{#if unit.approved}}
+															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+														{{else}}
+															<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
+														{{/if}}
+													</td>
+												{{/unless}}
+											{{/link-to}}
+										{{/each}}
+									</tbody>
+								</table>
+							</div>
+						</section>
 					{{else}}
-						<table>
-							<thead>
-								<tr class="sortable border-right">
-									<th {{action "sortUnitTypes" "unitType"}}>Unit Type</th>
-									<th {{action "sortUnitTypes" "expirationCount"}}>Expirations</th>
-									<th {{action "sortUnitTypes" "avgRecRent"}}>Avg Offer Rent</th>
-									<th {{action "sortUnitTypes" "avgIncrease"}}>Avg Increase</th>
-									<th {{action "sortUnitTypes" "avgRecLeaseTerm"}}>Avg Offer Term</th>
-									<th>Increase Range</th>
-									<th {{action "sortUnitTypes" "avgCurrentDtm"}}>Avg Current DTM</th>
-									<th {{action "sortUnitTypes" "avgNewDtm"}}>Avg Offer DTM</th>
-									{{#unless model.batch.isCommitted}}
-										<th></th>
-									{{/unless}}
-								</tr>
-							</thead>
-							<tbody>
-								{{#each hbsUnitTypeContent as |ut|}}
-									<tr class="border-right">
-				    					<td>{{ut.unitType}}</td>
-				    					<td>{{format-commas ut.expirationCount}}</td>
-				    					<td>${{format-commas ut.avgRecRent}}</td>
-				    					<td>{{format-percent ut.avgIncrease}}</td>
-				    					<td>{{format-commas ut.avgRecLeaseTerm}}</td>
-				    					<td>{{format-percent ut.minIncrease}} - {{format-percent ut.maxIncrease}}</td>
-				    					<td>{{format-percent ut.avgCurrentDtm}}</td>
-				    					<td>{{format-percent ut.avgNewDtm}}</td>
-				    					{{#unless model.batch.isCommitted}}
-				    						<td>
-					    						{{#if ut.allApproved}}
-													<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnitType" ut bubbles=false}}></i>
-												{{else}}
-													<i class="fa fa-thumbs-o-up" {{action "approveUnitType" ut bubbles=false}}></i>
-												{{/if}}
-											</td>
-					    				{{/unless}}
-				    				</tr>
-								{{/each}}
-							</tbody>
-						</table>
+						<section class="table renewal-details">
+							<div class="table-container">
+								<table class="sticky-headers">
+									<thead>
+										<tr class="sortable border-right">
+											<th {{action "sortUnitTypes" "unitType"}}>Unit Type
+												<div>Unit Type</div>
+											</th>
+											<th {{action "sortUnitTypes" "expirationCount"}}>Expirations
+												<div>Expirations</div>
+											</th>
+											<th {{action "sortUnitTypes" "avgRecRent"}}>Avg Offer Rent
+												<div>Avg. Offer Rent</div>
+											</th>
+											<th {{action "sortUnitTypes" "avgIncrease"}}>Avg Increase
+												<div>Avg. Increase</div>
+											</th>
+											<th {{action "sortUnitTypes" "avgRecLeaseTerm"}}>Avg Offer Term
+												<div>Avg. Offer Term</div>
+											</th>
+											<th>Increase Range
+												<div>Increase Range</div>
+											</th>
+											<th {{action "sortUnitTypes" "avgCurrentDtm"}}>Avg Current DTM
+												<div>Avg. Current DTM</div>
+											</th>
+											<th {{action "sortUnitTypes" "avgNewDtm"}}>Avg Offer DTM
+												<div>Avg. Offer DTM</div>
+											</th>
+											{{#unless model.batch.isCommitted}}
+												<th><div></div></th>
+											{{/unless}}
+										</tr>
+									</thead>
+									<tbody>
+										{{#each hbsUnitTypeContent as |ut|}}
+											<tr class="border-right">
+						    					<td>{{ut.unitType}}</td>
+						    					<td>{{format-commas ut.expirationCount}}</td>
+						    					<td>${{format-commas ut.avgRecRent}}</td>
+						    					<td>{{format-percent ut.avgIncrease}}</td>
+						    					<td>{{format-commas ut.avgRecLeaseTerm}}</td>
+						    					<td>{{format-percent ut.minIncrease}} - {{format-percent ut.maxIncrease}}</td>
+						    					<td>{{format-percent ut.avgCurrentDtm}}</td>
+						    					<td>{{format-percent ut.avgNewDtm}}</td>
+						    					{{#unless model.batch.isCommitted}}
+						    						<td>
+							    						{{#if ut.allApproved}}
+															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnitType" ut bubbles=false}}></i>
+														{{else}}
+															<i class="fa fa-thumbs-o-up" {{action "approveUnitType" ut bubbles=false}}></i>
+														{{/if}}
+													</td>
+							    				{{/unless}}
+						    				</tr>
+										{{/each}}
+									</tbody>
+								</table>
+							</div>
+						</section>
 					{{/if}}
 				</div>
 			</section>

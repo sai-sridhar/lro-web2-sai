@@ -8,11 +8,13 @@ export default Ember.Route.extend({
 				self = this;
 
 			this.controller.get('session').authenticate('authenticator:oauth2', identification, password).then( () => {
+				// Take the user to LRO!
 				this.transitionTo('lro');
 			}, function(response) {
-				console.log("login failed:", response.error);
+				// Reset email and password fields
 				self.controllerFor("login.index").set('emailAddress', null);
 				self.controllerFor("login.index").set('password', null);
+				// Set the message the user will see
 				if( response.error === "invalid_grant" ) {
 					self.controllerFor('login.index').set('loginError', "invalid username or password");
 				} else {

@@ -60,51 +60,55 @@
         {{/each}}
     </section>
     <section class="table-wrapper">
-    	<table>
-			<thead>
-          		<tr>
-            		<th>Unit ID</th>
-            		<th>Status</th>
-            		<th>Available</th>
-            		{{#if hbsShowColumns.pmsUnitType.show}}<th class="no-mobile">PMS Unit Type</th>{{/if}}
-                    <th>Term</th>
-            		<th class="number">Effective Rent</th>
-		            {{#if hbsShowColumns.sf.show}}<th class="no-mobile">SF</th>{{/if}}
-		            {{#if hbsShowColumns.moveout.show}}<th class="no-mobile">Moveout</th>{{/if}}
-		            {{#if hbsShowColumns.priorRent.show}}<th class="number no-mobile">Prior Rent</th>{{/if}}
-		            {{#if hbsShowColumns.baseRent.show}}<th class="number no-mobile">Base Rent</th>{{/if}}
-		            {{#if hbsShowColumns.totalConcession.show}}<th class="number no-mobile">Total Conc.</th>{{/if}}
-		            {{#if hbsShowColumns.amenityAmount.show}}<th class="number no-mobile">Amen. Amt.</th>{{/if}}
-		            {{#if hbsShowColumns.offset.show}}<th class="number no-mobile">Offset</th>{{/if}}
-		            {{#if hbsShowColumns.amenities.show}}<th class="no-mobile">Amenities</th>{{/if}}
-          		</tr>
-        	</thead>
-        	<tbody>
-                {{#each groupedContent as |ut|}}
-                    <tr>
-                        <td colspan=99 class="grouper">{{ut.unitType}} ({{ut.unitCategory}})</td>
-                    </tr>
-                    {{#each ut.units as |unit|}}
-                		{{#link-to 'lro.pricingLeasing.community.new.unit' unit.id tagName='tr'}}
-                			<td>{{unit.unitNumber}}</td>
-                			<td>{{unit.status}}</td>
-                			<td>{{format-date unit.available}}</td>
-                            {{#if hbsShowColumns.pmsUnitType.show}}<td class="no-mobile">{{unit.pmsUnitType}}</td>{{/if}}
-                			<td>{{unit.leaseTerm}}</td>
-                			<td>${{format-commas unit.effectiveRent}}</td>
-                            {{#if hbsShowColumns.sf.show}}<td class="no-mobile">{{format-commas unit.sf}}</td>{{/if}}
-                            {{#if hbsShowColumns.moveout.show}}<td class="no-mobile">{{format-date unit.moveout}}</td>{{/if}}
-                            {{#if hbsShowColumns.priorRent.show}}<td class="number no-mobile">${{format-commas unit.priorRent}}</td>{{/if}}
-                            {{#if hbsShowColumns.baseRent.show}}<td class="number no-mobile">${{format-commas unit.baseRent}}</td>{{/if}}
-                            {{#if hbsShowColumns.totalConcession.show}}<td class="number no-mobile">${{format-commas unit.totalConcession}}</td>{{/if}}
-                            {{#if hbsShowColumns.amenityAmount.show}}<td class="number no-mobile">${{format-commas unit.amenityAmount}}</td>{{/if}}
-                            {{#if hbsShowColumns.offset.show}}<td class="number no-mobile">${{format-commas unit.offset}}</td>{{/if}}
-                            {{#if hbsShowColumns.amenities.show}}<td class="left no-mobile">{{unit.amenities}}</td>{{/if}}
-                		{{/link-to}}
-                    {{/each}}
-                {{/each}}
-        	</tbody>
-      	</table>
+    	<section class="table">
+            <div class="table-container">
+                <table class="sticky-headers">
+        			<thead>
+                  		<tr>
+                    		<th>Unit<div>Unit</div></th>
+                    		<th>Status<div>Status</div></th>
+                    		<th>Available<div>Available</div></th>
+                    		{{#if hbsShowColumns.pmsUnitType.show}}<th class="no-mobile">PMS Unit Type<div>PMS Unit Type</div></th>{{/if}}
+                            <th>Term<div>Term</div></th>
+                    		<th class="number">Effective Rent<div>Effective Rent</div></th>
+        		            {{#if hbsShowColumns.sf.show}}<th class="no-mobile">SF<div>SF</div></th>{{/if}}
+        		            {{#if hbsShowColumns.moveout.show}}<th class="no-mobile">Moveout<div>Moveout</div></th>{{/if}}
+        		            {{#if hbsShowColumns.priorRent.show}}<th class="number no-mobile">Prior Rent<div>Prior Rent</div></th>{{/if}}
+        		            {{#if hbsShowColumns.baseRent.show}}<th class="number no-mobile">Base Rent<div>Base Rent</div></th>{{/if}}
+        		            {{#if hbsShowColumns.totalConcession.show}}<th class="number no-mobile">Total Conc.<div>Total Conc.</div></th>{{/if}}
+        		            {{#if hbsShowColumns.amenityAmount.show}}<th class="number no-mobile">Amen. Amt.<div>Amen. Amt</div></th>{{/if}}
+        		            {{#if hbsShowColumns.offset.show}}<th class="number no-mobile">Offset<div>Offset</div></th>{{/if}}
+        		            {{#if hbsShowColumns.amenities.show}}<th class="no-mobile">Amenities<div>Amenities</div></th>{{/if}}
+                  		</tr>
+                	</thead>
+                	<tbody>
+                        {{#each groupedContent as |ut|}}
+                            <tr>
+                                <td colspan=99 class="grouper">{{ut.unitType}} ({{ut.unitCategory}})</td>
+                            </tr>
+                            {{#each ut.units as |unit|}}
+                        		{{#link-to 'lro.pricingLeasing.community.new.unit' unit.id tagName='tr'}}
+                        			<td>{{unit.unitNumber}}</td>
+                        			<td>{{unit.status}}</td>
+                        			<td>{{format-date unit.available}}</td>
+                                    {{#if hbsShowColumns.pmsUnitType.show}}<td class="no-mobile">{{unit.pmsUnitType}}</td>{{/if}}
+                        			<td>{{unit.leaseTerm}}</td>
+                        			<td>${{format-commas unit.effectiveRent}}</td>
+                                    {{#if hbsShowColumns.sf.show}}<td class="no-mobile">{{format-commas unit.sf}}</td>{{/if}}
+                                    {{#if hbsShowColumns.moveout.show}}<td class="no-mobile">{{format-date unit.moveout}}</td>{{/if}}
+                                    {{#if hbsShowColumns.priorRent.show}}<td class="number no-mobile">${{format-commas unit.priorRent}}</td>{{/if}}
+                                    {{#if hbsShowColumns.baseRent.show}}<td class="number no-mobile">${{format-commas unit.baseRent}}</td>{{/if}}
+                                    {{#if hbsShowColumns.totalConcession.show}}<td class="number no-mobile">${{format-commas unit.totalConcession}}</td>{{/if}}
+                                    {{#if hbsShowColumns.amenityAmount.show}}<td class="number no-mobile">${{format-commas unit.amenityAmount}}</td>{{/if}}
+                                    {{#if hbsShowColumns.offset.show}}<td class="number no-mobile">${{format-commas unit.offset}}</td>{{/if}}
+                                    {{#if hbsShowColumns.amenities.show}}<td class="left no-mobile">{{unit.amenities}}</td>{{/if}}
+                        		{{/link-to}}
+                            {{/each}}
+                        {{/each}}
+                	</tbody>
+              	</table>
+            </div>
+        </section>
     </section>
    	{{outlet}}
 </div>

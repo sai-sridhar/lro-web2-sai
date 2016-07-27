@@ -3,9 +3,26 @@
 		{{input type="search" placeholder="Search..." value=searchText}}
 	</div>
 	<div class="catalog-scroll {{if addingCommunity 'shorter'}}">
-		{{#each filteredModel as |community|}}
-			{{#link-to "lro.admin.communities.community" community.id tagName="div"}}{{community.name}}{{/link-to}}
-		{{/each}}
+		<section class="table">
+			<div class="table-container">
+				<table class="sticky-headers">
+					<thead>
+						<tr>
+							<th class="left clickable" {{action "sort" "code"}}>Code<div>Code</div></th>
+							<th class="left clickable" {{action "sort" "name"}}>Community Name<div>Community Name</div></th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each hbsContent as |community|}}
+							{{#link-to "lro.admin.communities.community" community.id tagName="tr"}}
+								<td class="left">{{community.code}}</td>
+								<td class="left">{{community.name}}</td>
+							{{/link-to}}
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</section>
 	</div>
 	<div class="catalog-add {{if addingCommunity 'taller'}}">
 		{{#if addingCommunity}}

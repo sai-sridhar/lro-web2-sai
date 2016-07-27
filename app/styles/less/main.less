@@ -247,10 +247,6 @@ table {
 
 	thead {
 		tr {
-			&.sticky {
-				position: -webkit-sticky;
-				top: 0px;
-			}
 			&.title {
 				th {
 					border: none;
@@ -287,22 +283,21 @@ table {
 					cursor: pointer;
 				}
 			}
-		}
 
-		th {
-			padding: @stdPadding;
-			background: white;
-			color: @gray;
-			position: relative;
-			top: 0;
-			/*z-index: 1;*/
-			height: 1em;
-			border-bottom: 2px solid @stdBorderColor;
+			th {
+				padding: @stdPadding;
+				background: white;
+				color: @gray;
+				height: 1em;
+				border-bottom: 2px solid @stdBorderColor;
 
-			&.number {
-				text-align: right;
+				&.number {
+					text-align: right;
+				}
 			}
 		}
+
+
 	}
 	tbody {
 		font-size: 1em;
@@ -354,10 +349,9 @@ table {
 
 			.grouper {
 				background: lighten(@grayBlue, 20%);
-				/*background: lighten(@lightBlue, 20%);*/
-				text-align: left;
+				text-align: left !important;
 				color: white;
-				padding: @stdPadding @dblPadding;
+				padding: @stdPadding @dblPadding !important;
 
 				td {
 					padding: @stdPadding @dblPadding;
@@ -681,6 +675,115 @@ button {
 		padding: @stdPadding @dblPadding;
 	}
 }
+
+/* for tables with sticky headers */
+section {
+	&.table {
+		position: relative;
+		padding-top: 30px;
+		background: white;
+		height: 100%;
+		box-sizing: border-box;
+		&.dbl-head-rows {
+			padding-top: 60px;
+		}
+
+		&.renewal-details {
+			height: 600px;
+		}
+
+		.table-container {
+			overflow-y: auto;
+			height: 100%;
+			border: @stdBorder;
+			border-left: none;
+			box-sizing: border-box;
+			background: @backgroundGray;
+
+			table {
+				&.sticky-headers {
+					border-spacing: 0;
+					width:100%;
+
+					thead {
+						tr {
+							th {
+								height: 0;
+								line-height: 0;
+								padding: 0px;
+								/*padding-top: 0;
+								padding-bottom: 0;*/
+								color: transparent;
+								border: none;
+								white-space: nowrap;
+
+								div {
+									box-sizing: border-box;
+									height: 30px;
+									position: absolute;
+									background: transparent;
+									color: @gray;
+									padding: @stdPadding;
+									text-align: center;
+									top: 0;
+									line-height: normal;
+									border-left: @stdBorder;
+									margin: 0px auto;
+								}
+
+								&:first-child {
+									div {
+										border: none;
+									}
+								}
+							}
+
+							&:nth-of-type(2) {
+								div {
+									top: 30px;
+								}
+							}
+						}
+					}
+
+					tbody {
+						tr {
+							background: rgb(245,245,245);
+							color: #000;
+
+							td {
+								padding: 1.5*@stdPadding @stdPadding;
+								border-bottom: @stdBorder;
+								text-align: center;
+								&.number {
+									text-align: right;
+								}
+								i {
+									font-size: 20px !important;
+								}
+							}
+
+							&:nth-of-type(2n) {
+								background: rgb(255,255,255);
+							}
+
+							&:hover {
+								background: @hoverBlue;
+								cursor: pointer;
+							}
+
+							&.active {
+								background: @mediumBlue;
+								color: white;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 
 .my-account {
 	position: relative;

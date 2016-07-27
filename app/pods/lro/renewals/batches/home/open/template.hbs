@@ -1,37 +1,61 @@
 <div class="batches">
 	{{#if model.length}}
-		<table>
-			<thead>
-				<tr>
-					<th>Batch/Community Name</th>
-					<th>Date Range</th>
-					<th>Expirations</th>
-					<th class="no-mobile">Approvals</th>
-					<th class="no-mobile">Avg. Rec. Rent</th>
-					<th>Avg. Increase</th>
-					<th class="no-mobile">Avg. Rec. Term</th>
-					<th class="no-mobile">Avg. Prior Rent</th>
-					<th class="no-mobile">Avg. Prior Term</th>
-					<th class="no-mobile">Created By</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each filteredContent as |batch|}}
-					{{#link-to "lro.renewals.batches.batch.home" batch.id tagName="tr"}}
-						<td>{{batch.name}}</td>
-						<td>{{format-date batch.startDate "MMM D, YYYY"}} - {{format-date batch.endDate "MMM D, YYYY"}}</td>
-						<td>{{format-commas batch.expirationCount}}</td>
-						<td class="no-mobile">{{format-commas batch.approvalCount}}</td>
-						<td class="no-mobile">${{format-commas batch.avgRecRent}}</td>
-						<td>{{format-percent batch.avgIncrease}}</td>
-						<td class="no-mobile">{{format-commas batch.avgRecTerm}}</td>
-						<td class="no-mobile">${{format-commas batch.avgCurrentRent}}</td>
-						<td class="no-mobile">{{format-commas batch.avgCurrentLeaseTerm}}</td>
-						<td class="no-mobile">{{batch.createdBy.firstInitial}}. {{batch.createdBy.lastName}}</td>
-					{{/link-to}}
-				{{/each}}
-			</tbody>
-		</table>
+		<section class="table">
+			<div class="table-container">
+				<table class="sticky-headers">
+					<thead>
+						<tr>
+							<th>Batch/Community Name
+								<div>Batch/Community Name</div>
+							</th>
+							<th>Date Range
+								<div>Date Range</div>
+							</th>
+							<th>Expirations
+								<div>Expirations</div>
+							</th>
+							<th class="no-mobile">Approvals
+								<div>Approvals</div>
+							</th>
+							<th class="no-mobile">Avg. Rec. Rent
+								<div>Avg. Rec. Rent</div>
+							</th>
+							<th>Avg. Increase
+								<div>Avg. Increase</div>
+							</th>
+							<th class="no-mobile">Avg. Rec. Term
+								<div>Avg. Rec. Term</div>
+							</th>
+							<th class="no-mobile">Avg. Prior Rent
+								<div>Avg. Prior Rent</div>
+							</th>
+							<th class="no-mobile">Avg. Prior Term
+								<div>Avg. Prior Term</div>
+							</th>
+							<th class="no-mobile">Created By
+								<div>Created By</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each filteredContent as |batch|}}
+							{{#link-to "lro.renewals.batches.batch.home" batch.id tagName="tr"}}
+								<td>{{batch.name}}</td>
+								<td>{{format-date batch.startDate "MMM D, YYYY"}} - {{format-date batch.endDate "MMM D, YYYY"}}</td>
+								<td>{{format-commas batch.expirationCount}}</td>
+								<td class="no-mobile">{{format-commas batch.approvalCount}}</td>
+								<td class="no-mobile">${{format-commas batch.avgRecRent}}</td>
+								<td>{{format-percent batch.avgIncrease}}</td>
+								<td class="no-mobile">{{format-commas batch.avgRecTerm}}</td>
+								<td class="no-mobile">${{format-commas batch.avgCurrentRent}}</td>
+								<td class="no-mobile">{{format-commas batch.avgCurrentLeaseTerm}}</td>
+								<td class="no-mobile">{{batch.createdBy.firstInitial}}. {{batch.createdBy.lastName}}</td>
+							{{/link-to}}
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</section>
 	{{else}}
 		<h2 class="center dbl-top-margin">There are no open renewal batches currently.</h2>
 	{{/if}}

@@ -213,112 +213,188 @@
 				</div>
 				<div class="table-wrapper  {{if showDetailFilters 'filters-open'}}">
 					{{#if unitView}}
-						<table>
-							<thead>
-								<tr class="border-right">
-									<th colspan=2>Community</th>
-									<th colspan=2>Unit Type</th>
-									<th rowspan=2 {{action "sortUnits" "beds"}}>Beds</th>
-									<th rowspan=2 {{action "sortUnits" "baths"}}>Baths</th>
-									<th rowspan=2 {{action "sortUnits" "unitNumber"}}>Unit Number</th>
-									<th rowspan=2 {{action "sortUnits" "renewalDate"}}>Renewal Date</th>
-									<th colspan=2>Lease Term</th>
-									<th colspan=3>Effective Rent</th>
-									<th rowspan=2 {{action "sortUnits" "userIncreasePct"}}>Increase %</th>
-									<th colspan=2>Discount to Market</th>
-									{{#unless model.isCommitted}}
-										<th rowspan=2></th>
-									{{/unless}}
-								</tr>
-								<tr class="sortable">
-									<th {{action "sortUnits" "communityName"}}>Code</th>
-									<th {{action "sortUnits" "communityCode"}} class="border-right">Community Name</th>
-									<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS</th>
-									<th {{action "sortUnits" "unitType"}} class="border-right">LRO</th>
-									<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current</th>
-									<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}} class="border-right">Offer</th>
-									<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current</th>
-									<th {{action "sortUnits" "finalRecRent"}}>Offer</th>
-									<th class="no-mobile" {{action "sortUnits" "cmr"}} class="border-right">Market</th>
-									<th {{action "sortUnits" "currentDiscountToMarket"}}>Current</th>
-									<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{#each hbsUnitContent as |unit|}}
-									{{#link-to "lro.renewals.batches.batch.home.unit" unit.id tagName="tr"}}
-										<td>{{unit.communityCode}}</td>
-										<td class="no-mobile border-right">{{unit.communityName}}</td>
-										<td class="no-mobile">{{unit.pmsUnitType}}</td>
-										<td class="border-right">{{unit.unitType}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.beds}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.baths}}</td>
-										<td class="border-right">{{unit.unitNumber}}</td>
-										<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
-										<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
-										<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
-										<td class="no-mobile">${{format-commas unit.currentRent}}</td>
-										<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
-										<td class="no-mobile border-right">${{format-commas unit.cmr}}</td>
-										<td class="border-right{{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
-										<td>{{format-percent unit.currentDiscountToMarket 1 1}}</td>
-										<td class="border-right">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
-										{{#unless model.isCommitted}}
-											<td>
-												{{#if unit.approved}}
-													<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
-												{{else}}
-													<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
-												{{/if}}
-											</td>
-										{{/unless}}
-									{{/link-to}}
-								{{/each}}
-							</tbody>
-						</table>
+						<section class="table dbl-head-rows renewal-details">
+							<div class="table-container">
+								<table class="sticky-headers">
+									<thead>
+										<tr class="border-right">
+											<th colspan=2 class="border-bottom">Community
+												<div>Community</div>
+											</th>
+											<th colspan=2>Unit Type
+												<div>Unit Type</div>
+											</th>
+											<th {{action "sortUnits" "beds"}}>Beds
+												<div>Beds</div>
+											</th>
+											<th {{action "sortUnits" "baths"}}>Baths
+												<div>Baths</div>
+											</th>
+											<th {{action "sortUnits" "unitNumber"}}>Unit Number
+												<div>Unit</div>
+											</th>
+											<th {{action "sortUnits" "renewalDate"}}>Renewal Date
+												<div>Renewal Date</div>
+											</th>
+											<th colspan=2>Lease Term
+												<div>Lease Term</div>
+											</th>
+											<th colspan=3>Effective Rent
+												<div>Effective Rent</div>
+											</th>
+											<th {{action "sortUnits" "userIncreasePct"}}>Increase %
+												<div>Increase %</div>
+											</th>
+											<th colspan=2>Discount to Market
+												<div>Discount to Market</div>
+											</th>
+											{{#unless model.isCommitted}}
+												<th></th>
+											{{/unless}}
+										</tr>
+										<tr class="sortable">
+											<th {{action "sortUnits" "communityName"}}>Code
+												<div>Code</div>
+											</th>
+											<th {{action "sortUnits" "communityCode"}} class="border-right">Name
+												<div>Name</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "pmsUnitType"}}>PMS
+												<div>PMS</div>
+											</th>
+											<th {{action "sortUnits" "unitType"}} class="border-right">LRO
+												<div>LRO</div>
+											</th>
+											<th>Beds<div></div></th>
+											<th>Baths<div></div></th>
+											<th>Unit Number<div></div></th>
+											<th>Renewal Date<div></div></th>
+											<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current
+												<div>Current</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "recLeaseTerm"}} class="border-right">Offer
+												<div>Offer</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "currentRent"}}>Current
+												<div>Current</div>
+											</th>
+											<th {{action "sortUnits" "finalRecRent"}}>Offer
+												<div>Offer</div>
+											</th>
+											<th class="no-mobile" {{action "sortUnits" "cmr"}} class="border-right">Market
+												<div>Market</div>
+											</th>
+											<th>Increase %<div></div></th>
+											<th {{action "sortUnits" "currentDiscountToMarket"}}>Current
+												<div>Current</div>
+											</th>
+											<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer
+												<div>Offer</div>
+											</th>
+											{{#unless model.isCommitted}}
+												<th></th>
+											{{/unless}}
+										</tr>
+									</thead>
+									<tbody>
+										{{#each hbsUnitContent as |unit|}}
+											{{#link-to "lro.renewals.batches.batch.home.unit" unit.id tagName="tr"}}
+												<td>{{unit.communityCode}}</td>
+												<td class="no-mobile border-right">{{unit.communityName}}</td>
+												<td class="no-mobile">{{unit.pmsUnitType}}</td>
+												<td class="border-right">{{unit.unitType}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.beds}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.baths}}</td>
+												<td class="border-right">{{unit.unitNumber}}</td>
+												<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
+												<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
+												<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
+												<td class="no-mobile">${{format-commas unit.currentRent}}</td>
+												<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+												<td class="no-mobile border-right">${{format-commas unit.cmr}}</td>
+												<td class="border-right{{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+												<td>{{format-percent unit.currentDiscountToMarket 1 1}}</td>
+												<td class="border-right">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
+												{{#unless model.isCommitted}}
+													<td>
+														{{#if unit.approved}}
+															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+														{{else}}
+															<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
+														{{/if}}
+													</td>
+												{{/unless}}
+											{{/link-to}}
+										{{/each}}
+									</tbody>
+								</table>
+							</div>
+						</section>
 					{{else}}
-						<table>
-							<thead>
-								<tr class="sortable border-right">
-									<th {{action "sortCommunities" "communityCode"}}>Code</th>
-									<th {{action "sortCommunities" "communityName"}}>Community Name</th>
-									<th {{action "sortCommunities" "expirationCount"}}>Expirations</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Offer Rent</th>
-									<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgRecLeaseTerm"}}>Avg Offer Term</th>
-									<th>Increase Range</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgCurrentDiscountToMarket"}}>Current Avg DTM</th>
-									<th class="no-mobile" {{action "sortCommunities" "avgNewDiscountToMarket"}}>Offer Avg DTM</th>
-									{{#unless model.isCommitted}}
-										<th></th>
-									{{/unless}}
-								</tr>
-							</thead>
-							<tbody>
-								{{#each hbsCommunityContent as |comm|}}
-									{{#link-to "lro.renewals.batches.batch.community" comm.id tagName="tr" class="border-right"}}
-										<td class="left">{{comm.communityCode}}</td>
-										<td class="left">{{comm.communityName}}</td>
-										<td>{{format-commas comm.expirationCount}}</td>
-										<td class="no-mobile">${{format-commas comm.avgRecRent}}</td>
-										<td>{{format-percent comm.avgIncrease 1 1}}</td>
-										<td class="no-mobile">{{format-commas comm.avgRecLeaseTerm}}</td>
-										<td>{{format-percent comm.minIncrease 1 1}} - {{format-percent comm.maxIncrease 1 1}}</td>
-										<td class="no-mobile">{{format-percent comm.avgCurrentDiscountToMarket 1 1}}</td>
-										<td class="no-mobile">{{format-percent comm.avgNewDiscountToMarket 1 1}}</td>
-										{{#unless model.isCommitted}}
-											<td>
-												{{#if comm.allApproved}}
-													<i class="fa fa-thumbs-o-down gray" {{action "unapproveCommunity" comm bubbles=false}}></i>
-												{{else}}
-													<i class="fa fa-thumbs-o-up" {{action "approveCommunity" comm bubbles=false}}></i>
-												{{/if}}
-											</td>
-										{{/unless}}
-									{{/link-to}}
-								{{/each}}
-							</tbody>
-						</table>
+						<section class="table renewal-details">
+							<div class="table-container">
+								<table class="sticky-headers">
+									<thead>
+										<tr class="sortable border-right">
+											<th {{action "sortCommunities" "communityCode"}}>Code
+												<div>Code</div>
+											</th>
+											<th {{action "sortCommunities" "communityName"}}>Community Name
+												<div>Community Name</div>
+											</th>
+											<th {{action "sortCommunities" "expirationCount"}}>Expirations
+												<div>Expirations</div>
+											</th>
+											<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Offer Rent
+												<div>Avg. Offer Rent</div>
+											</th>
+											<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase
+												<div>Avg. Increase</div>
+											</th>
+											<th class="no-mobile" {{action "sortCommunities" "avgRecLeaseTerm"}}>Avg Offer Term
+												<div>Avg. Offer Term</div>
+											</th>
+											<th>Increase Range
+												<div>Increase Range</div>
+											</th>
+											<th class="no-mobile" {{action "sortCommunities" "avgCurrentDiscountToMarket"}}>Current Avg DTM
+												<div>Current Avg. DTM</div>
+											</th>
+											<th class="no-mobile" {{action "sortCommunities" "avgNewDiscountToMarket"}}>Offer Avg DTM
+												<div>Offer Avg. DTM</div>
+											</th>
+											{{#unless model.isCommitted}}
+												<th><div></div></th>
+											{{/unless}}
+										</tr>
+									</thead>
+									<tbody>
+										{{#each hbsCommunityContent as |comm|}}
+											{{#link-to "lro.renewals.batches.batch.community" comm.id tagName="tr" class="border-right"}}
+												<td class="left">{{comm.communityCode}}</td>
+												<td class="left">{{comm.communityName}}</td>
+												<td>{{format-commas comm.expirationCount}}</td>
+												<td class="no-mobile">${{format-commas comm.avgRecRent}}</td>
+												<td>{{format-percent comm.avgIncrease 1 1}}</td>
+												<td class="no-mobile">{{format-commas comm.avgRecLeaseTerm}}</td>
+												<td>{{format-percent comm.minIncrease 1 1}} - {{format-percent comm.maxIncrease 1 1}}</td>
+												<td class="no-mobile">{{format-percent comm.avgCurrentDiscountToMarket 1 1}}</td>
+												<td class="no-mobile">{{format-percent comm.avgNewDiscountToMarket 1 1}}</td>
+												{{#unless model.isCommitted}}
+													<td>
+														{{#if comm.allApproved}}
+															<i class="fa fa-thumbs-o-down gray" {{action "unapproveCommunity" comm bubbles=false}}></i>
+														{{else}}
+															<i class="fa fa-thumbs-o-up" {{action "approveCommunity" comm bubbles=false}}></i>
+														{{/if}}
+													</td>
+												{{/unless}}
+											{{/link-to}}
+										{{/each}}
+									</tbody>
+								</table>
+							</div>
+						</section>
 					{{/if}}
 				</div>
 			</section>

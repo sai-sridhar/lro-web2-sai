@@ -3,22 +3,26 @@
 		{{input type="search" placeholder="Search..." value=searchText}}
 	</div>
 	<div class="catalog-scroll no-add">
-		<table>
-			<thead>
-				<tr>
-					<th class="left clickable" {{action "sort" "code"}}>Code</th>
-					<th class="left clickable" {{action "sort" "name"}}>Community Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each arrangedContent as |comm|}}
-					{{#link-to "lro.renewals.params.community" comm.id tagName="tr"}}
-						<td class="left">{{comm.code}}</td>
-						<td class="left">{{comm.name}}</td>
-					{{/link-to}}
-				{{/each}}
-			</tbody>
-		</table>
+		<section class="table">
+			<div class="table-container">
+				<table class="sticky-headers">
+					<thead>
+						<tr>
+							<th class="left clickable" {{action "sort" "code"}}>Code<div>Code</div></th>
+							<th class="left clickable" {{action "sort" "name"}}>Community Name<div>Community Name</div></th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each arrangedContent as |comm|}}
+							{{#link-to "lro.renewals.params.community" comm.id tagName="tr"}}
+								<td class="left">{{comm.code}}</td>
+								<td class="left">{{comm.name}}</td>
+							{{/link-to}}
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</section>
 	</div>
 </section>
 <section class="item-content">

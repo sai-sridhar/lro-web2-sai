@@ -1,41 +1,69 @@
 <div class="batches">
 	{{#if model.length}}
-		<table>
-			<thead>
-				<tr>
-					<th>Batch/Community Name</th>
-					<th>Date Range</th>
-					<th>Expirations</th>
-					<th>Avg. Rec. Rent</th>
-					<th>Avg. Increase</th>
-					<th>Avg. Rec. Term</th>
-					<th>Avg. Prior Rent</th>
-					<th>Avg. Prior Term</th>
-					<th>Notice</th>
-					<th>Renewed</th>
-					<th>Undecided</th>
-					<th>Committed</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each filteredContent as |batch|}}
-					{{#link-to "lro.renewals.batches.batch.home" batch.id tagName="tr"}}
-						<td>{{batch.name}}</td>
-						<td>{{batch.dateRange}}</td>
-						<td>{{format-commas batch.expirationCount}}</td>
-						<td>${{format-commas batch.avgRecRent}}</td>
-						<td>{{format-percent batch.avgIncrease}}</td>
-						<td>{{format-commas batch.avgRecLeaseTerm}}</td>
-						<td>${{format-commas batch.avgCurrentRent}}</td>
-						<td>{{format-commas batch.avgCurrentLeaseTerm}}</td>
-						<td>12</td>
-						<td>50</td>
-						<td>50</td>
-						<td>2015-11-01<br>jtrkovsky@letitrain.com</td>
-					{{/link-to}}
-				{{/each}}
-			</tbody>
-		</table>
+		<section class="table">
+			<div class="table-container">
+				<table class="sticky-headers">
+					<thead>
+						<tr>
+							<th>Batch/Community Name
+								<div>Batch/Community Name</div>
+							</th>
+							<th>Date Range
+								<div>Date Range</div>
+							</th>
+							<th>Expirations
+								<div>Expirations</div>
+							</th>
+							<th>Avg. Rec. Rent
+								<div>Avg. Rec. Rent</div>
+							</th>
+							<th>Avg. Increase
+								<div>Avg. Increase</div>
+							</th>
+							<th>Avg. Rec. Term
+								<div>Avg. Rec. Term</div>
+							</th>
+							<th>Avg. Prior Rent
+								<div>Avg. Prior Rent</div>
+							</th>
+							<th>Avg. Prior Term
+								<div>Avg. Prior Term</div>
+							</th>
+							<th>Notice
+								<div>Notice</div>
+							</th>
+							<th>Renewed
+								<div>Renewed</div>
+							</th>
+							<th>Undecided
+								<div>Undecided</div>
+							</th>
+							<th>Committed
+								<div>Committed</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each filteredContent as |batch|}}
+							{{#link-to "lro.renewals.batches.batch.home" batch.id tagName="tr"}}
+								<td>{{batch.name}}</td>
+								<td>{{batch.dateRange}}</td>
+								<td>{{format-commas batch.expirationCount}}</td>
+								<td>${{format-commas batch.avgRecRent}}</td>
+								<td>{{format-percent batch.avgIncrease}}</td>
+								<td>{{format-commas batch.avgRecLeaseTerm}}</td>
+								<td>${{format-commas batch.avgCurrentRent}}</td>
+								<td>{{format-commas batch.avgCurrentLeaseTerm}}</td>
+								<td>12</td>
+								<td>50</td>
+								<td>50</td>
+								<td>2015-11-01<br>jtrkovsky@letitrain.com</td>
+							{{/link-to}}
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</section>
 	{{else}}
 		<h2 class="center dbl-top-margin">There are no committed renewal batches.</h2>
 	{{/if}}

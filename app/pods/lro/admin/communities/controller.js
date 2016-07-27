@@ -3,6 +3,8 @@ import computedFilterByQuery from 'ember-cli-filter-by-query';
 
 export default Ember.Controller.extend({
 	searchText : null,
-	filteredModel : computedFilterByQuery('model', ['name','code'], 'searchText')
+	filteredContent : computedFilterByQuery('model', ['name','code'], 'searchText'),
+	sortBy : ["name:asc"],
+	hbsContent : Ember.computed.sort("filteredContent", "sortBy")
 
 });

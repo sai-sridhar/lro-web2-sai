@@ -8,22 +8,26 @@
 			{{input value=query type="search" placeholder="Search..."}}
 		</section>
 		<section class="list">
-			<table>
-				<thead>
-					<tr>
-						<th class="left">Community Code</th>
-						<th class="left">Community Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each filteredList as |community|}}
-						{{#link-to "lro.pricingLeasing.community" community.id tagName="tr"}}
-							<td class="left">{{community.code}}</td>
-							<td class="left">{{community.name}}</td>
-						{{/link-to}}
-					{{/each}}
-				</tbody>
-			</table>
+			<section class="table">
+				<div class="table-container">
+					<table class="sticky-headers">
+						<thead>
+							<tr>
+								<th class="left" {{action "sort" "code"}}>Community Code<div>Community Code</div></th>
+								<th class="left" {{action "sort" "name"}}>Community Name<div>Community Name</div></th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each hbsContent as |community|}}
+								{{#link-to "lro.pricingLeasing.community" community.id tagName="tr"}}
+									<td class="left">{{community.code}}</td>
+									<td class="left">{{community.name}}</td>
+								{{/link-to}}
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
+			</section>
 		</section>
 	</div>
 </div>
