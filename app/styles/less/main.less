@@ -70,6 +70,10 @@ input[type="number"] {
 	/*font-size: 1.2em;*/
 }
 
+input[type="search"] {
+	-webkit-appearance: textfield;
+}
+
 input {
 	border-radius: none;
 	height: 2em;
@@ -668,7 +672,7 @@ button {
 		&:hover {
 			background: @buttonGreen;
 			color: white;
-		};
+		}
 	}
 
 	&.slim {
@@ -788,7 +792,7 @@ section {
 .my-account {
 	position: relative;
 	display: inline-block;
-	line-height: 5em;
+	line-height: @headerBarHeight;
 	margin-right: @dblPadding;
 
 	.user-menu {
@@ -1030,25 +1034,18 @@ section {
 		top: 0;
 		right: 0;
 		left: 0;
-		height: 3.5em;
 		box-sizing: border-box;
 		text-align: left;
-		/*background-color: darken(@buttonGreen, 10%);*/
 		background-color: @buttonGreen;
-		/*border-bottom: 1px solid darken(@buttonGreen, 15%);*/
 		border-bottom: 2px solid darken(@buttonGreen, 10%);
 		-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
        	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
 		z-index: 500;
 
 		.abbreviated {
-			position: absolute;
+			position: relative;
 			display: block;
-			top: 0;
-			left: 0;
-			right: 0;
 			font-size: 1.2em;
-			height: 2.8em;
 			color: white;
 			padding: @dblPadding;
 			box-sizing: border-box;
@@ -1062,17 +1059,13 @@ section {
 		}
 
 		&.expanded {
-			height: 22em;
+			/*height: 22em;*/
 		}
 
 		.verbose {
-			position: absolute;
+			position: relative;
 			font-size: 1.2em;
 			color: @gray2;
-			top: 1.8em;
-			left: 0;
-			right: 0;
-			bottom: 0;
 			margin-top: @dblPadding;
 			padding: @dblPadding;
 			box-sizing: border-box;
@@ -1144,17 +1137,10 @@ section {
 
        		&:hover {
        			background-color: darken(@grayBlue, 10%);
-       			/*color: @lightBlue;*/
-       			/*color: black;*/
-       			i {
-       				/*color: @lightBlue;*/
-       				/*color: black;*/
-       			}
        		}
 
        		&.active {
        			background-color: @mediumBlue;
-       			/*background-color: darken(@grayBlue, 20%);*/
 
        			&:hover {
        				color: white;
@@ -1234,10 +1220,10 @@ section {
 
 	.hamburger {
 		display: none;
-		float: right;
-		margin: 1em @stdPadding;
+		float: left;
+		margin: 1.6em;
 		i {
-			font-size: 3em;
+			font-size: 4em;
 			color: white;
 		}
 	}
@@ -1537,6 +1523,8 @@ section {
 			display: block;
 			text-align: left;
 			padding: @dblPadding;
+			height: 3em;
+			box-sizing: border-box;
 		}
 	}
 
@@ -1684,7 +1672,7 @@ section {
 			border-top: @stdBorder;
 			margin-top: @dblPadding;
 
-			.title {
+			h2 {
 				padding: @dblPadding;
 				font-weight: 400;
 			}
@@ -2261,7 +2249,7 @@ section {
 		height: 80%;
 		margin: 0px auto;
 		margin-top: 3 * @dblPadding;
-		overflow-y: scroll;
+		overflow-y: auto;
 		font-size: 1.2em;
 
 		&>section {

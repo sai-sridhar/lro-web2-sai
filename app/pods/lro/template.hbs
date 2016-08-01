@@ -3,10 +3,10 @@
 		<div class="logo"></div>
 	</nav>
 	<div class="main-menu">
-		<div class="triangle tri-right left-of-menu"></div>
-		<div class="hidden-button" {{action 'toggleMainMenu'}}></div>
-		<div class="triangle tri-right right-of-menu"></div>
-		{{fa-icon "caret-down" fixedWidth=true}}
+		<div class="triangle tri-right left-of-menu no-mobile"></div>
+		<div class="hidden-button no-mobile" {{action 'toggleMainMenu'}}></div>
+		<div class="triangle tri-right right-of-menu no-mobile"></div>
+		{{fa-icon "caret-down" fixedWidth=true class="no-mobile"}}
 		<div class="menu {{if showMenu 'show'}}">
 			{{#link-to 'lro.dashboard' tagName="div"}}
 				<div {{action "toggleMainMenu"}}>
@@ -55,7 +55,7 @@
 			{{/if}}
 	    </div>
 	</div>
-	<div class="online-help float-right">
+	<div class="online-help float-right no-mobile">
 		<button class="round-small">?</button>
 	</div>
 	{{outlet}}

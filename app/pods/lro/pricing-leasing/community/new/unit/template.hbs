@@ -62,12 +62,13 @@
 			</div>
 		</div>
 		<div class="lease-terms">
-			<div class="title">Available Lease Terms</div>
+			<h2>Available Lease Terms</h2>
+			{{!-- <div class="title">Available Lease Terms</div> --}}
 			<div class="move-in">
 				Desired Move-in Date: {{input type="date" value=model.moveInDate min=model.moveInDateMin}}
 			</div>
 			<div>
-				<table>
+				<table class="new-pricing-table">
 					<thead>
 						<tr>
 							{{!-- <th>Term</th>

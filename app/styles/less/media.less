@@ -52,8 +52,15 @@
 }
 
 @media screen and (max-width: 800px) {
+	@headerBarHeight: 7em;
 	html {
 		font-size: 10px;
+	}
+
+	input {
+		&.calendar {
+			font-size: 2em;
+		}
 	}
 
 	.no-mobile {
@@ -101,27 +108,31 @@
 		}
 
 		.login-banner {
-			height: 10.5em;
 
 			.abbreviated {
 				font-size: 1.8em;
-				height: 4.8em;
 			}
 
 			&.expanded {
-				height: 43em;
+				/*height: 43em;*/
 			}
 
 			.verbose {
 				font-size: 1.8em;
-				top: 4.8em;
 			}
 		}
 	}
 
+	.my-account {
+		line-height: @headerBarHeight;
+	}
+
 	nav {
-		background-position: 0.5em 50%;
-		background-size: 100px 38px;
+		height: @headerBarHeight;
+		text-align: center;
+		.logo {
+			background-size: 100px 38px;
+		}
 	}
 
 	button {
@@ -144,6 +155,15 @@
 				line-height: 1em;
 			}
 		}
+
+		&.user-avatar {
+			font-size: 2em;
+
+			&:hover {
+				background: none;
+				color: @buttonGreen;
+			}
+		}
 	}
 
 	.main-menu {
@@ -151,7 +171,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: @headerBarHeight + 1;
+		height: @headerBarHeight;
 		display: block;
 		width: 100%;
 		padding: 0px;
@@ -179,6 +199,10 @@
 				text-align: center;
 				box-sizing: border-box;
 
+				&:hover {
+	       			background-color: transparent;
+	       		}
+
 				i {
 					display: block;
 					margin: 0 auto;
@@ -187,6 +211,12 @@
 				name {
 					display: none;
 				}
+
+				&.active {
+	       			&:hover {
+	       				background-color: @mediumBlue;
+	       			}
+	       		}
 			}
 		}
 	}
@@ -194,6 +224,7 @@
 	.section-menu {
 		left: 0;
 		right: 0;
+		height: @headerBarHeight;
 
 		&>i {
 			display: none;
@@ -201,7 +232,6 @@
 
 		.hamburger {
 			display: inline-block;
-			margin-right: 1em;
 		}
 
 		.menu {
@@ -228,7 +258,8 @@
 	}
 
 	.module-content {
-		bottom: @headerBarHeight + 1;
+		top: @headerBarHeight;
+		bottom: @headerBarHeight;
 	}
 
 	.new-pricing {
@@ -239,7 +270,42 @@
 	}
 
 	table {
-		font-size: 2em;
+		tbody {
+			tr {
+				&:hover {
+					background: rgb(245,245,245) !important;
+					cursor: default !important;
+
+					&:nth-of-type(2n) {
+						background: rgb(255,255,255) !important;
+					}
+				}
+			}
+		}
+
+		&.new-pricing-table {
+			font-size: 1.5em;
+		}
+	}
+
+	section {
+		&.table {
+
+			.table-container {
+
+				table {
+					&.sticky-headers {
+						border-spacing: 0;
+						width:100%;
+
+						thead {
+							font-size: 0.8em;
+						}
+					}
+
+				}
+			}
+		}
 	}
 
 	.detail-drawer {
@@ -264,9 +330,17 @@
 					font-size: 4em;
 				}
 			}
+			.unit-header {
+				height: 5em;
+				h1 {
+					font-size: 3em;
+				}
+				/*box-sizing: border-box;*/
+			}
 		}
 
 		.scroll-content {
+			top: 5.2em;
 			.data-point-wrapper {
 				&>div {
 					width: (@detailDrawerWidth / 2) - 2;
@@ -284,11 +358,27 @@
 					}
 				}
 			}
+
+			.lease-terms {
+
+				h2 {
+					font-size: 2em;
+				}
+
+				.move-in {
+					font-size: 1.8em;
+
+					input {
+						font-size: 1em;
+					}
+				}
+			}
 		}
 	}
 
 	.control-wrapper {
 		height: 2.8 * @toolbarHeight;
+		padding: 0;
 
 		title {
 			display: block;
@@ -334,16 +424,18 @@
 				padding: @dblPadding @stdPadding;
 				vertical-align: top;
 				border-bottom: @stdBorder;
-				height: 3em;
 				line-height: 2em;
 
 				.label {
-					display: inline-block;
+					display: block;
 					color: @gray;
 					font-size: 2em;
 					padding-bottom: @stdPadding / 2;
-					float: left;
 					line-height: 1.5em;
+				}
+
+				.control {
+
 				}
 
 				.selected {
@@ -396,6 +488,7 @@
 	.search-wrapper {
 		display: block;
 		width: 100%;
+		margin-top: 1em;
 
 		.search-control {
 			width: 100%;
@@ -601,10 +694,14 @@
 	}
 
 	.community-select {
+		top: @headerBarHeight;
+		bottom: @headerBarHeight;
+
 		.community-list-wrapper {
 			font-size: 2em;
-			height: 80%;
-			width: 80%;
+			height: 90%;
+			width: 90%;
+			margin-top: 5%;
 		}
 	}
 
@@ -618,5 +715,56 @@
 			box-shadow: none;
 
 		}
+	}
+
+	.community-select-wrapper {
+
+		.community-control {
+
+			.community-code {
+				font-size: 1.5em;
+			}
+
+			.community-name {
+				font-size: 2em;
+			}
+		}
+
+		.community-menu {
+			top: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+
+			&.open {
+				display: block;
+			}
+
+			.list-wrapper {
+				overflow-y: auto;
+
+				&>div {
+					&:hover {
+						color: @gray;
+						cursor: pointer;
+					}
+
+					.c-code {
+						font-size: 1.5em;
+					}
+					.c-name {
+						font-size: 2em;
+					}
+				}
+			}
+		}
+	}
+
+	.select2-container {
+		font-size: 2em;
+	}
+
+	.select2-drop {
+		font-size: 2em;
 	}
 }
