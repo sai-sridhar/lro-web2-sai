@@ -8,9 +8,9 @@
 			{{input value=query type="search" placeholder="Search..."}}
 		</section>
 		<section class="list">
-			<section class="table">
-				<div class="table-container">
-					<table class="sticky-headers">
+			{{!-- <section class="table">
+				<div class="table-container"> --}}
+					<table {{!-- class="sticky-headers" --}}>
 						<thead>
 							<tr>
 								<th class="left" {{action "sort" "code"}}>Community Code<div>Community Code</div></th>
@@ -26,8 +26,8 @@
 							{{/each}}
 						</tbody>
 					</table>
-				</div>
-			</section>
+				{{!-- </div>
+			</section> --}}
 		</section>
 	</div>
 </div>
