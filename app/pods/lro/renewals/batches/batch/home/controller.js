@@ -5,6 +5,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 
 	communityView : null,
 	unitView : null,
+	summaryView : null,
 	newDtmMin : 0,
 	newDtmMax : 0,
 	currentDtmMin : 0,
@@ -18,11 +19,23 @@ export default Ember.Controller.extend(RoundingMixin, {
 
 	detailViewObserver : Ember.observer("detailView", function() {
 		if( this.get("detailView") === "community" ) {
-			this.set("unitView", false);
-			this.set("communityView", true);
+			this.setProperties({
+				"communityView" : true,
+				"unitView" : false,
+				"summaryView" : false
+			});
 		} else if( this.get("detailView") === "unit" ) {
-			this.set("unitView", true);
-			this.set("communityView", false);
+			this.setProperties({
+				"unitView" : true,
+				"communityView" : false,
+				"summaryView" : false
+			});
+		} else if( this.get("detailView") === "summary" ) {
+			this.setProperties({
+				"summaryView" : true,
+				"unitView" : false,
+				"communityView" : false
+			});
 		}
 	}),
 

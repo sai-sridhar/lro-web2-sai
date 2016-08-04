@@ -21,62 +21,12 @@
 		</div>
 	</section>
 	<section class="batch-content">
-		<section class="rb-summary">
-			<div class="col col-25">
-				<div class="chart">
-					{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
-				</div>
-			</div
-			><div class="col col-40">
-				{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
-			</div
-			><div class="col col-20">
-				<table class="rb-metrics-table no-hover">
-					<tr style="height: 80px">
-						<td style="border: none;">
-							<div class="rb-metric-title">Average Increase</div>
-							<div class="rb-metric">{{format-percent model.avgIncrease}}</div>
-						</td>
-						<td style="border: none;">
-							<div class="rb-metric-title">Increase Range</div>
-							<div class="rb-metric">{{format-percent model.minIncrease}} - {{format-percent model.maxIncrease}}</div>
-						</td>
-					</tr>
-					<tr style="height: 80px">
-						<td style="border: none;">
-							<div class="rb-metric-title">Current Avg. DTM</div>
-							<div class="rb-metric">{{format-percent model.avgCurrentDiscountToMarket}}</div>
-						</td>
-						<td style="border: none;">
-							<div class="rb-metric-title">Current DTM Range</div>
-							<div class="rb-metric">{{format-percent model.minCurrentDiscountToMarket}} - {{format-percent model.maxCurrentDiscountToMarket}}</div>
-						</td>
-					</tr>
-					<tr style="height: 80px">
-						<td style="border: none;">
-							<div class="rb-metric-title">New Avg. DTM</div>
-							<div class="rb-metric">{{format-percent model.avgNewDiscountToMarket}}</div>
-						</td>
-						<td style="border: none;">
-							<div class="rb-metric-title">New DTM Range</div>
-							<div class="rb-metric">{{format-percent model.minNewDiscountToMarket}} - {{format-percent model.maxNewDiscountToMarket}}</div>
-						</td>
-					</tr>
-				</table>
-			</div
-			><div class="col col-15">
-				{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
-				<div class="center">
-					<h2 class="std-bottom-margin">Overrides</h2>
-					<h1>{{format-commas model.overrideCount}}</h1>
-				</div>
-			</div>
-		</section>
 		<section class="rb-details">
 			<div class="rb-detail-nav">
 				<div class="tab-menu tm-4 rb-detail-tabs inline no-border {{if showDetailFilters 'filters-open'}}">
-					<div {{action "toggleCommunityView"}} class="{{if communityView 'active'}}">Community View</div
-					><div {{action "toggleUnitView"}} class="{{if unitView 'active'}}">Unit View</div>
+					<div {{action "toggleView" "summary"}} class="{{if summaryView 'active'}}">Summary</div
+					><div {{action "toggleView" "community"}} class="{{if communityView 'active'}}">Community View</div
+					><div {{action "toggleView" "unit"}} class="{{if unitView 'active'}}">Unit View</div>
 				</div>
 				{{#if unitFiltersApplied}}
 					<div class="filter-tag clickable" {{action "clearUnitFilters"}}>
@@ -92,8 +42,10 @@
 				{{/if}}
 				{{#if unitView}}
 					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
-				{{else}}
+				{{else if communityView}}
 					<button class="with-icon float-right std-right-margin" {{action "approveFilteredCommunities"}}>{{fa-icon "thumbs-up"}}Approve Filtered Communities</button>
+				{{else}}
+
 				{{/if}}
 			</div>
 			<section class="rb-detail-content">
@@ -170,7 +122,7 @@
 										</div>
 									</div>
 								</div>
-							{{else}}
+							{{else if communityView}}
 								<div class="filter">
 									<div>
 										<div class="label">Avg. Increase <br>({{format-percent avgIncreaseMin 100}} - {{format-percent avgIncreaseMax 100}}):</div>
@@ -203,6 +155,8 @@
 								<div class="filter">
 									{{input-control value=unapprovedCommunityFilter type="toggle" label="Unapproved Only" orientation="block"}}
 								</div>
+							{{else}}
+
 							{{/if}}
 						</div>
 					{{else}}
@@ -211,9 +165,9 @@
 						</div>
 					{{/if}}
 				</div>
-				<div class="table-wrapper  {{if showDetailFilters 'filters-open'}}">
+				<div class="rb-detail-content-wrapper  {{if showDetailFilters 'filters-open'}}">
 					{{#if unitView}}
-						<section class="table dbl-head-rows renewal-details">
+						<section class="table dbl-head-rows">
 							<div class="table-container">
 								<table class="sticky-headers">
 									<thead>
@@ -330,8 +284,8 @@
 								</table>
 							</div>
 						</section>
-					{{else}}
-						<section class="table renewal-details">
+					{{else if communityView}}
+						<section class="table">
 							<div class="table-container">
 								<table class="sticky-headers">
 									<thead>
@@ -393,6 +347,58 @@
 										{{/each}}
 									</tbody>
 								</table>
+							</div>
+						</section>
+					{{else}}
+						<section class="rb-summary">
+							<div class="col col-25">
+								<div class="chart">
+									{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
+								</div>
+							</div
+							><div class="col col-40">
+								{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
+							</div
+							><div class="col col-20">
+								<table class="rb-metrics-table no-hover">
+									<tr style="height: 80px">
+										<td style="border: none;">
+											<div class="rb-metric-title">Average Increase</div>
+											<div class="rb-metric">{{format-percent model.avgIncrease}}</div>
+										</td>
+										<td style="border: none;">
+											<div class="rb-metric-title">Increase Range</div>
+											<div class="rb-metric">{{format-percent model.minIncrease}} - {{format-percent model.maxIncrease}}</div>
+										</td>
+									</tr>
+									<tr style="height: 80px">
+										<td style="border: none;">
+											<div class="rb-metric-title">Current Avg. DTM</div>
+											<div class="rb-metric">{{format-percent model.avgCurrentDiscountToMarket}}</div>
+										</td>
+										<td style="border: none;">
+											<div class="rb-metric-title">Current DTM Range</div>
+											<div class="rb-metric">{{format-percent model.minCurrentDiscountToMarket}} - {{format-percent model.maxCurrentDiscountToMarket}}</div>
+										</td>
+									</tr>
+									<tr style="height: 80px">
+										<td style="border: none;">
+											<div class="rb-metric-title">New Avg. DTM</div>
+											<div class="rb-metric">{{format-percent model.avgNewDiscountToMarket}}</div>
+										</td>
+										<td style="border: none;">
+											<div class="rb-metric-title">New DTM Range</div>
+											<div class="rb-metric">{{format-percent model.minNewDiscountToMarket}} - {{format-percent model.maxNewDiscountToMarket}}</div>
+										</td>
+									</tr>
+								</table>
+							</div
+							><div class="col col-15">
+								{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
+								<div class="center">
+									<h2 class="std-bottom-margin">Overrides</h2>
+									<h1>{{format-commas model.overrideCount}}</h1>
+								</div>
 							</div>
 						</section>
 					{{/if}}

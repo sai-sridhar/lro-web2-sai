@@ -692,10 +692,6 @@ section {
 			padding-top: 60px;
 		}
 
-		&.renewal-details {
-			height: 600px;
-		}
-
 		.table-container {
 			overflow-y: auto;
 			height: 100%;
@@ -2752,7 +2748,8 @@ section {
 			left: 0;
 			right: 0;
 			overflow-y: auto;
-			border-top: @stdBorder;
+			/*border-top: @stdBorder;*/
+			padding-top: @dblPadding;
 			box-sizing: border-box;
 
 			.settings-wrapper {
@@ -2796,27 +2793,27 @@ section {
 		}
 	}
 
-	.rb-summary {
-		position: relative;
-		display: block;
-		margin-bottom: 20px;
-		border-bottom: @stdBorder;
-		box-sizing: border-box;
-		background: white;
-	}
+
 
 	.rb-details {
 		position: relative;
 		display: block;
-		height: 600px;
-		margin-bottom: 20px;
-		border-bottom: @stdBorder;
+		/*height: 600px;*/
+		height: 100%;
+		box-sizing: border-box;
+		/*margin-bottom: 20px;*/
+		/*border-bottom: @stdBorder;*/
 
 		.rb-detail-nav {
+			position: absolute;
+			left: 0;
+			right: 0;
 			border-bottom: @stdBorder;
 			height: 3.5em;
+			box-sizing: border-box;
 
 			.rb-detail-tabs {
+				position: relative;
 				padding-left: 36px;
 				height: 100%;
 				&>div {
@@ -2831,13 +2828,14 @@ section {
 		}
 
 		.rb-detail-content {
-			position: relative;
-			/*top: 33px;*/
+			position: absolute;
+			top: 3.5em;
 			left: 0;
-			height: 100%;
+			right: 0;
+			bottom: 0;
 			overflow-y: auto;
 
-			.table-wrapper {
+			.rb-detail-content-wrapper {
 				position: relative;
 				border-left: @stdBorder;
 				overflow: auto;
@@ -2845,11 +2843,22 @@ section {
 				top: 0;
 				margin-right: 36px;
 				left: 36px;
-				max-height: 600px;
+				height: 100%;
 
 				&.filters-open {
 					left: @filterPanelWidth;
 					margin-right: @filterPanelWidth;
+				}
+
+				.rb-summary {
+					position: absolute;
+					display: block;
+					box-sizing: border-box;
+					background: white;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
 				}
 			}
 		}

@@ -7,30 +7,31 @@ export default Ember.Route.extend({
 	setupController : function(controller, model) {
 		this._super(controller, model);
 		if( !controller.get("detailView") ) {
-			controller.set("detailView", "unitType");
+			controller.set("detailView", "summary");
 		}
 
-		controller.set("bedsFilter", null);
-		controller.set("bathsFilter", null);
-		controller.set("unitTypeFilter", null);
-		controller.set("pmsUnitTypeFilter", null);
-		controller.set("overrideUnitFilter", false);
-		controller.set("unapprovedUnitFilter", false);
-		controller.set("minIncFilter", null);
-		controller.set("maxIncFilter", null);
-		controller.set("minCurrentDtmFilter", null);
-		controller.set("minCurrentDtmFilter", null);
-		controller.set("minNewDtmFilter", null);
-		controller.set("maxNewDtmFilter", null);
-
-		controller.set("minAvgIncFilter", null);
-		controller.set("maxAvgIncFilter", null);
-		controller.set("minAvgCurrentDtmFilter", null);
-		controller.set("maxAvgCurrentDtmFilter", null);
-		controller.set("minAvgNewDtmFilter", null);
-		controller.set("maxAvgNewDtmFilter", null);
-		controller.set("overrideUnitTypeFilter", false);
-		controller.set("unapprovedUnitTypeFilter", false);
+		controller.setProperties({
+			"bedsFilter" : null,
+			"bathsFilter" : null,
+			"unitTypeFilter" : null,
+			"pmsUnitTypeFilter" : null,
+			"overrideUnitFilter" : false,
+			"unapprovedUnitFilter" : false,
+			"minIncFilter" : null,
+			"maxIncFilter" : null,
+			"minCurrentDtmFilter" : null,
+			"minCurrentDtmFilter" : null,
+			"minNewDtmFilter" : null,
+			"maxNewDtmFilter" : null,
+			"minAvgIncFilter" : null,
+			"maxAvgIncFilter" : null,
+			"minAvgCurrentDtmFilter" : null,
+			"maxAvgCurrentDtmFilter" : null,
+			"minAvgNewDtmFilter" : null,
+			"maxAvgNewDtmFilter" : null,
+			"overrideUnitTypeFilter" : false,
+			"unapprovedUnitTypeFilter" : false
+		});
 	},
 
 	actions : {
@@ -73,11 +74,8 @@ export default Ember.Route.extend({
 		closeCommunity : function() {
 			this.transitionTo("lro.renewals.batches.batch.home");
 		},
-		toggleUnitTypeView : function() {
-			this.controller.set("detailView", "unitType");
-		},
-		toggleUnitView : function() {
-			this.controller.set("detailView", "unit");
+		toggleView : function(view) {
+			this.controller.set("detailView", view);
 		},
 		openDetailFilterPane : function() {
 			this.controller.set("showDetailFilters", true);
@@ -199,21 +197,20 @@ export default Ember.Route.extend({
 			);
 		},
 		clearUnitFilters : function() {
-			this.controller.set("bedsFilter", null);
-			this.controller.set("bathsFilter", null);
-			this.controller.set("unitTypeFilter", null);
-			this.controller.set("pmsUnitTypeFilter", null);
-			this.controller.set("overrideUnitFilter", false);
-			this.controller.set("unapprovedUnitFilter", false);
-
-			this.controller.set("minIncFilter", null);
-			this.controller.set("maxIncFilter", null);
-
-			this.controller.set("minCurrentDtmFilter", null);
-			this.controller.set("minCurrentDtmFilter", null);
-
-			this.controller.set("minNewDtmFilter", null);
-			this.controller.set("maxNewDtmFilter", null);
+			this.controller.setProperties({
+				"bedsFilter" : null,
+				"bathsFilter" : null,
+				"unitTypeFilter" : null,
+				"pmsUnitTypeFilter" : null,
+				"overrideUnitFilter" : false,
+				"unapprovedUnitFilter" : false,
+				"minIncFilter" : null,
+				"maxIncFilter" : null,
+				"minCurrentDtmFilter" : null,
+				"minCurrentDtmFilter" : null,
+				"minNewDtmFilter" : null,
+				"maxNewDtmFilter" : null
+			});
 		},
 		sortUnits : function(prop) {
 			// What is the current unitSortBy property
@@ -234,14 +231,16 @@ export default Ember.Route.extend({
 			this.controller.set("unitSortBy", [ prop+":"+direction]);
 		},
 		clearUnitTypeFilters : function() {
-			this.controller.set("minAvgIncFilter", null);
-			this.controller.set("maxAvgIncFilter", null);
-			this.controller.set("minAvgCurrentDtmFilter", null);
-			this.controller.set("maxAvgCurrentDtmFilter", null);
-			this.controller.set("minAvgNewDtmFilter", null);
-			this.controller.set("maxAvgNewDtmFilter", null);
-			this.controller.set("overrideUnitTypeFilter", false);
-			this.controller.set("unapprovedUnitTypeFilter", false);
+			this.controller.setProperties({
+				"minAvgIncFilter" : null,
+				"maxAvgIncFilter" : null,
+				"minAvgCurrentDtmFilter" : null,
+				"maxAvgCurrentDtmFilter" : null,
+				"minAvgNewDtmFilter" : null,
+				"maxAvgNewDtmFilter" : null,
+				"overrideUnitTypeFilter" : false,
+				"unapprovedUnitTypeFilter" : false
+			});
 		},
 		sortUnitTypes : function(prop) {
 			// What is the current unitTypeSortBy property

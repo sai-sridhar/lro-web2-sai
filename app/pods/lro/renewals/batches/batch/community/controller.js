@@ -5,6 +5,7 @@ import RoundingMixin from 'zion/mixins/rounding';
 export default Ember.Controller.extend(RoundingMixin, {
 	unitTypeView : null,
 	unitView : null,
+	summaryView : null,
 	unitSortBy : ["renewalDate:asc"],
 	unitTypeSortBy : ["unitType:asc"],
 
@@ -14,11 +15,23 @@ export default Ember.Controller.extend(RoundingMixin, {
 
 	detailViewObserver : Ember.observer("detailView", function() {
 		if( this.get("detailView") === "unitType" ) {
-			this.set("unitView", false);
-			this.set("unitTypeView", true);
+			this.setProperties({
+				"unitTypeView" : true,
+				"unitView" : false,
+				"summaryView" : false
+			});
 		} else if( this.get("detailView") === "unit" ) {
-			this.set("unitView", true);
-			this.set("unitTypeView", false);
+			this.setProperties({
+				"unitView" : true,
+				"unitTypeView" : false,
+				"summaryView" : false
+			});
+		} else if( this.get("detailView") === "summary" ) {
+			this.setProperties({
+				"summaryView" : true,
+				"unitView" : false,
+				"unitTypeView" : false
+			});
 		}
 	}),
 
