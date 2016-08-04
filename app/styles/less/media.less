@@ -270,6 +270,7 @@
 	}
 
 	table {
+		font-size: 1.5em;
 		tbody {
 			tr {
 				&:hover {
@@ -283,8 +284,8 @@
 			}
 		}
 
-		&.new-pricing-table {
-			font-size: 1.5em;
+		&.community-select-table {
+			font-size: 1em;
 		}
 	}
 
@@ -377,8 +378,12 @@
 	}
 
 	.control-wrapper {
-		height: 2.8 * @toolbarHeight;
+		height: @headerBarHeight;
 		padding: 0;
+
+		&>div {
+			margin-top: @dblPadding;
+		}
 
 		title {
 			display: block;
@@ -486,9 +491,9 @@
 	}
 
 	.search-wrapper {
-		display: block;
+		display: block !important;
 		width: 100%;
-		margin-top: 1em;
+		margin-top: @dblPadding;
 
 		.search-control {
 			width: 100%;
@@ -543,29 +548,58 @@
 
 	.renewal-mgmt {
 		.renewal-batches {
+			.control-wrapper {
+				height: 2 * @headerBarHeight;
+			}
 			.batches {
-				    top: 2.8 * @toolbarHeight;
+				    top: 2*@headerBarHeight;
 			}
 		}
 
 		.batch {
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			right: 0;
-			left: 0;
-
 			.batch-content {
-				position: absolute;
-				top: 2.8 * @toolbarHeight;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				overflow-y: scroll;
-				border-top: @stdBorder;
-				box-sizing: border-box;
+				top: 2*@headerBarHeight;
 			}
 		}
+
+		.batch-settings {
+			.control-wrapper {
+				height: @headerBarHeight;
+				title {
+					margin-left: @dblPadding;
+					margin-top: @dblPadding;
+					display: inline-block;
+					vertical-align: top;
+					float: left;
+				}
+				.button-wrapper {
+					margin-right: @dblPadding;
+					margin-top: @dblPadding;
+					display: inline-block;
+					vertical-align: top;
+					float: right;
+				}
+			}
+			.settings-content {
+				top: @headerBarHeight;
+
+				.settings-wrapper {
+					width: 100%;
+					border: none;
+					&>div {
+						.setting {
+							font-size: 1.2em;
+							width: 60%;
+						}
+						.control {
+							font-size: 1.2em;
+							width: 35%;
+						}
+					}
+				}
+			}
+		}
+
 		.rb-details {
 			height: none;
 			margin-bottom: 0px;
@@ -590,6 +624,16 @@
 				}
 			}
 		}
+	}
+
+	.catalog {
+		width: 100%;
+		border: none;
+
+	}
+
+	.item-content {
+		width: 100%;
 	}
 
 	.tab-menu {
