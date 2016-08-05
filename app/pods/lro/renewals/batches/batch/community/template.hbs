@@ -299,7 +299,7 @@
 									</thead>
 									<tbody>
 										{{#each hbsUnitTypeContent as |ut|}}
-											<tr class="border-right">
+											<tr class="border-right" {{action "filterToUnitType" ut}}>
 						    					<td>{{ut.unitType}}</td>
 						    					<td>{{format-commas ut.expirationCount}}</td>
 						    					<td>${{format-commas ut.avgRecRent}}</td>

@@ -20,7 +20,7 @@ export default Ember.Route.extend({
 			"minIncFilter" : null,
 			"maxIncFilter" : null,
 			"minCurrentDtmFilter" : null,
-			"minCurrentDtmFilter" : null,
+			"maxCurrentDtmFilter" : null,
 			"minNewDtmFilter" : null,
 			"maxNewDtmFilter" : null,
 			"minAvgIncFilter" : null,
@@ -207,7 +207,7 @@ export default Ember.Route.extend({
 				"minIncFilter" : null,
 				"maxIncFilter" : null,
 				"minCurrentDtmFilter" : null,
-				"minCurrentDtmFilter" : null,
+				"maxCurrentDtmFilter" : null,
 				"minNewDtmFilter" : null,
 				"maxNewDtmFilter" : null
 			});
@@ -317,6 +317,16 @@ export default Ember.Route.extend({
 					}
 				}
 			);
+		},
+		filterToUnitType : function(ut) {
+			// set the detail view to Unit
+			this.send("toggleView", "unit");
+
+			// set the LRO Unit Type filter to the unit type
+			this.controller.set("unitTypeFilter", Ember.Object.create({
+				id : ut.get("unitType"),
+				text : ut.get("unitType")
+			}));
 		}
 	}
 });
