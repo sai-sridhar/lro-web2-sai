@@ -3,22 +3,31 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 	actions : {
 		authenticate : function() {
-			var identification = this.controllerFor("login.index").get('emailAddress'),
-				password = this.controllerFor("login.index").get('password'),
-				self = this;
+			let loginIndex = this.controllerFor("login.index");
 
+			// Set the property that will trigger the loading indicator
+			loginIndex.set("attemptingLogin", true);
+
+			// Grab the credentials the user entered
+			var identification = loginIndex.get('emailAddress'),
+				password = loginIndex.get('password');
+
+			// Attempt the login
 			this.controller.get('session').authenticate('authenticator:oauth2', identification, password).then( () => {
 				// Take the user to LRO!
+				loginIndex.set("attemptingLogin", false);
+
 				this.transitionTo('lro');
 			}, function(response) {
+				loginIndex.set("attemptingLogin", false);
 				// Reset email and password fields
-				self.controllerFor("login.index").set('emailAddress', null);
-				self.controllerFor("login.index").set('password', null);
+				loginIndex.set('emailAddress', null);
+				loginIndex.set('password', null);
 				// Set the message the user will see
 				if( response.error === "invalid_grant" ) {
-					self.controllerFor('login.index').set('loginError', "invalid username or password");
+					loginIndex.set('loginError', "invalid username or password");
 				} else {
-					self.controllerFor('login.index').set('loginError', "invalid username or password");
+					loginIndex.set('loginError', "invalid username or password");
 				}
 			});
 		},

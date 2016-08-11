@@ -207,6 +207,60 @@ input {
 	}
 }
 
+.login-loading {
+	position: relative;
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	-webkit-animation: LOADING-BACK-FADE 0.4s;
+
+	.loading-content {
+		position: relative;
+		display: block;
+		width: 200px;
+		margin: 0 auto;
+		/*padding: 20px;*/
+		font-size: 1em;
+		color: white;
+		text-align: left;
+
+		-webkit-animation: DIALOGUE-MOVE-IN 0.2s;
+		/*// -webkit-transform: translate(0%,-50%);*/
+
+		&.loading {
+			width: 160px;
+			text-align: center;
+			-webkit-animation: LOADING-MOVE-IN 0.4s;
+		}
+
+		.spinner {
+		  	margin: 0px auto;
+		  	width: 70px;
+		  	text-align: center;
+
+		  	&>div {
+		  		width: 14px;
+				height: 14px;
+				background-color: #333;
+				background-color: white;
+				border-radius: 100%;
+				display: inline-block;
+				-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+				animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+		  	}
+
+		  	.bounce1 {
+				-webkit-animation-delay: -0.32s;
+				animation-delay: -0.32s;
+		  	}
+		  	.bounce2 {
+		  		-webkit-animation-delay: -0.16s;
+				animation-delay: -0.16s;
+		  	}
+		}
+	}
+}
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
