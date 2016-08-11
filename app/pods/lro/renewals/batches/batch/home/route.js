@@ -22,7 +22,7 @@ export default Ember.Route.extend({
 			"minIncFilter" : null,
 			"maxIncFilter" : null,
 			"minCurrentDtmFilter" : null,
-			"minCurrentDtmFilter" : null,
+			"maxCurrentDtmFilter" : null,
 			"minNewDtmFilter" : null,
 			"maxNewDtmFilter" : null,
 			"minAvgIncFilter" : null,
@@ -246,7 +246,7 @@ export default Ember.Route.extend({
 				"minIncFilter" : null,
 				"maxIncFilter" : null,
 				"minCurrentDtmFilter" : null,
-				"minCurrentDtmFilter" : null,
+				"maxCurrentDtmFilter" : null,
 				"minNewDtmFilter" : null,
 				"maxNewDtmFilter" : null
 			});

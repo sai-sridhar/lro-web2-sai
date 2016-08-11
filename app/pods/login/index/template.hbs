@@ -1,9 +1,9 @@
 <form {{action 'authenticate' on='submit'}}>
 	<div class="username">
-		{{input placeholder="Email Address" type="email" value=emailAddress autofocus=true}}
+		{{input placeholder="Email Address" type="email" value=emailAddress autofocus=true disabled=attemptingLogin}}
 	</div>
 	<div class="password">
-		{{input placeholder="Password" type="password" value=password}}
+		{{input placeholder="Password" type="password" value=password disabled=attemptingLogin}}
 	</div>
 	{{#link-to "login.forgotPassword" tagName="div" class="small-link"}}Forgot Password{{/link-to}}
 	<div class="error-container">
@@ -12,8 +12,24 @@
 		{{/if}}
 	</div>
 	{{#if credentialsEntered}}
-		<button class="login-button width-200" type="submit"> Login </button>
+		{{#if attemptingLogin}}
+			<button class="login-button width-200 disabled">
+				<div class="login-loading">
+					<div class="loading-content loading">
+						<div class="spinner">
+							<div class="bounce1"></div>
+							<div class="bounce2"></div>
+							<div class="bounce3"></div>
+						</div>
+					</div>
+				</div>
+			</button>
+		{{else}}
+			<button class="login-button width-200" type="submit">
+				Sign In
+			</button>
+		{{/if}}
 	{{else}}
-		<button class="login-button width-200 disabled">Login</button>
+		<button class="login-button width-200 disabled">Sign In</button>
 	{{/if}}
 </form>
