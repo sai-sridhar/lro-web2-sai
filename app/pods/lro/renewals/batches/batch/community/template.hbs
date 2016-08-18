@@ -182,8 +182,8 @@
 											<th colspan=3>Effective Rent
 												<div>Effective Rent</div>
 											</th>
-											<th {{action "sortUnits" "userIncreasePct"}}>Increase %
-												<div>Increase %</div>
+											<th colspan=2 {{action "sortUnits" "userIncreasePct"}}>Increase
+												<div>Increase</div>
 											</th>
 											<th colspan=2>Discount to Market
 												<div>Discount to Market</div>
@@ -219,7 +219,8 @@
 											<th class="no-mobile" {{action "sortUnits" "cmr"}} class="border-right">Market
 												<div>Market</div>
 											</th>
-											<th>Increase %<div></div></th>
+											<th {{action "sortUnits" "userIncreaseDollars"}}>Increase $<div>$</div></th>
+											<th {{action "sortUnits" "userIncreasePct"}}>Increase %<div>%</div></th>
 											<th {{action "sortUnits" "currentDiscountToMarket"}}>Current
 												<div>Current</div>
 											</th>
@@ -243,12 +244,13 @@
 												<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
 												<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
 												<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
-												<td class="no-mobile">${{format-commas unit.currentRent}}</td>
-												<td class="{{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
-												<td class="no-mobile border-right">${{format-commas unit.cmr}}</td>
-												<td class="border-right {{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
-												<td>{{format-percent unit.currentDiscountToMarket 1 1}}</td>
-												<td class="border-right">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
+												<td class="number no-mobile">${{format-commas unit.currentRent}}</td>
+												<td class="number {{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+												<td class="no-mobile border-right number">${{format-commas unit.cmr}}</td>
+												<td class="number {{if unit.userOverrideMode 'red'}}">${{format-commas unit.userIncreaseDollars}}</td>
+												<td class="border-right number {{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+												<td class="number">{{format-percent unit.currentDiscountToMarket 1 1}}</td>
+												<td class="border-right number">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
 												{{#unless model.batch.isCommitted}}
 													<td>
 														{{#if unit.approved}}
