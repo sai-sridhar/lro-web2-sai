@@ -100,8 +100,9 @@ export default Ember.Route.extend({
 		},
 		commitBatch : function() {
 			this.controller.set("model.status", "Committed");
-			this.controller.get("model").save();
-			this.transitionTo("lro.renewals.batches.home.committed");
+			this.controller.get("model").save().then( () => {
+				this.transitionTo("lro.renewals.batches.home.committed");
+			});
 		},
 		toggleView : function(view) {
 			this.controller.set("detailView", view);

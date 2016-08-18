@@ -40,13 +40,15 @@
 						{{fa-icon "times-circle"}}
 					</div>
 				{{/if}}
-				{{#if unitView}}
-					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
-				{{else if communityView}}
-					<button class="with-icon float-right std-right-margin" {{action "approveFilteredCommunities"}}>{{fa-icon "thumbs-up"}}Approve Filtered Communities</button>
-				{{else}}
+				{{#unless model.isCommitted}}
+					{{#if unitView}}
+						<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
+					{{else if communityView}}
+						<button class="with-icon float-right std-right-margin" {{action "approveFilteredCommunities"}}>{{fa-icon "thumbs-up"}}Approve Filtered Communities</button>
+					{{else}}
 
-				{{/if}}
+					{{/if}}
+				{{/unless}}
 			</div>
 			<section class="rb-detail-content">
 				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
@@ -272,7 +274,7 @@
 												{{#unless model.isCommitted}}
 													<td>
 														{{#if unit.approved}}
-															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+															<i class="fa fa-check gray" {{action "unapproveUnit" unit bubbles=false}}></i>
 														{{else}}
 															<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
 														{{/if}}
@@ -337,7 +339,7 @@
 												{{#unless model.isCommitted}}
 													<td>
 														{{#if comm.allApproved}}
-															<i class="fa fa-thumbs-o-down gray" {{action "unapproveCommunity" comm bubbles=false}}></i>
+															<i class="fa fa-check gray" {{action "unapproveCommunity" comm bubbles=false}}></i>
 														{{else}}
 															<i class="fa fa-thumbs-o-up" {{action "approveCommunity" comm bubbles=false}}></i>
 														{{/if}}

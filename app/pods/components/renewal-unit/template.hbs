@@ -44,7 +44,7 @@
 				<div class="value">${{format-commas model.currentRent}}</div>
 			</div>
 			<div>
-				<div class="label">Recommended CPR</div>
+				<div class="label">Offer CPR</div>
 				{{#if model.userOverrideMode}}
 					<div class="value red">${{format-commas model.finalRecRent}}</div>
 					<div class="label std-top-margin">LRO Rec: ${{format-commas model.recRent}}</div>
@@ -102,7 +102,7 @@
 				<div class="value">{{format-percent model.currentDiscountToMarket}}</div>
 			</div>
 			<div>
-				<div class="label">Recommended DTM</div>
+				<div class="label">Offer DTM</div>
 				{{#if model.userOverrideMode}}
 					<div class="value red">{{format-percent model.finalDiscountToMarket}}</div>
 					<div class="label std-top-margin">LRO Rec: {{format-percent model.newDiscountToMarket}}</div>
@@ -117,7 +117,7 @@
 				<div class="value">{{model.currentLeaseTerm}}</div>
 			</div>
 			<div>
-				<div class="label">Recommended Term</div>
+				<div class="label">Offer Term</div>
 				<div class="value">{{model.recLeaseTerm}}</div>
 			</div>
 		</div>

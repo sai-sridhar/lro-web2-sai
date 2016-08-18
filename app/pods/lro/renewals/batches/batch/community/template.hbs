@@ -42,12 +42,14 @@
 						{{fa-icon "times-circle"}}
 					</div>
 				{{/if}}
-				{{#if unitView}}
-					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
-				{{else if unitTypeView}}
-					<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnitTypes"}}>{{fa-icon "thumbs-up"}}Approve Filtered Unit Types</button>
-				{{else}}
-				{{/if}}
+				{{#unless model.isCommitted}}
+					{{#if unitView}}
+						<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnits"}}>{{fa-icon "thumbs-up"}}Approve Filtered Units</button>
+					{{else if unitTypeView}}
+						<button class="with-icon float-right std-right-margin" {{action "approveFilteredUnitTypes"}}>{{fa-icon "thumbs-up"}}Approve Filtered Unit Types</button>
+					{{else}}
+					{{/if}}
+				{{/unless}}
 			</div>
 			<section class="rb-detail-content">
 				<div class="filter-panel {{if showDetailFilters 'open' 'closed'}} no-mobile">
@@ -250,7 +252,7 @@
 												{{#unless model.batch.isCommitted}}
 													<td>
 														{{#if unit.approved}}
-															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+															<i class="fa fa-check gray" {{action "unapproveUnit" unit bubbles=false}}></i>
 														{{else}}
 															<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
 														{{/if}}
@@ -311,7 +313,7 @@
 						    					{{#unless model.batch.isCommitted}}
 						    						<td>
 							    						{{#if ut.allApproved}}
-															<i class="fa fa-thumbs-o-down gray" {{action "unapproveUnitType" ut bubbles=false}}></i>
+															<i class="fa fa-check gray" {{action "unapproveUnitType" ut bubbles=false}}></i>
 														{{else}}
 															<i class="fa fa-thumbs-o-up" {{action "approveUnitType" ut bubbles=false}}></i>
 														{{/if}}
