@@ -147,7 +147,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 		yAxis: [
 			{	// Primary Axis
 				title: {
-					text: 'Unit Count'
+					text: 'Expiration Count'
 				}
     		},
     		{	// Secondary Axis
@@ -215,55 +215,78 @@ export default Ember.Controller.extend(RoundingMixin, {
         }
 	},
 
-	detailChartOptions: {
-		chart: {
-			// type: 'column',
-			zoomType: 'none', // 'x', 'y', 'xy' or 'none'
-			style : {
-				fontFamily : "Avenir"
-			},
-			height: 300
-		},
-		title: {
-			text: ''
-		},
-		xAxis: [{
-			categories: ['-10+', '-5-10', '-5-2', '-2-0', '0', '0-2', '2-5', '5-10', '10+'],
-			crosshair : true,
-			labels : {
-				align : "center",
-				autoRotation : 0
-			}
-		}],
-		yAxis: [
-			{	// Primary Axis
-				title: {
-					text: 'Unit Count'
-				}
-    		},
-    		{	// Secondary Axis
-    			title : {
-    				text : "Increase %"
-    			},
-				labels : {
-					format : "{value}%"
+	detailChartStriations : Ember.computed("model.striation1", "model.striation2", "model.striation3", function() {
+		let arr = [],
+			s1 = this.get("model.striation1"),
+			s2 = this.get("model.striation2"),
+			s3 = this.get("model.striation3");
+		arr.push("(" + s3 + ")+");
+		arr.push("(" + s2 + ") - (" + s3 + ")");
+		arr.push("(" + s1 + ") - (" + s2 + ")");
+		arr.push( "0 - (" + s1 + ")");
+		arr.push("0");
+		arr.push( "0 - " + s1);
+		arr.push(s1 + " - " + s2);
+		arr.push(s2 + " - " + s3);
+		arr.push(s3 + "+");
+
+		return arr;
+	}),
+
+	detailChartOptions : Ember.computed("detailChartStriations", function() {
+		let categories = this.get("detailChartStriations");
+		let obj = {
+			chart: {
+				// type: 'column',
+				zoomType: 'none', // 'x', 'y', 'xy' or 'none'
+				style : {
+					fontFamily : "Avenir"
 				},
-    			opposite : true
-    		}
-    	],
-    	tooltip : {
-    		shared : true,
-    		backgroundColor : "rgba(255,255,255,1)",
-    	},
-    	legend: {
-			layout: 'horizontal',
-			align: 'center',
-			x: 0,
-			verticalAlign: 'top',
-			y: 0,
-			floating: false,
-        }
-  	},
+				height: 300
+			},
+			title: {
+				text: ''
+			},
+			xAxis: [{
+				categories: categories,
+				crosshair : true,
+				labels : {
+					align : "center",
+					autoRotation : 0
+				}
+			}],
+			yAxis: [
+				{	// Primary Axis
+					title: {
+						text: 'Expiration Count'
+					}
+	    		},
+	    		{	// Secondary Axis
+	    			title : {
+	    				text : "Increase %"
+	    			},
+					labels : {
+						format : "{value}%"
+					},
+	    			opposite : true
+	    		}
+	    	],
+	    	tooltip : {
+	    		shared : true,
+	    		backgroundColor : "rgba(255,255,255,1)",
+	    	},
+	    	legend: {
+				layout: 'horizontal',
+				align: 'center',
+				x: 0,
+				verticalAlign: 'top',
+				y: 0,
+				floating: false,
+	        }
+		};
+
+		return obj;
+  	}),
 
   	unitFilterConstruct : Ember.observer("model.unitTypes", "model.pmsUnitTypes", "model.beds", "model.baths", function() {
   		var cols = ["unitTypes", "pmsUnitTypes", "beds", "baths"];

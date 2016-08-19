@@ -252,7 +252,7 @@ export default Model.extend(AggregationMixin, {
 		}];
 	}),
 
-	chartDataCurrentDtm : Ember.computed("communities.@each.avgCurrentDiscountToMarket", function() {
+	chartDataCurrentDtm : Ember.computed("communities.@each.avgCurrentDiscountToMarket", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [0,0,0,0,0,0,0,0,0],
 			dtm,
 			invDtm;
@@ -286,7 +286,7 @@ export default Model.extend(AggregationMixin, {
 		return data;
 	}),
 
-	chartDataNewDtm : Ember.computed("communities.@each.avgNewDiscountToMarket", function() {
+	chartDataNewDtm : Ember.computed("communities.@each.avgNewDiscountToMarket", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [0,0,0,0,0,0,0,0,0],
 			dtm,
 			invDtm;
@@ -320,7 +320,7 @@ export default Model.extend(AggregationMixin, {
 		return data;
 	}),
 
-	chartDataDetailAvgInc : Ember.computed("communities.@each.avgIncrease", function() {
+	chartDataDetailAvgInc : Ember.computed("communities.@each.avgIncrease", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [],
 			arr = [],
 			inc, dtm, invDtm;

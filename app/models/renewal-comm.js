@@ -240,7 +240,7 @@ export default Model.extend(AggregationMixin, {
 	striation2 : 5,
 	striation3 : 10,
 
-	chartDataCurrentDtm : Ember.computed("units.@each.currentDiscountToMarket", function() {
+	chartDataCurrentDtm : Ember.computed("units.@each.currentDiscountToMarket", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [0,0,0,0,0,0,0,0,0],
 			dtm,
 			invDtm;
@@ -272,7 +272,7 @@ export default Model.extend(AggregationMixin, {
 		return data;
 	}),
 
-	chartDataNewDtm : Ember.computed("units.@each.finalRecRent", function() {
+	chartDataNewDtm : Ember.computed("units.@each.finalRecRent", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [0,0,0,0,0,0,0,0,0],
 			dtm,
 			invDtm;
@@ -304,7 +304,7 @@ export default Model.extend(AggregationMixin, {
 		return data;
 	}),
 
-	chartDataDetailAvgInc : Ember.computed("units.@each.finalRecRent", function() {
+	chartDataDetailAvgInc : Ember.computed("units.@each.finalRecRent", "striation0", "striation1", "striation2", "striation3", function() {
 		var data = [],
 			arr = [],
 			inc, dtm, invDtm;
@@ -354,7 +354,7 @@ export default Model.extend(AggregationMixin, {
 		return arr;
 	}),
 
-	detailChartData : Ember.computed("units.@each.finalRecRent", function(){
+	detailChartData : Ember.computed("units.@each.finalRecRent", "chartDataCurrentDtm", "chartDataNewDtm", "chartDataDetailAvgInc", function(){
 		var content = [];
 
 		// The Unit counts by Below, At, Above Market Series
@@ -365,7 +365,7 @@ export default Model.extend(AggregationMixin, {
 		};
 
 		var newCounts = {
-			name : "New Rents",
+			name : "Offer Rents",
 			type : "column",
 			data : this.get("chartDataNewDtm")
 		};

@@ -143,6 +143,31 @@
 									{{input-control value=unapprovedUnitTypeFilter type="toggle" label="Unapproved Only" orientation="block"}}
 								</div>
 							{{else}}
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Striation 1</div>
+										<div class="control block">
+											{{input value=model.striation1}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Striation 2</div>
+										<div class="control block">
+											{{input value=model.striation2}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Striation 3</div>
+										<div class="control block">
+											{{input value=model.striation3}}
+										</div>
+									</div>
+								</div>
+
 							{{/if}}
 						</div>
 					{{else}}
@@ -330,15 +355,17 @@
 						</section>
 					{{else}}
 						<section class="rb-summary">
-							<div class="col col-25">
+							<div class="col col-33">
 								<div class="chart">
 									{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
 								</div>
 							</div
-							><div class="col col-40">
-								{{high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
-							</div
-							><div class="col col-20">
+							><div class="col col-66">
+								{{dynamic-high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
+							</div>
+						</section>
+						<section class="rb-summary">
+							<div class="col col-50">
 								<table class="rb-metrics-table no-hover">
 									<tr style="height: 80px">
 										<td style="border: none;">
@@ -352,27 +379,27 @@
 									</tr>
 									<tr style="height: 80px">
 										<td style="border: none;">
-											<div class="rb-metric-title">Current Avg. DTM</div>
+											<div class="rb-metric-title">Current Avg. Discount to Market</div>
 											<div class="rb-metric">{{format-percent model.avgCurrentDiscountToMarket}}</div>
 										</td>
 										<td style="border: none;">
-											<div class="rb-metric-title">Current DTM Range</div>
+											<div class="rb-metric-title">Current Discount to Market Range</div>
 											<div class="rb-metric">{{format-percent model.minCurrentDiscountToMarket}} - {{format-percent model.maxCurrentDiscountToMarket}}</div>
 										</td>
 									</tr>
 									<tr style="height: 80px">
 										<td style="border: none;">
-											<div class="rb-metric-title">New Avg. DTM</div>
+											<div class="rb-metric-title">Offer Avg. Discount to Market</div>
 											<div class="rb-metric">{{format-percent model.avgNewDiscountToMarket}}</div>
 										</td>
 										<td style="border: none;">
-											<div class="rb-metric-title">New DTM Range</div>
+											<div class="rb-metric-title">Offer Discount to Market Range</div>
 											<div class="rb-metric">{{format-percent model.minNewDiscountToMarket}} - {{format-percent model.maxNewDiscountToMarket}}</div>
 										</td>
 									</tr>
 								</table>
 							</div
-							><div class="col col-15">
+							><div class="col col-50">
 								{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
 								<div class="center">
 									<h2 class="std-bottom-margin">Overrides</h2>
