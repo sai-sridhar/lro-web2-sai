@@ -765,8 +765,6 @@ section {
 								height: 0;
 								line-height: 0;
 								padding: 0px;
-								/*padding-top: 0;
-								padding-bottom: 0;*/
 								color: transparent;
 								border: none;
 								white-space: nowrap;
@@ -778,16 +776,25 @@ section {
 									background: transparent;
 									color: @gray;
 									padding: @stdPadding;
-									text-align: center;
+									text-align: left;
+									width: 100%;
 									top: 0;
 									line-height: normal;
 									border-left: @stdBorder;
 									margin: 0px auto;
+									border-bottom: @stdBorder;
+
+									&.dbl-header {
+										height: 60px;
+										border-bottom: none;
+										background: white;
+										padding-top: 20px;
+									}
 								}
 
 								&:first-child {
 									div {
-										border: none;
+										border-left: none;
 									}
 								}
 							}
@@ -2892,7 +2899,8 @@ section {
 			.rb-detail-content-wrapper {
 				position: relative;
 				border-left: @stdBorder;
-				overflow: auto;
+				overflow-y: auto;
+				overflow-x: hidden;
 				vertical-align: top;
 				top: 0;
 				margin-right: 36px;

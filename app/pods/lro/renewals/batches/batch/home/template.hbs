@@ -180,17 +180,17 @@
 											<th colspan=2>Unit Type
 												<div>Unit Type</div>
 											</th>
-											<th {{action "sortUnits" "beds"}}>Beds
-												<div>Beds</div>
+											<th rowspan=2 {{action "sortUnits" "beds"}}>Beds
+												<div class="dbl-header">Beds</div>
 											</th>
-											<th {{action "sortUnits" "baths"}}>Baths
-												<div>Baths</div>
+											<th rowspan=2 {{action "sortUnits" "baths"}}>Baths
+												<div class="dbl-header">Baths</div>
 											</th>
-											<th {{action "sortUnits" "unitNumber"}}>Unit Number
-												<div>Unit</div>
+											<th rowspan=2 {{action "sortUnits" "unitNumber"}}>Unit Number
+												<div class="dbl-header">Unit</div>
 											</th>
-											<th {{action "sortUnits" "renewalDate"}}>Renewal Date
-												<div>Renewal Date</div>
+											<th rowspan=2 {{action "sortUnits" "renewalDate"}}>Renewal Date
+												<div class="dbl-header">Renewal Date</div>
 											</th>
 											<th colspan=2>Lease Term
 												<div>Lease Term</div>
@@ -205,7 +205,9 @@
 												<div>Discount to Market</div>
 											</th>
 											{{#unless model.isCommitted}}
-												<th></th>
+												<th rowspan=2>
+													<div class="dbl-header"></div>
+												</th>
 											{{/unless}}
 										</tr>
 										<tr class="sortable">
@@ -221,10 +223,6 @@
 											<th {{action "sortUnits" "unitType"}} class="border-right">LRO
 												<div>LRO</div>
 											</th>
-											<th>Beds<div></div></th>
-											<th>Baths<div></div></th>
-											<th>Unit Number<div></div></th>
-											<th>Renewal Date<div></div></th>
 											<th class="no-mobile" {{action "sortUnits" "currentLeaseTerm"}}>Current
 												<div>Current</div>
 											</th>
@@ -248,9 +246,7 @@
 											<th {{action "sortUnits" "finalDiscountToMarket"}} class="border-right">Offer
 												<div>Offer</div>
 											</th>
-											{{#unless model.isCommitted}}
-												<th></th>
-											{{/unless}}
+
 										</tr>
 									</thead>
 									<tbody>
