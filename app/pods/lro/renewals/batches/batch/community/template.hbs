@@ -290,6 +290,9 @@
 											<th {{action "sortUnitTypes" "avgNewDtm"}}>Avg Offer DTM
 												<div>Avg. Offer DTM</div>
 											</th>
+											<th style="width: 60px;">Filter to Units
+												<div> Show Units</div>
+											</th>
 											{{#unless model.batch.isCommitted}}
 												<th><div></div></th>
 											{{/unless}}
@@ -297,7 +300,8 @@
 									</thead>
 									<tbody>
 										{{#each hbsUnitTypeContent as |ut|}}
-											<tr class="border-right" {{action "filterToUnitType" ut}}>
+											{{#link-to "lro.renewals.batches.batch.community.unitType" ut.unitType tagName="tr" class="border-right"}}
+											{{!-- <tr class="border-right"> --}}
 						    					<td>{{ut.unitType}}</td>
 						    					<td>{{format-commas ut.expirationCount}}</td>
 						    					<td>${{format-commas ut.avgRecRent}}</td>
@@ -306,6 +310,9 @@
 						    					<td>{{format-percent ut.minIncrease}} - {{format-percent ut.maxIncrease}}</td>
 						    					<td>{{format-percent ut.avgCurrentDtm}}</td>
 						    					<td>{{format-percent ut.avgNewDtm}}</td>
+						    					<td>
+						    						<i class="fa fa-eye" {{action "filterToUnitType" ut bubbles=false}}></i>
+						    					</td>
 						    					{{#unless model.batch.isCommitted}}
 						    						<td>
 							    						{{#if ut.allApproved}}
@@ -315,7 +322,7 @@
 														{{/if}}
 													</td>
 							    				{{/unless}}
-						    				</tr>
+						    				{{/link-to}}
 										{{/each}}
 									</tbody>
 								</table>

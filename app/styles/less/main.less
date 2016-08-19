@@ -397,6 +397,11 @@ table {
 			&.active {
 				background: @mediumBlue;
 				color: white;
+				td {
+					i {
+						color: white;
+					}
+				}
 			}
 
 			&.border-right {
@@ -1508,6 +1513,8 @@ section {
 }
 
 .detail-drawer {
+	@detailDrawerWidth: 30em;
+
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -1519,14 +1526,16 @@ section {
 	box-sizing: border-box;
 	z-index: 5;
 	overflow: auto;
-	@detailDrawerWidth: 30em;
+	width: @detailDrawerWidth;
 
 	&.new-pricing-drawer {
-		width: @detailDrawerWidth;
 	}
 
 	&.renewal-unit-drawer {
-		width: @detailDrawerWidth;
+	}
+
+	&.unit-type-params-drawer {
+		width: 48em;
 	}
 
 	&.bulk-update-drawer {

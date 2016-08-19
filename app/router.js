@@ -50,6 +50,7 @@ Router.map(function() {
             this.route('unit', { path : "/unit/:unit_id" });
             this.route('params');
             this.route('terms');
+            this.route('unitType', { path : "unitType/:unit_type" });
           });
         });
       });

@@ -1,0 +1,14 @@
+<div class="detail-drawer unit-type-params-drawer">
+	<div class="fixed-header">
+		<div class="close" {{action "close"}}>
+			{{fa-icon "times"}}
+		</div>
+		<div class="unit-header"><h1>{{defaultRanges.firstObject.unitType}} Unit Type Renewal Parameters</h1></div>
+	</div>
+	<div class="scroll-content dbl-padding">
+		{{#if defaultRanges}}
+			{{renewal-params content=defaultRanges}}
+		{{/if}}
+
+	</div>
+</div>
