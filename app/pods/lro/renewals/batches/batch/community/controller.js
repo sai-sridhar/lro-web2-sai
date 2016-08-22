@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import RoundingMixin from 'zion/mixins/rounding';
-// import defaultTheme from '../themes/default-theme';
+import AggregationMixin from 'zion/mixins/aggregation';
 
-export default Ember.Controller.extend(RoundingMixin, {
+export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 	unitTypeView : null,
 	unitView : null,
 	summaryView : null,
@@ -134,7 +134,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 			height: 300
 		},
 		title: {
-			text: ''
+			text: 'Current Rent Relative to Market'
 		},
 		xAxis: [{
 			categories: ['Below Market', 'At Market', 'Above Market'],
@@ -168,7 +168,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 			layout: 'horizontal',
 			align: 'center',
 			x: 0,
-			verticalAlign: 'top',
+			verticalAlign: 'bottom',
 			y: 0,
 			floating: false,
         }
@@ -215,20 +215,20 @@ export default Ember.Controller.extend(RoundingMixin, {
         }
 	},
 
-	detailChartStriations : Ember.computed("model.striation1", "model.striation2", "model.striation3", function() {
+	detailChartStriations : Ember.computed("striation1", "striation2", "striation3", function() {
 		let arr = [],
-			s1 = this.get("model.striation1"),
-			s2 = this.get("model.striation2"),
-			s3 = this.get("model.striation3");
-		arr.push("(" + s3 + ")+");
-		arr.push("(" + s2 + ") - (" + s3 + ")");
-		arr.push("(" + s1 + ") - (" + s2 + ")");
-		arr.push( "0 - (" + s1 + ")");
-		arr.push("0");
-		arr.push( "0 - " + s1);
-		arr.push(s1 + " - " + s2);
-		arr.push(s2 + " - " + s3);
-		arr.push(s3 + "+");
+			s1 = this.get("striation1"),
+			s2 = this.get("striation2"),
+			s3 = this.get("striation3");
+		arr.push("(" + s3 + "%)+");
+		arr.push("(" + s2 + "%) - (" + s3 + "%)");
+		arr.push("(" + s1 + "%) - (" + s2 + "%)");
+		arr.push( "0 - (" + s1 + "%)");
+		arr.push("At Market");
+		arr.push( "0 - " + s1 + "%");
+		arr.push(s1 + "% - " + s2 + "%");
+		arr.push(s2 + "% - " + s3 + "%");
+		arr.push(s3 + "%+");
 
 		return arr;
 	}),
@@ -245,7 +245,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 				height: 300
 			},
 			title: {
-				text: ''
+				text: 'Current Rent and Offer Rent by % Above/Below Market'
 			},
 			xAxis: [{
 				categories: categories,
@@ -279,7 +279,7 @@ export default Ember.Controller.extend(RoundingMixin, {
 				layout: 'horizontal',
 				align: 'center',
 				x: 0,
-				verticalAlign: 'top',
+				verticalAlign: 'bottom',
 				y: 0,
 				floating: false,
 	        }
@@ -524,5 +524,344 @@ export default Ember.Controller.extend(RoundingMixin, {
 		} else {
 			return true;
 		}
+	}),
+
+	filteredSummaryContent : Ember.computed("model.units.@each.beds", "bedsFilter", "bathsFilter", "unitTypeFilter", "pmsUnitTypeFilter", function() {
+		return this.get("model.units").filter(function(unit) {
+			var f1 = true, // beds
+				f2 = true, // baths
+				f3 = true, // unit type
+				f4 = true; // pms unit type
+
+			if( this.get("bedsFilter") ) {
+				if( this.get("bedsFilter.text") !== unit.get("beds") ) {
+					f1 = false;
+				}
+			}
+
+			if( this.get("bathsFilter") ) {
+				if( this.get("bathsFilter.text") !== unit.get("baths") ) {
+					f2 = false;
+				}
+			}
+
+			if( this.get("unitTypeFilter") ) {
+				if( this.get("unitTypeFilter.text") !== unit.get("unitType") ) {
+					f3 = false;
+				}
+			}
+
+			if( this.get("pmsUnitTypeFilter") ) {
+				if( this.get("pmsUnitTypeFilter.text") !== unit.get("pmsUnitType") ) {
+					f4 = false;
+				}
+			}
+
+			return (f1 && f2 && f3 && f4);
+		}, this);
+	}),
+
+	filtTotalIncrease : Ember.computed("filteredSummaryContent", function() {
+		return this.calcSum(this.get("filteredSummaryContent"), "userIncreasePct");
+	}),
+	filtAvgIncrease : Ember.computed("filtTotalIncrease", function() {
+		return this.calcAvg(this.get("filtTotalIncrease"), this.get("filteredSummaryContent.length"));
+	}),
+	filtTotalCurrentDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.calcSum(this.get("filteredSummaryContent"), "currentDiscountToMarket");
+	}),
+	filtAvgCurrentDtm : Ember.computed("filtTotalCurrentDtm", function() {
+		return this.calcAvg(this.get("filtTotalCurrentDtm"), this.get("filteredSummaryContent.length"));
+	}),
+	filtTotalNewDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.calcSum(this.get("filteredSummaryContent"), "newDiscountToMarket");
+	}),
+	filtAvgNewDtm : Ember.computed("filtTotalNewDtm", function() {
+		return this.calcAvg(this.get("filtTotalNewDtm"), this.get("filteredSummaryContent.length"));
+	}),
+	filtMinIncrease : Ember.computed("filteredSummaryContent", function() {
+		return this.getMin(this.get("filteredSummaryContent"), 'userIncreasePct');
+	}),
+	filtMaxIncrease : Ember.computed("filteredSummaryContent", function() {
+		return this.getMax(this.get("filteredSummaryContent"), 'userIncreasePct');
+	}),
+	filtMinCurrentDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.getMin(this.get("filteredSummaryContent"), 'currentDiscountToMarket');
+	}),
+	filtMaxCurrentDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.getMax(this.get("filteredSummaryContent"), 'currentDiscountToMarket');
+	}),
+	filtMinNewDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.getMin(this.get("filteredSummaryContent"), 'finalDiscountToMarket');
+	}),
+	filtMaxNewDtm : Ember.computed("filteredSummaryContent", function() {
+		return this.getMax(this.get("filteredSummaryContent"), 'finalDiscountToMarket');
+	}),
+
+	// Chart data
+	chartDataDtm : Ember.computed("filteredSummaryContent.@each.currentDiscountToMarket", function() {
+		var belowMkt = 0,
+			atMkt = 0,
+			aboveMkt = 0;
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			if( unit.get("currentDiscountToMarket") > 0 ) {
+				aboveMkt += 1;
+			} else if ( unit.get("currentDiscountToMarket") < 0 ) {
+				belowMkt += 1;
+			} else {
+				atMkt += 1;
+			}
+		});
+
+		return [belowMkt, atMkt, aboveMkt];
+	}),
+	chartDataAvgInc : Ember.computed("filteredSummaryContent.@each.finalRecRent", function() {
+		var belowMktSum = 0,
+			belowMktCount = 0,
+			atMktSum = 0,
+			atMktCount = 0,
+			aboveMktSum = 0,
+			aboveMktCount = 0,
+			belowMktAvg, atMktAvg, aboveMktAvg, inc, dtm;
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			inc = unit.get("userIncreasePct");
+			dtm = unit.get("currentDiscountToMarket");
+			if( dtm > 0 ) {
+				aboveMktCount += 1;
+				aboveMktSum += inc;
+			} else if ( dtm < 0 ) {
+				belowMktCount += 1;
+				belowMktSum += inc;
+			} else {
+				atMktCount += 1;
+				atMktSum += inc;
+			}
+		});
+
+		belowMktAvg = Number(((belowMktSum / belowMktCount) * 100).toFixed(1)) || 0;
+		atMktAvg = Number(((atMktSum / atMktCount) * 100).toFixed(1)) || 0;
+		aboveMktAvg = Number(((aboveMktSum / aboveMktCount) * 100).toFixed(1)) || 0;
+
+		return [belowMktAvg, atMktAvg, aboveMktAvg];
+	}),
+
+  	chartData : Ember.computed("filteredSummaryContent.@each.finalRecRent", function(){
+		var content = [];
+
+		// The Unit counts by Below, At, Above Market Series
+		var counts = {
+			name : "Current Rent",
+			type : "column",
+			data : this.get("chartDataDtm")
+		};
+
+		// The Average Increase Series
+		var avgInc = {
+			name : "Avg. Increase",
+			type : "spline",
+			yAxis : 1,
+			tooltip: {
+                valueSuffix: '%'
+            },
+			data : this.get("chartDataAvgInc")
+		};
+
+		// Push the series into the array
+		content.push(counts);
+		content.push(avgInc);
+
+		return content;
+	}),
+	donutChartData : Ember.computed("filteredSummaryContent.@each.approved", function() {
+
+		var data = [],
+			approved = 0,
+			unapproved = 0;
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			// console.log(unit);
+			if( unit.get("approved") ) {
+				approved += 1;
+			} else {
+				unapproved += 1;
+			}
+		});
+
+		data.push({
+			name : "Approved",
+			y : approved,
+			color : "rgb(81, 188, 106)"
+		});
+
+		data.push({
+			name : "Unapproved",
+			y : unapproved,
+			color : "rgba(81, 188, 106, 0.5)"
+		});
+
+		return [{
+			type : "pie",
+			name : "Approvals",
+			innerSize : "70%",
+			data : data
+		}];
+	}),
+
+	striation0 : 0,
+	striation1 : 2,
+	striation2 : 4,
+	striation3 : 8,
+
+	chartDataCurrentDtm : Ember.computed("filteredSummaryContent.@each.currentDiscountToMarket", "striation0", "striation1", "striation2", "striation3", function() {
+		var data = [0,0,0,0,0,0,0,0,0],
+			dtm,
+			invDtm;
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			dtm = unit.get("currentDiscountToMarket") * 100;
+			invDtm = -1 * dtm;
+			if( invDtm >= this.get("striation3") ) {
+				data[0] += 1;
+			} else if( invDtm >= this.get("striation2") && invDtm < this.get("striation3") ) {
+				data[1] += 1;
+			} else if( invDtm >= this.get("striation1") && invDtm < this.get("striation2") ) {
+				data[2] += 1;
+			} else if( invDtm > this.get("striation0") && invDtm < this.get("striation1") ) {
+				data[3] += 1;
+			} else if( dtm === this.get("striation0") ) {
+				data[4] += 1;
+			} else if( dtm > this.get("striation0") && dtm < this.get("striation1") ) {
+				data[5] += 1;
+			} else if( dtm >= this.get("striation1") && dtm < this.get("striation2") ) {
+				data[6] += 1;
+			} else if( dtm >= this.get("striation2") && dtm < this.get("striation3") ) {
+				data[7] += 1;
+			} else if( dtm >= this.get("striation3") ) {
+				data[8] += 1;
+			}
+		}, this);
+
+		return data;
+	}),
+
+	chartDataNewDtm : Ember.computed("filteredSummaryContent.@each.finalRecRent", "striation0", "striation1", "striation2", "striation3", function() {
+		var data = [0,0,0,0,0,0,0,0,0],
+			dtm,
+			invDtm;
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			dtm = unit.get("finalDiscountToMarket") * 100;
+			invDtm = -1 * dtm;
+			if( invDtm >= this.get("striation3") ) {
+				data[0] += 1;
+			} else if( invDtm >= this.get("striation2") && invDtm < this.get("striation3") ) {
+				data[1] += 1;
+			} else if( invDtm >= this.get("striation1") && invDtm < this.get("striation2") ) {
+				data[2] += 1;
+			} else if( invDtm > this.get("striation0") && invDtm < this.get("striation1") ) {
+				data[3] += 1;
+			} else if( dtm === this.get("striation0") ) {
+				data[4] += 1;
+			} else if( dtm > this.get("striation0") && dtm < this.get("striation1") ) {
+				data[5] += 1;
+			} else if( dtm >= this.get("striation1") && dtm < this.get("striation2") ) {
+				data[6] += 1;
+			} else if( dtm >= this.get("striation2") && dtm < this.get("striation3") ) {
+				data[7] += 1;
+			} else if( dtm >= this.get("striation3") ) {
+				data[8] += 1;
+			}
+		}, this);
+
+		return data;
+	}),
+
+	chartDataDetailAvgInc : Ember.computed("filteredSummaryContent.@each.finalRecRent", "striation0", "striation1", "striation2", "striation3", function() {
+		var data = [],
+			arr = [],
+			inc, dtm, invDtm;
+
+		for( var i = 0; i < 9; i++ ) {
+			data[i] = { count : 0, sum : 0 };
+		}
+
+		this.get("filteredSummaryContent").forEach(function(unit) {
+			dtm = unit.get("currentDiscountToMarket") * 100;
+			inc = unit.get("userIncreasePct");
+			invDtm = -1 * dtm;
+			if( invDtm >= this.get("striation3") ) {
+				data[0].count += 1;
+				data[0].sum += inc;
+			} else if( invDtm >= this.get("striation2") && invDtm < this.get("striation3") ) {
+				data[1].count += 1;
+				data[1].sum += inc;
+			} else if( invDtm >= this.get("striation1") && invDtm < this.get("striation2") ) {
+				data[2].count += 1;
+				data[2].sum += inc;
+			} else if( invDtm > this.get("striation0") && invDtm < this.get("striation1") ) {
+				data[3].count += 1;
+				data[3].sum += inc;
+			} else if( dtm === this.get("striation0") ) {
+				data[4].count += 1;
+				data[4].sum += inc;
+			} else if( dtm > this.get("striation0") && dtm < this.get("striation1") ) {
+				data[5].count += 1;
+				data[5].sum += inc;
+			} else if( dtm >= this.get("striation1") && dtm < this.get("striation2") ) {
+				data[6].count += 1;
+				data[6].sum += inc;
+			} else if( dtm >= this.get("striation2") && dtm < this.get("striation3") ) {
+				data[7].count += 1;
+				data[7].sum += inc;
+			} else if( dtm >= this.get("striation3") ) {
+				data[8].count += 1;
+				data[8].sum += inc;
+			}
+		}, this);
+
+		for( var k = 0; k < data.length; k++ ) {
+			arr[k] = Number(((data[k].sum / data[k].count) * 100).toFixed(1)) || 0;
+		}
+
+		return arr;
+	}),
+
+	detailChartData : Ember.computed("filteredSummaryContent.@each.finalRecRent", "chartDataCurrentDtm", "chartDataNewDtm", "chartDataDetailAvgInc", function(){
+		var content = [];
+
+		// The Unit counts by Below, At, Above Market Series
+		var currentCounts = {
+			name : "Current Rents",
+			type : "column",
+			data : this.get("chartDataCurrentDtm")
+		};
+
+		var newCounts = {
+			name : "Offer Rents",
+			type : "column",
+			data : this.get("chartDataNewDtm")
+		};
+
+		// The Average Increase Series
+		var avgInc = {
+			name : "Avg. Increase",
+			type : "spline",
+			yAxis : 1,
+			tooltip: {
+                valueSuffix: '%'
+            },
+			data : this.get("chartDataDetailAvgInc"),
+			zIndex : 3
+		};
+
+		// Push the series into the array
+		content.push(currentCounts);
+		content.push(avgInc);
+		content.push(newCounts);
+
+
+		return content;
 	}),
 });

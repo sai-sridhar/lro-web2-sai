@@ -8,10 +8,10 @@
 		</title>
 		<div class="button-wrapper">
 			{{#unless model.batch.isCommitted}}
+				<button class="with-icon transparent" {{action "closeCommunity"}}>{{fa-icon "chevron-left"}}Batch</button>
 				<button class="transparent" {{action "deleteCommunity"}}>{{fa-icon "trash"}}</button>
 				{{#link-to "lro.renewals.batches.batch.community.terms" tagName="button" class="transparent"}}Lease Terms{{/link-to}}
 				{{#link-to "lro.renewals.batches.batch.community.params" tagName="button" class="transparent"}}Parameters{{/link-to}}
-				<button class="with-icon transparent" {{action "closeCommunity"}}>{{fa-icon "chevron-left"}}Batch</button>
 				{{#if model.allApproved}}
 					<button class="with-icon red" {{action "unapproveCommunity"}}>{{fa-icon "thumbs-down"}}Unapprove All</button>
 				{{else}}
@@ -32,13 +32,13 @@
 				</div>
 				{{#if unitFiltersApplied}}
 					<div class="filter-tag clickable" {{action "clearUnitFilters"}}>
-						Clear unit filters
+						Clear filters
 						{{fa-icon "times-circle"}}
 					</div>
 				{{/if}}
 				{{#if unitTypeFiltersApplied}}
 					<div class="filter-tag clickable" {{action "clearUnitTypeFilters"}}>
-						Clear unit type filters
+						Clear filters
 						{{fa-icon "times-circle"}}
 					</div>
 				{{/if}}
@@ -147,7 +147,7 @@
 									<div class="input-control">
 										<div class="label block">Striation 1</div>
 										<div class="control block">
-											{{input value=model.striation1}}
+											{{input value=striation1 type="number"}}
 										</div>
 									</div>
 								</div>
@@ -155,7 +155,7 @@
 									<div class="input-control">
 										<div class="label block">Striation 2</div>
 										<div class="control block">
-											{{input value=model.striation2}}
+											{{input value=striation2 type="number"}}
 										</div>
 									</div>
 								</div>
@@ -163,11 +163,42 @@
 									<div class="input-control">
 										<div class="label block">Striation 3</div>
 										<div class="control block">
-											{{input value=model.striation3}}
+											{{input value=striation3 type="number"}}
 										</div>
 									</div>
 								</div>
-
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Beds</div>
+										<div class="control block">
+											{{select-2 value=bedsFilter content=beds placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">Baths</div>
+										<div class="control block">
+											{{select-2 value=bathsFilter content=baths placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">LRO Unit Type</div>
+										<div class="control block">
+											{{select-2 value=unitTypeFilter content=unitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
+								<div class="filter">
+									<div class="input-control">
+										<div class="label block">PMS Unit Type</div>
+										<div class="control block">
+											{{select-2 value=pmsUnitTypeFilter content=pmsUnitTypes placeholder="All" allowClear=true}}
+										</div>
+									</div>
+								</div>
 							{{/if}}
 						</div>
 					{{else}}
@@ -357,50 +388,49 @@
 						<section class="rb-summary">
 							<div class="col col-33">
 								<div class="chart">
-									{{high-charts mode=chartMode content=model.chartData chartOptions=chartOptions}}
+									{{dynamic-high-charts mode=chartMode content=chartData chartOptions=chartOptions}}
 								</div>
 							</div
 							><div class="col col-66">
-								{{dynamic-high-charts mode=chartMode content=model.detailChartData chartOptions=detailChartOptions}}
+								{{dynamic-high-charts mode=chartMode content=detailChartData chartOptions=detailChartOptions}}
 							</div>
 						</section>
 						<section class="rb-summary">
-							<div class="col col-50">
+							<div class="col col-60">
 								<table class="rb-metrics-table no-hover">
 									<tr style="height: 80px">
 										<td style="border: none;">
 											<div class="rb-metric-title">Average Increase</div>
-											<div class="rb-metric">{{format-percent model.avgIncrease}}</div>
+											<div class="rb-metric">{{format-percent filtAvgIncrease}}</div>
 										</td>
 										<td style="border: none;">
-											<div class="rb-metric-title">Increase Range</div>
-											<div class="rb-metric">{{format-percent model.minIncrease}} - {{format-percent model.maxIncrease}}</div>
+											<div class="rb-metric-title">Current Avg. Discount to Market</div>
+											<div class="rb-metric">{{format-percent filtAvgCurrentDtm}}</div>
 										</td>
+										<td style="border: none;">
+											<div class="rb-metric-title">Offer Avg. Discount to Market</div>
+											<div class="rb-metric">{{format-percent filtAvgNewDtm}}</div>
+										</td>
+
 									</tr>
 									<tr style="height: 80px">
 										<td style="border: none;">
-											<div class="rb-metric-title">Current Avg. Discount to Market</div>
-											<div class="rb-metric">{{format-percent model.avgCurrentDiscountToMarket}}</div>
+											<div class="rb-metric-title">Increase Range</div>
+											<div class="rb-metric">{{format-percent filtMinIncrease}} to {{format-percent filtMaxIncrease}}</div>
 										</td>
 										<td style="border: none;">
 											<div class="rb-metric-title">Current Discount to Market Range</div>
-											<div class="rb-metric">{{format-percent model.minCurrentDiscountToMarket}} - {{format-percent model.maxCurrentDiscountToMarket}}</div>
-										</td>
-									</tr>
-									<tr style="height: 80px">
-										<td style="border: none;">
-											<div class="rb-metric-title">Offer Avg. Discount to Market</div>
-											<div class="rb-metric">{{format-percent model.avgNewDiscountToMarket}}</div>
+											<div class="rb-metric">{{format-percent filtMinCurrentDtm}} to {{format-percent filtMaxCurrentDtm}}</div>
 										</td>
 										<td style="border: none;">
 											<div class="rb-metric-title">Offer Discount to Market Range</div>
-											<div class="rb-metric">{{format-percent model.minNewDiscountToMarket}} - {{format-percent model.maxNewDiscountToMarket}}</div>
+											<div class="rb-metric">{{format-percent filtMinNewDtm}} to {{format-percent filtMaxNewDtm}}</div>
 										</td>
 									</tr>
 								</table>
 							</div
-							><div class="col col-50">
-								{{high-charts mode=chartMode content=model.donutChartData chartOptions=donutChartOptions}}
+							><div class="col col-40">
+								{{high-charts mode=chartMode content=donutChartData chartOptions=donutChartOptions}}
 								<div class="center">
 									<h2 class="std-bottom-margin">Overrides</h2>
 									<h1>{{format-commas model.overrideCount}}</h1>

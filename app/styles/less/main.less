@@ -746,6 +746,7 @@ section {
 		padding-top: 30px;
 		background: white;
 		height: 100%;
+		overflow-x: hidden;
 		box-sizing: border-box;
 		&.dbl-head-rows {
 			padding-top: 60px;
@@ -766,6 +767,7 @@ section {
 
 					thead {
 						tr {
+							overflow-x: hidden;
 							th {
 								height: 0;
 								line-height: 0;
@@ -788,6 +790,7 @@ section {
 									border-left: @stdBorder;
 									margin: 0px auto;
 									border-bottom: @stdBorder;
+									overflow-x: hidden;
 
 									&.dbl-header {
 										height: 60px;
@@ -2906,19 +2909,20 @@ section {
 			overflow-y: auto;
 
 			.rb-detail-content-wrapper {
-				position: relative;
+				position: absolute;
+				box-sizing: border-box;
 				border-left: @stdBorder;
 				overflow-y: auto;
 				overflow-x: hidden;
 				vertical-align: top;
 				top: 0;
-				margin-right: 36px;
+				bottom: 0;
+				right: 0;
 				left: 36px;
-				height: 100%;
+				background: white;
 
 				&.filters-open {
 					left: @filterPanelWidth;
-					margin-right: @filterPanelWidth;
 				}
 
 				.rb-summary {
