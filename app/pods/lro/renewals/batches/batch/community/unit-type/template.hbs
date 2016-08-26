@@ -6,9 +6,20 @@
 		<div class="unit-header"><h1>{{defaultRanges.firstObject.unitType}} Unit Type Renewal Parameters</h1></div>
 	</div>
 	<div class="scroll-content dbl-padding">
+		<h2> Default Values </h2>
+		<br>
 		{{#if defaultRanges}}
-			{{renewal-params content=defaultRanges}}
+			{{renewal-params content=defaultRanges viewOnly=true}}
+		{{else}}
+			<span>No default values available.</span>
 		{{/if}}
-
+		<br><hr><br>
+		<h2> Last Applied Values </h2>
+		<br>
+		{{renewal-params content=model}}
+		<br>
+		<div>
+			<button class="with-icon" {{action "applyParameters"}}>{{fa-icon "check"}}Apply</button>
+		</div>
 	</div>
 </div>

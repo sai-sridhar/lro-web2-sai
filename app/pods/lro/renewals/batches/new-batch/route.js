@@ -19,7 +19,6 @@ export default Ember.Route.extend(RenewalMixin, {
 		deselectAll : function() {
 			this.controller.set("selectedCommunities", []);
 		},
-
 		createBatch : function() {
 
 			var name = this.controller.get('batchName'),
@@ -127,9 +126,10 @@ export default Ember.Route.extend(RenewalMixin, {
 										newRenewalUnit.save().then( (nru) => {
 											ut = nru.get("unitType");
 											communityId = nru.get("renewalComm.community.id");
-											this.store.query("renewalRange", { community : communityId, unitType : ut, isUnitType : true }).then( (utRanges) => {
+											this.store.query("renewalRange", { community : communityId, unitType : ut, isUnitType : true, isRenewalComm : false }).then( (utRanges) => {
 												if( utRanges.length ) {
 													recRent = this.calcRenewalOffer(nru, utRanges);
+
 												} else {
 													recRent = this.calcRenewalOffer(nru, nrcRanges);
 												}
@@ -138,10 +138,32 @@ export default Ember.Route.extend(RenewalMixin, {
 												nru.set("finalRecRent", recRent.offer);
 												nru.set("renewalRange", recRent.range);
 												nru.save();
+
+
 											});
 										});
 									}, this);
 								});
+							});
+
+							this.store.query("renewalRange", { community : community.get("id"), isUnitType : true, isRenewalComm : false }).then( (newUtRanges) => {
+								newUtRanges.forEach(function(utRange) {
+									let newRange = this.store.createRecord("renewalRange", {
+										batch : nb,
+										community : community,
+										renewalComm : nrc,
+										unitType : utRange.get("unitType"),
+										type : utRange.get("type"),
+										minIncrease : utRange.get("minIncrease"),
+										maxIncrease : utRange.get("maxIncrease"),
+										from : utRange.get("from"),
+										to : utRange.get("to"),
+										bringToMktRate : utRange.get("bringToMktRate"),
+										isRenewalComm : true,
+										isUnitType : true
+									});
+									newRange.save();
+								}, this);
 							});
 						});
 					}, this);
@@ -157,8 +179,6 @@ export default Ember.Route.extend(RenewalMixin, {
 					this.transitionTo("lro.renewals.batches.home.open");
 				});
 			});
-
-
 		}
 	}
 });

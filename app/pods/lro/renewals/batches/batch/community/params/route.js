@@ -13,11 +13,11 @@ export default Ember.Route.extend(RenewalMixin, {
 			this.refresh();
 		},
 		apply : function() {
-			let renewalUnits, recRent;
+			var renewalUnits, recRent;
 			// Loop through the selected unit types
 			this.controller.get("selectedUnitTypes").forEach(function(ut) {
 				// Get all the renewal units for the unit type, filtering for unapproved
-				renewalUnits = this.controller.get("renewalUnits").filterBy("unitType", ut.get("unitType")).filterBy("approved", false);
+				renewalUnits = this.controller.get("renewalUnits").filterBy("unitType", ut.get("unitType")).filterBy("approved", false).filterBy("userOverrideMode", null);
 
 				// Apply the logic to calculate the new recRent, save
 				renewalUnits.forEach(function(rUnit) {

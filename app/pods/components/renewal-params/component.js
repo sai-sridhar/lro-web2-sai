@@ -5,6 +5,8 @@ export default Ember.Component.extend({
 
 	store : Ember.inject.service(),
 
+	viewOnly : false,
+
 	belowMarketContent : Ember.computed("content.[]", function() {
 		let r = this.get("content").filterBy("type", "below").sortBy("from");
 		r.set("firstObject.first", true);

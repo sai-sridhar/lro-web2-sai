@@ -14,26 +14,54 @@
 			{{#each belowMarketContent as |range|}}
 				<tr>
 					<td>
-						{{#if range.first}}
-							<span>{{range.from}}</span>
+						{{#if viewOnly}}
+							<span>{{format-percent range.from 100 1}}</span>
 						{{else}}
-							{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+							{{#if range.first}}
+								<span>{{format-percent range.from 100 1}}</span>
+							{{else}}
+								{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+							{{/if}}
 						{{/if}}
 					</td>
 					<td class="to"> to </td>
 					<td>
 						{{#if range.to}}
-							{{input type="number" width=80 value=range.to focus-out="saveRanges"}}
+							{{#if viewOnly}}
+								<span>{{format-percent range.to 100 1}}</span>
+							{{else}}
+								{{input type="number" width=80 value=range.to focus-out="saveRanges"}}
+							{{/if}}
 						{{else}}
 							<span>Infinity</span>
 						{{/if}}
 					</td>
-					<td>{{input type="number" width=80 value=range.bringToMktRate focus-out="saveRanges"}}</td>
-					<td>{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}</td>
-					<td>{{input type="number" width=80 value=range.maxIncrease focus-out="saveRanges"}}</td>
 					<td>
-						{{#unless range.first}}
-							<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+						{{#if viewOnly}}
+							<span>{{format-percent range.bringToMktRate 100 1}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.bringToMktRate focus-out="saveRanges"}}
+						{{/if}}
+					</td>
+					<td>
+						{{#if viewOnly}}
+							<span>{{format-percent range.minIncrease 100 1}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}
+						{{/if}}
+					</td>
+					<td>
+						{{#if viewOnly}}
+							<span>{{format-percent range.maxIncrease 100 1}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.maxIncrease focus-out="saveRanges"}}
+						{{/if}}
+					</td>
+					<td>
+						{{#unless viewOnly}}
+							{{#unless range.first}}
+								<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+							{{/unless}}
 						{{/unless}}
 					</td>
 				</tr>
@@ -41,15 +69,23 @@
 		</tbody>
 	</table>
 	<div class="select-deselect-all">
-		<div {{action "addRange" "below"}}>Add Below Market Range</div>
+		{{#unless viewOnly}}
+			<div {{action "addRange" "below"}}>Add Below Market Range</div>
+		{{/unless}}
 	</div>
 </section>
+<br>
 <section class="dbl-top-margin">
 	<h3>At Market Rent:</h3>
 	<br>
-	<label for="flat-increase">Increase %</label>
-	{{input type="number" id="flat-increase" value=atMarketContent.firstObject.minIncrease focus-out="saveRanges"}}
+	<label for="flat-increase">Increase %:</label>
+	{{#if viewOnly}}
+		<span>{{format-percent atMarketContent.firstObject.minIncrease 100 1}}</span>
+	{{else}}
+		{{input type="number" id="flat-increase" value=atMarketContent.firstObject.minIncrease focus-out="saveRanges"}}
+	{{/if}}
 </section>
+<br>
 <section class="dbl-top-margin">
 	<h3>Above Market Rent:</h3>
 	<table class="style-a">
@@ -64,24 +100,40 @@
 			{{#each aboveMarketContent as |range|}}
 				<tr>
 					<td>
-						{{#if range.first}}
-							<span>{{range.from}}</span>
+						{{#if viewOnly}}
+							<span>{{format-percent range.from 100 1}}</span>
 						{{else}}
-							{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+							{{#if range.first}}
+								<span>{{format-percent range.from 100 1}}</span>
+							{{else}}
+								{{input type="number" width=80 value=range.from focus-out="saveRanges"}}
+							{{/if}}
 						{{/if}}
 					</td>
 					<td class="to"> to </td>
 					<td>
 						{{#if range.to}}
-							{{input type="number" width=80 value=range.to focus-out="saveRanges"}}
+							{{#if viewOnly}}
+								<span>{{format-percent range.to 100 1}}</span>
+							{{else}}
+								{{input type="number" width=80 value=range.to focus-out="saveRanges"}}
+							{{/if}}
 						{{else}}
 							<span>Infinity</span>
 						{{/if}}
 					</td>
-					<td>{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}</td>
 					<td>
-						{{#unless range.first}}
-							<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+						{{#if viewOnly}}
+							<span>{{format-percent range.minIncrease 100 1}}</span>
+						{{else}}
+							{{input type="number" width=80 value=range.minIncrease focus-out="saveRanges"}}
+						{{/if}}
+					</td>
+					<td>
+						{{#unless viewOnly}}
+							{{#unless range.first}}
+								<span {{action "deleteRange" range}}>{{fa-icon "trash-o"}}</span>
+							{{/unless}}
 						{{/unless}}
 					</td>
 				</tr>
@@ -89,6 +141,8 @@
 		</tbody>
 	</table>
 	<div class="select-deselect-all">
-		<div {{action "addRange" "above"}}>Add Above Market Range</div>
+		{{#unless viewOnly}}
+			<div {{action "addRange" "above"}}>Add Above Market Range</div>
+		{{/unless}}
 	</div>
 </section>

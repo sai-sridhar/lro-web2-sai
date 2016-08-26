@@ -11,10 +11,18 @@
 					<h3>Select communities to apply to:</h3>
 					{{community-select2 content=communities selectedCommunities=selectedCommunities selectAll=true selectMultiple=true}}
 				</section>
+				<section>
+					<h3>Select beds to apply to:</h3>
+					{{my-select2 content=beds selectedObjects=selectedBeds selectAll=true selectMultiple=true placeholderPlural="Select beds..."}}
+				</section>
 			</div>
 		</section>
 		<footer>
-			<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			{{#if canApplyParameters}}
+				<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			{{else}}
+				<button class="with-icon disabled">{{fa-icon "check"}}Apply</button>
+			{{/if}}
 			<button class="white with-icon" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
 		</footer>
 	</div>

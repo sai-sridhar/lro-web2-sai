@@ -37,7 +37,7 @@ export default Ember.Route.extend({
 	},
 	actions : {
 		deleteBatch : function() {
-			var self = this;
+			let self = this;
 
 			this.store.findRecord('renewalBatch', this.controller.get("model.id")).then( (batch) => {
 				swal(
@@ -53,11 +53,11 @@ export default Ember.Route.extend({
 					},
 					function (isConfirm) {
 						if (isConfirm) {
-							var comms = batch.get("communities"),
+							let comms = batch.get("communities"),
 								forDeleteComms = comms.toArray();
 
 							forDeleteComms.forEach( function(comm) {
-								var units = comm.get("units"),
+								let units = comm.get("units"),
 									forDeleteUnits = units.toArray();
 
 								forDeleteUnits.forEach( function(unit) {
@@ -72,7 +72,7 @@ export default Ember.Route.extend({
 							});
 
 							self.store.query("renewalRange", { batch : batch.get("id") }).then( (ranges) => {
-								var forDeleteRanges = ranges.toArray();
+								let forDeleteRanges = ranges.toArray();
 								forDeleteRanges.forEach(function(range) {
 									range.deleteRecord();
 									range.save();
@@ -114,7 +114,7 @@ export default Ember.Route.extend({
 			this.controller.set("showDetailFilters", false);
 		},
 		approveCommunity : function(comm) {
-			var commName = comm.get("community.name");
+			let commName = comm.get("community.name");
 
 			this.store.query("renewalUnit", { renewalComm : comm.get("id") }).then( (units) => {
 				swal(
@@ -140,7 +140,7 @@ export default Ember.Route.extend({
 			});
 		},
 		unapproveCommunity : function(comm) {
-			var commName = comm.get("community.name");
+			let commName = comm.get("community.name");
 
 			this.store.query("renewalUnit", { renewalComm : comm.get("id") }).then( (units) => {
 				swal(
@@ -166,7 +166,7 @@ export default Ember.Route.extend({
 			});
 		},
 		approveBatch : function() {
-			var units = Ember.ArrayProxy.create({ content : Ember.A([]) });
+			let units = Ember.ArrayProxy.create({ content : Ember.A([]) });
 			this.controller.get("model.communities").forEach(function(comm) {
 				comm.get("units").forEach(function(unit) {
 					units.pushObject(unit);
@@ -266,7 +266,7 @@ export default Ember.Route.extend({
 		},
 		sortUnits : function(prop) {
 			// What is the current unitSortBy property
-			var sort = this.controller.get("unitSortBy.firstObject").split(":"),
+			let sort = this.controller.get("unitSortBy.firstObject").split(":"),
 				currentProp = sort.get("firstObject"),
 				direction = sort.get("lastObject");
 
@@ -284,7 +284,7 @@ export default Ember.Route.extend({
 		},
 		sortCommunities : function(prop) {
 			// What is the current communitySortBy property
-			var sort = this.controller.get("communitySortBy.firstObject").split(":"),
+			let sort = this.controller.get("communitySortBy.firstObject").split(":"),
 				currentProp = sort.get("firstObject"),
 				direction = sort.get("lastObject");
 

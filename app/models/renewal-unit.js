@@ -52,7 +52,7 @@ export default Model.extend({
 	terms : hasMany("renewalTerm", { async : true }),
 	userOverridePct : attr("number"),
 	userOverrideDollars : attr("number"),
-	userOverrideMode : attr("string"),
+	userOverrideMode : attr("string", { defaultValue : null}),
 
 	overrideChanged : Ember.observer("userOverridePct", "userOverrideDollars", "userOverrideMode", function() {
 		if( this.get("userOverrideMode") === "percent" ) {
