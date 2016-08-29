@@ -16,10 +16,14 @@
 		<br><hr><br>
 		<h2> Last Applied Values </h2>
 		<br>
-		{{renewal-params content=model}}
-		<br>
-		<div>
-			<button class="with-icon" {{action "applyParameters"}}>{{fa-icon "check"}}Apply</button>
-		</div>
+			{{#if model.length}}
+				{{renewal-params content=model}}
+				<br>
+				<div>
+					<button class="with-icon" {{action "applyParameters"}}>{{fa-icon "check"}}Apply</button>
+				</div>
+			{{else}}
+				<span> No parameter values available </span>
+			{{/if}}
 	</div>
 </div>
