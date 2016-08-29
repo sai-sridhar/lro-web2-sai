@@ -16,7 +16,7 @@ export default Ember.Route.extend(RenewalMixin, {
 		// Get the community id
 		let c = this.controllerFor("lro.renewals.batches.batch.community"),
 			community_id = c.get("model.community.id"),
-			unit_type = model.get("firstObject.unitType");
+			unit_type = model.get("query.unitType");
 
 		// Query for the default renewal parameter for the unit type and set property on controller
 		this.store.query("renewalRange", { unitType : unit_type, community : community_id, isUnitType : true, isRenewalComm : false }).then( ranges => {
