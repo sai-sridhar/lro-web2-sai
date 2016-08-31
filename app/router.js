@@ -31,6 +31,9 @@ Router.map(function() {
           this.route('drrcLeaseVelocity');
           this.route('unitsOnRent');
         });
+        this.route('renewal', function() {
+          this.route('unit', { path : "/:unit_id" });
+        });
       });
     });
     this.route('renewals', function() {

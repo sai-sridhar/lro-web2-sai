@@ -131,47 +131,6 @@ export default Ember.Route.extend({
 				}
 			);
 		},
-		approveUnit : function(unit) {
-			swal(
-				{  	title: "Approve?",
-					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("finalRecRent"),
-					type: "warning",
-					showCancelButton: true,
-					confirmButtonColor: "#51bc6a",
-					confirmButtonText: "Yes, approve it",
-					cancelButtonText: "No, cancel",
-					closeOnConfirm: true,
-					closeOnCancel: true
-				},
-				function (isConfirm) {
-					if( isConfirm ) {
-						unit.set("approved", true);
-						unit.save();
-					}
-				}
-			);
-		},
-		unapproveUnit : function(unit) {
-			swal(
-				{  	title: "Unapprove?",
-					text: "Renewal offer: " + unit.get("recLeaseTerm") + " months @ $" + unit.get("finalRecRent"),
-					type: "warning",
-					showCancelButton: true,
-					confirmButtonColor: "#51bc6a",
-					confirmButtonText: "Yes, unapprove it",
-					cancelButtonText: "No, cancel",
-					closeOnConfirm: true,
-					closeOnCancel: true
-				},
-				function (isConfirm) {
-					if( isConfirm ) {
-						unit.set("approved", false);
-						unit.save();
-					}
-
-				}
-			);
-		},
 		unapproveUnitType : function(ut) {
 			var unitType = ut.get("unitType"),
 				units = this.controller.get("model.units").filterBy("unitType", unitType);

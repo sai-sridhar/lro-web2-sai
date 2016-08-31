@@ -1,0 +1,128 @@
+<section class="table dbl-head-rows renewal-details">
+	<div class="table-container">
+		<table class="sticky-headers">
+			<thead>
+				<tr class="border-right">
+					{{#if showCommunity}}
+						<th colspan=2 class="border-bottom">Community
+							<div>Community</div>
+						</th>
+					{{/if}}
+					<th colspan=2 class="border-bottom">Unit Type
+						<div>Unit Type</div>
+					</th>
+					<th rowspan=2 {{action "sort" "beds"}}>Beds
+						<div class="dbl-header">Beds</div>
+					</th>
+					<th rowspan=2 {{action "sort" "baths"}}>Baths
+						<div class="dbl-header">Baths</div>
+					</th>
+					<th rowspan=2 {{action "sort" "unitNumber"}}>Unit
+						<div class="dbl-header">Unit</div>
+					</th>
+					<th rowspan=2 {{action "sort" "resident"}}>Resident
+						<div class="dbl-header">Resident</div>
+					</th>
+					<th rowspan=2 {{action "sort" "renewalDate"}}>Renewal Date
+						<div class="dbl-header">Renewal Date</div>
+					</th>
+					<th colspan=2>Lease Term
+						<div>Lease Term</div>
+					</th>
+					<th colspan=3>Effective Rent
+						<div>Effective Rent</div>
+					</th>
+					<th colspan=2 {{action "sort" "userIncreasePct"}}>Increase
+						<div>Increase</div>
+					</th>
+					<th colspan=2>Discount to Market
+						<div>Discount to Market</div>
+					</th>
+					{{#unless viewOnly}}
+						{{#unless model.isCommitted}}
+							<th rowspan=2>
+								<div class="dbl-header"></div>
+							</th>
+						{{/unless}}
+					{{/unless}}
+				</tr>
+				<tr class="sortable">
+					{{#if showCommunity}}
+						<th {{action "sortUnits" "communityName"}}>Code
+							<div>Code</div>
+						</th>
+						<th {{action "sortUnits" "communityCode"}} class="border-right">Name
+							<div>Name</div>
+						</th>
+					{{/if}}
+					<th {{action "sort" "pmsUnitType"}}>PMS
+						<div>PMS</div>
+					</th>
+					<th {{action "sort" "unitType"}} class="border-right">LRO
+						<div>LRO</div>
+					</th>
+					<th class="no-mobile" {{action "sort" "currentLeaseTerm"}}>Current
+						<div>Current</div>
+					</th>
+					<th class="no-mobile" {{action "sort" "recLeaseTerm"}} class="border-right">Offer
+						<div>Offer</div>
+					</th>
+					<th class="no-mobile" {{action "sort" "currentRent"}}>Current
+						<div>Current</div>
+					</th>
+					<th {{action "sort" "finalRecRent"}}>Offer
+						<div>Offer</div>
+					</th>
+					<th class="no-mobile" {{action "sort" "cmr"}} class="border-right">Market
+						<div>Market</div>
+					</th>
+					<th {{action "sort" "userIncreaseDollars"}}>Increase $<div>$</div></th>
+					<th {{action "sort" "userIncreasePct"}}>Increase %<div>%</div></th>
+					<th {{action "sort" "currentDiscountToMarket"}}>Current
+						<div>Current</div>
+					</th>
+					<th {{action "sort" "finalDiscountToMarket"}} class="border-right">Offer
+						<div>Offer</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each arrangedContent as |unit|}}
+					{{#link-to linkTo unit.id tagName="tr"}}
+						{{#if showCommunity}}
+							<td>{{unit.communityCode}}</td>
+							<td class="no-mobile border-right">{{unit.communityName}}</td>
+						{{/if}}
+						<td class="no-mobile">{{unit.pmsUnitType}}</td>
+						<td class="border-right">{{unit.unitType}}</td>
+						<td class="no-mobile border-right">{{format-commas unit.beds}}</td>
+						<td class="no-mobile border-right">{{format-commas unit.baths}}</td>
+						<td class="border-right">{{unit.unitNumber}}</td>
+						<td class="no-mobile border-right">{{unit.resident}}</td>
+						<td class="no-mobile border-right">{{format-date unit.renewalDate}}</td>
+						<td class="no-mobile">{{format-commas unit.currentLeaseTerm}}</td>
+						<td class="no-mobile border-right">{{format-commas unit.recLeaseTerm}}</td>
+						<td class="number no-mobile">${{format-commas unit.currentRent}}</td>
+						<td class="number {{if unit.userOverrideMode 'red'}}">${{format-commas unit.finalRecRent}}</td>
+						<td class="no-mobile border-right number">${{format-commas unit.cmr}}</td>
+						<td class="number {{if unit.userOverrideMode 'red'}}">${{format-commas unit.userIncreaseDollars}}</td>
+						<td class="border-right number {{if unit.userOverrideMode 'red'}}">{{format-percent unit.userIncreasePct 1 1}}</td>
+						<td class="number">{{format-percent unit.currentDiscountToMarket 1 1}}</td>
+						<td class="border-right number">{{format-percent unit.finalDiscountToMarket 1 1}}</td>
+						{{#unless viewOnly}}
+							{{#unless model.batch.isCommitted}}
+								<td>
+									{{#if unit.approved}}
+										<i class="fa fa-check gray" {{action "unapproveUnit" unit bubbles=false}}></i>
+									{{else}}
+										<i class="fa fa-thumbs-o-up" {{action "approveUnit" unit bubbles=false}}></i>
+									{{/if}}
+								</td>
+							{{/unless}}
+						{{/unless}}
+					{{/link-to}}
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</section>

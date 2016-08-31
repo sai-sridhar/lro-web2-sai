@@ -853,6 +853,15 @@ section {
 	}
 }
 
+.abs {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow-y: auto;
+}
+
 
 .my-account {
 	position: relative;
@@ -1511,7 +1520,24 @@ section {
 		bottom: 0;
 		right: 0;
 		left: @utPanelWidth;
-		overflow-y: scroll;
+		overflow-y: auto;
+	}
+}
+
+.renewal-pricing {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+
+	.table-wrapper {
+		position: absolute;
+		top: @toolbarHeight;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		overflow-y: auto;
 	}
 }
 

@@ -6,7 +6,6 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 	unitTypeView : null,
 	unitView : null,
 	summaryView : null,
-	unitSortBy : ["renewalDate:asc"],
 	unitTypeSortBy : ["unitType:asc"],
 
 	detailView : null,
@@ -301,8 +300,6 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 			this.set(cols[i], emberArr);
   		}
   	}),
-
-	hbsUnitContent : Ember.computed.sort("filteredUnitContent", "unitSortBy"),
 
   	filteredUnitContent : Ember.computed("minIncFilter", "maxIncFilter", "minNewDtmFilter", "maxNewDtmFilter", "minCurrentDtmFilter", "maxCurrentDtmFilter", "bedsFilter", "bathsFilter", "unitTypeFilter", "pmsUnitTypeFilter", "overrideUnitFilter", "unapprovedUnitFilter", "model.units.@each.userIncreasePct", "model.units.@each.approved", function() {
 

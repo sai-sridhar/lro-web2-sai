@@ -15,7 +15,7 @@
         </div>
         <div class="list-wrapper" {{action "toggleCommunityMenu"}}>
             {{#each filteredCommunities as |comm|}}
-                {{#link-to "lro.pricingLeasing.community.new" comm.id tagName="div"}}
+                {{#link-to linkTo comm.id tagName="div"}}
                     <div class="c-code">{{comm.code}}</div>
                     <div class="c-name">{{comm.name}}</div>
                 {{/link-to}}

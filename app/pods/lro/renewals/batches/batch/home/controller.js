@@ -11,7 +11,6 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 	newDtmMax : 0,
 	currentDtmMin : 0,
 	currentDtmMax : 0,
-	unitSortBy : ["communityName:asc"],
 	communitySortBy : ["communityFullName:asc"],
 
 	detailView : null,
@@ -49,8 +48,6 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 		});
 		return units;
 	}),
-
-	hbsUnitContent : Ember.computed.sort("filteredUnitContent", "unitSortBy"),
 
 	filteredUnitContent : Ember.computed("minIncFilter", "maxIncFilter", "minNewDtmFilter", "maxNewDtmFilter", "minCurrentDtmFilter", "maxCurrentDtmFilter", "communityFilter", "bedsFilter", "bathsFilter", "unitTypeFilter", "pmsUnitTypeFilter", "overrideUnitFilter", "unapprovedUnitFilter", "units.@each.userIncreasePct", "units.@each.approved", function() {
 

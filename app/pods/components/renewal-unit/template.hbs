@@ -3,31 +3,30 @@
 		<div class="close" {{action "close"}}>
 			{{fa-icon "times"}}
 		</div>
-		{{!-- {{#link-to 'lro.renewals.batch.community' tagName="div" class="close"}}
-
-		{{/link-to}} --}}
 		<div class="unit-header"><h1><b>Unit {{model.unitNumber}}</b></h1></div>
 	</div>
 	<div class="scroll-content">
-		 <div class="override-wrapper {{if isOverriding 'overriding'}}">
-			{{#if isOverriding}}
-				<div class="std-top-margin"><h2>Renewal Offer Override</h2></div>
-				<div class="center std-bottom-margin">
-					{{#radio-button value="percent" groupValue=model.userOverrideMode}}Percent{{/radio-button}}
-					{{#radio-button value="dollars" groupValue=model.userOverrideMode}}Dollars{{/radio-button}}
-				</div>
-				<div class="std-bottom-margin">
-					<button class="white with-icon" {{action "cancelOverride"}}>{{fa-icon "times"}}Cancel</button>
-					<button class="white with-icon" {{action "clearOverride"}}>{{fa-icon "trash-o"}}Delete</button>
-					<button class="with-icon" {{action "saveOverride"}}>{{fa-icon "check"}}Save</button>
-				</div>
-			{{else if model.approved}}
-				<button class="with-icon width-150 red" {{action "unapprove" model}}>{{fa-icon "thumbs-down"}}Unapprove</button>
-			{{else}}
-				<button class="with-icon width-150" {{action "initOverride"}}>{{fa-icon "pencil"}}Override</button>
-				<button class="with-icon width-150" {{action "approve" model}}>{{fa-icon "thumbs-up"}}Approve</button>
-			{{/if}}
-		</div>
+		 {{#unless viewOnly}}
+			 <div class="override-wrapper {{if isOverriding 'overriding'}}">
+				{{#if isOverriding}}
+					<div class="std-top-margin"><h2>Renewal Offer Override</h2></div>
+					<div class="center std-bottom-margin">
+						{{#radio-button value="percent" groupValue=model.userOverrideMode}}Percent{{/radio-button}}
+						{{#radio-button value="dollars" groupValue=model.userOverrideMode}}Dollars{{/radio-button}}
+					</div>
+					<div class="std-bottom-margin">
+						<button class="white with-icon" {{action "cancelOverride"}}>{{fa-icon "times"}}Cancel</button>
+						<button class="white with-icon" {{action "clearOverride"}}>{{fa-icon "trash-o"}}Delete</button>
+						<button class="with-icon" {{action "saveOverride"}}>{{fa-icon "check"}}Save</button>
+					</div>
+				{{else if model.approved}}
+					<button class="with-icon width-150 red" {{action "unapprove" model}}>{{fa-icon "thumbs-down"}}Unapprove</button>
+				{{else}}
+					<button class="with-icon width-150" {{action "initOverride"}}>{{fa-icon "pencil"}}Override</button>
+					<button class="with-icon width-150" {{action "approve" model}}>{{fa-icon "thumbs-up"}}Approve</button>
+				{{/if}}
+			</div>
+		{{/unless}}
 		<div class="data-point-wrapper">
 			<div>
 				<div class="label">CMR</div>

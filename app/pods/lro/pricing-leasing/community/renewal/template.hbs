@@ -1,0 +1,30 @@
+<div class="renewal-pricing">
+	<section class="control-wrapper">
+        {{community-select communities=communities community=community linkTo="lro.pricingLeasing.community.renewal"}}
+        <div class="filter-button" {{action "toggleFilters"}}>{{fa-icon "sliders"}}></div>
+        <div class="filter-wrapper {{if showFilters 'show'}}">
+        	<div class="filter">
+                <div class="label block">LRO Unit Type</div>
+                <div class="control block">
+                    {{select-2 content=unitTypeContent value=unitTypeFilter placeholder="All" allowClear=true multiple=false}}
+                </div>
+            </div>
+            <div class="filter">
+                <div class="label block">PMS Unit Type</div>
+                <div class="control block">
+                    {{select-2 content=pmsUnitTypeContent value=pmsUnitTypeFilter placeholder="All" allowClear=true multiple=false}}
+                </div>
+            </div>
+        </div>
+        <div class="search-wrapper float-right">
+            <div class="search-control">
+                {{input type="search" placeholder="Search" value=searchText}}
+            </div>
+        </div>
+    </section>
+    <section class="table-wrapper">
+    	{{renewal-unit-table content=filteredSearchedContent viewOnly=true linkTo="lro.pricingLeasing.community.renewal.unit"}}
+    </section>
+	{{outlet}}
+</div>
+
