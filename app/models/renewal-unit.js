@@ -30,6 +30,7 @@ export default Model.extend({
 	recRent : attr("number"),
 	cmr : attr("number"),
 	approved : attr("boolean"),
+	committed : attr("boolean"),
 	notice : attr("boolean"),
 	renewed : attr("boolean"),
 	undecided : attr("boolean"),

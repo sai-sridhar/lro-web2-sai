@@ -561,6 +561,7 @@ button {
 	i {
 		color: white;
 		font-size: 1.3em !important;
+		vertical-align: middle;
 
 	}
 
@@ -654,7 +655,7 @@ button {
 			line-height: 0.9em !important;
 		}
 
-		&:hover {
+		&:hover, &.active {
 			background: @buttonGreen;
 			color: white;
 			border: 1px solid @buttonGreen;
@@ -667,6 +668,8 @@ button {
 		&.thick-border {
 			border: 2px solid @buttonGreen;
 		}
+
+
 	}
 
 	&.gray-border {
@@ -902,10 +905,42 @@ section {
 			}
 
 		}
-
 	}
 }
 
+.download-menu {
+	border: 1px solid @buttonGreen;
+	z-index: 300;
+	position: relative;
+	top: 2.9em;
+	background: white;
+	display: none;
+	box-sizing: border-box;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+   	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+
+	&.open {
+		display: block;
+	}
+
+	div {
+		display: block;
+		position: relative;
+		line-height: 1.5em;
+		padding: @stdPadding @dblPadding;
+		border-bottom: @stdBorder;
+		text-align: left;
+		color: @mediumBlue;
+		min-width: 100px;
+
+		&:hover {
+			background: @hoverBlue;
+			cursor: pointer;
+		}
+
+	}
+
+}
 .online-help {
 	position: relative;
 	display: inline-block;
@@ -1496,7 +1531,7 @@ section {
 
 	.ut-wrapper {
 		position: absolute;
-		top: @toolbarHeight;
+		top: @toolbarHeight + 1;
 		left: 0;
 		bottom: 0;
 		width: @utPanelWidth;
@@ -1516,7 +1551,7 @@ section {
 
 	.table-wrapper {
 		position: absolute;
-		top: @toolbarHeight;
+		top: @toolbarHeight + 1;
 		bottom: 0;
 		right: 0;
 		left: @utPanelWidth;
@@ -1533,7 +1568,7 @@ section {
 
 	.table-wrapper {
 		position: absolute;
-		top: @toolbarHeight;
+		top: @toolbarHeight + 1;
 		left: 0;
 		bottom: 0;
 		right: 0;
@@ -1799,6 +1834,9 @@ section {
 	box-sizing: border-box;
 	padding: @stdPadding;
 
+	&.taller {
+		height: @toolbarHeight + 1;
+	}
 
 	&>div {
 		display: inline-block;

@@ -1,5 +1,5 @@
 <div class="renewal-pricing">
-	<section class="control-wrapper">
+	<section class="control-wrapper taller">
         {{community-select communities=communities community=community linkTo="lro.pricingLeasing.community.renewal"}}
         <div class="filter-button" {{action "toggleFilters"}}>{{fa-icon "sliders"}}></div>
         <div class="filter-wrapper {{if showFilters 'show'}}">
@@ -15,15 +15,45 @@
                     {{select-2 content=pmsUnitTypeContent value=pmsUnitTypeFilter placeholder="All" allowClear=true multiple=false}}
                 </div>
             </div>
+            <div class="filter">
+                <div class="label block">Expiration Month</div>
+                <div class="control block">
+                    {{select-2 content=monthContent value=month placeholder="Choose month..." allowClear=true multiple=false}}
+                </div>
+            </div>
+            <div class="filter">
+                <div class="label block">Expiration From</div>
+                <div class="control block">
+                    {{pikaday-input onSelection=(action 'changeStartDate') value=startDate minDate=startDateBegin maxDate=startDateEnd placeholder="Start date" format=dateFormat class="calendar"}}
+                </div>
+            </div>
+            <div class="filter">
+                <div class="label block">Expiration To</div>
+                <div class="control block">
+                    {{pikaday-input onSelection=(action 'changeEndDate') value=endDate minDate=endDateBegin maxDate=endDateEnd placeholder="End date" format=dateFormat class="calendar"}}
+                </div>
+            </div>
         </div>
         <div class="search-wrapper float-right">
             <div class="search-control">
                 {{input type="search" placeholder="Search" value=searchText}}
             </div>
         </div>
+        <div class="float-right dbl-right-margin no-mobile">
+           <button class="transparent float-right {{if showDownloadMenu 'active'}}" {{action "toggleDownloads"}}>{{fa-icon "download"}}</button>
+           <div class="download-menu {{if showDownloadMenu 'open'}}">
+                <div>Default</div>
+                <div>Mail Merge</div>
+                <div>Mgmt Report</div>
+            </div>
+        </div>
     </section>
     <section class="table-wrapper">
-    	{{renewal-unit-table content=filteredSearchedContent viewOnly=true linkTo="lro.pricingLeasing.community.renewal.unit"}}
+        {{#if model.length}}
+    	   {{renewal-unit-table content=filteredSearchedContent viewOnly=true linkTo="lro.pricingLeasing.community.renewal.unit"}}
+        {{else}}
+            <h2 class="center dbl-top-margin italic">The are no renewal offers for this community.</h2>
+        {{/if}}
     </section>
 	{{outlet}}
 </div>

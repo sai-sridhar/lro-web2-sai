@@ -169,11 +169,13 @@ export default Ember.Route.extend(RenewalMixin, {
 					}, this);
 
 					// Reset the input values
-					this.controller.set('batchName', null);
-					this.controller.set('month', null);
-					this.controller.set("selectedCommunities", []);
-					this.controller.set('startDate', null);
-					this.controller.set('endDate', null);
+					this.controller.setProperties({
+						'batchName' : null,
+						'month' : null,
+						"selectedCommunities" : [],
+						'startDate' : null,
+						'endDate' : null
+					});
 
 					// Transition back to the list of open batches
 					this.transitionTo("lro.renewals.batches.home.open");
