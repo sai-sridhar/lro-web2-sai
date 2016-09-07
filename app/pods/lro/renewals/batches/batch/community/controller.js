@@ -49,6 +49,7 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 				utObj.totalRecLeaseTerm += unit.get("recLeaseTerm");
 				utObj.totalCurrentRent += unit.get("currentRent");
 				utObj.totalCurrentLeaseTerm += unit.get("currentLeaseTerm");
+				utObj.totalIncreaseDollars += unit.get("userIncreaseDollars");
 				utObj.totalIncrease += unit.get("userIncreasePct");
 				utObj.totalCurrentDtm += unit.get("currentDiscountToMarket");
 				utObj.totalNewDtm += unit.get("newDiscountToMarket");
@@ -63,6 +64,7 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 					totalRecLeaseTerm : unit.get("recLeaseTerm"),
 					totalCurrentRent : unit.get("currentRent"),
 					totalCurrentLeaseTerm : unit.get("currentLeaseTerm"),
+					totalIncreaseDollars : unit.get("userIncreaseDollars"),
 					totalIncrease : unit.get("userIncreasePct"),
 					minIncrease : unit.get("userIncreasePct"),
 					maxIncrease : unit.get("userIncreasePct"),
@@ -87,6 +89,7 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 			ut.avgRecLeaseTerm = ut.get("totalRecLeaseTerm") / ut.get("expirationCount");
 			ut.avgCurrentRent = ut.get("totalCurrentRent") / ut.get("expirationCount");
 			ut.avgCurrentLeaseTerm = ut.get("totalCurrentLeaseTerm") / ut.get("expirationCount");
+			ut.avgIncreaseDollars = ut.get("totalIncreaseDollars") / ut.get("expirationCount");
 			ut.avgIncrease = ut.get("totalIncrease") / ut.get("expirationCount");
 			ut.avgCurrentDtm = ut.get("totalCurrentDtm") / ut.get("expirationCount");
 			ut.avgNewDtm = ut.get("totalNewDtm") / ut.get("expirationCount");

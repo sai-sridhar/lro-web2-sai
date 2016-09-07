@@ -238,17 +238,26 @@
 											<th {{action "sortCommunities" "expirationCount"}}>Expirations
 												<div>Expirations</div>
 											</th>
+											<th {{action "sortCommunities" "approvalCount"}}>Approvals
+												<div>Approvals</div>
+											</th>
 											<th class="no-mobile" {{action "sortCommunities" "avgRecRent"}}>Avg Offer Rent
 												<div>Avg. Offer Rent</div>
 											</th>
-											<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase
-												<div>Avg. Increase</div>
+											<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase $
+												<div>Avg. Increase $</div>
+											</th>
+											<th {{action "sortCommunities" "avgIncrease"}}>Avg Increase %
+												<div>Avg. Increase %</div>
 											</th>
 											<th class="no-mobile" {{action "sortCommunities" "avgRecLeaseTerm"}}>Avg Offer Term
 												<div>Avg. Offer Term</div>
 											</th>
-											<th>Increase Range
-												<div>Increase Range</div>
+											<th {{action "sortCommunities" "minIncrease"}}>Min. Increase
+												<div>Min. Increase</div>
+											</th>
+											<th{{action "sortCommunities" "maxIncrease"}}>Max. Increase
+												<div>Max. Increase</div>
 											</th>
 											<th class="no-mobile" {{action "sortCommunities" "avgCurrentDiscountToMarket"}}>Current Avg DTM
 												<div>Current Avg. DTM</div>
@@ -267,10 +276,13 @@
 												<td class="left">{{comm.communityCode}}</td>
 												<td class="left">{{comm.communityName}}</td>
 												<td>{{format-commas comm.expirationCount}}</td>
+												<td>{{format-commas comm.approvalCount}}</td>
 												<td class="no-mobile">${{format-commas comm.avgRecRent}}</td>
+												<td>${{format-commas comm.avgIncreaseDollars}}</td>
 												<td>{{format-percent comm.avgIncrease 1 1}}</td>
 												<td class="no-mobile">{{format-commas comm.avgRecLeaseTerm}}</td>
-												<td>{{format-percent comm.minIncrease 1 1}} - {{format-percent comm.maxIncrease 1 1}}</td>
+												<td>{{format-percent comm.minIncrease 1 1}}</td>
+												<td>{{format-percent comm.maxIncrease 1 1}}</td>
 												<td class="no-mobile">{{format-percent comm.avgCurrentDiscountToMarket 1 1}}</td>
 												<td class="no-mobile">{{format-percent comm.avgNewDiscountToMarket 1 1}}</td>
 												{{#unless model.isCommitted}}

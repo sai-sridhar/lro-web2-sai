@@ -32,8 +32,14 @@ export default Model.extend(AggregationMixin, {
 	increaseSum : Ember.computed("units.@each.userIncreasePct", function() {
 	  	return this.calcSum(this.get("units"), "userIncreasePct");
 	}),
+	increaseSumDollars : Ember.computed("units.@each.userIncreaseDollars", function() {
+	  	return this.calcSum(this.get("units"), "userIncreaseDollars");
+	}),
 	avgIncrease : Ember.computed("expirationCount", "increaseSum", function() {
 	  	return this.calcAvg(this.get("increaseSum"), this.get("expirationCount"));
+	}),
+	avgIncreaseDollars : Ember.computed("expirationCount", "increaseSumDollars", function() {
+	  	return this.calcAvg(this.get("increaseSumDollars"), this.get("expirationCount"));
 	}),
 	totalRecLeaseTerm : Ember.computed("units.@each.recLeaseTerm", function() {
 	  	return this.calcSum(this.get("units"), "recLeaseTerm");

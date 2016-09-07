@@ -1,0 +1,49 @@
+<section class="table">
+    <div class="table-container">
+        <table class="sticky-headers new-pricing-table">
+			<thead>
+          		<tr>
+            		<th>Unit<div>Unit</div></th>
+            		<th>Status<div>Status</div></th>
+            		<th>Available<div>Available</div></th>
+            		{{#if showColumns.pmsUnitType.show}}<th class="no-mobile">PMS Unit Type<div>PMS Unit Type</div></th>{{/if}}
+                    <th>Term<div>Term</div></th>
+            		<th class="number">Effective Rent<div>Effective Rent</div></th>
+		            {{#if showColumns.sf.show}}<th class="no-mobile">SF<div>SF</div></th>{{/if}}
+		            {{#if showColumns.moveout.show}}<th class="no-mobile">Moveout<div>Moveout</div></th>{{/if}}
+		            {{#if showColumns.priorRent.show}}<th class="number no-mobile">Prior Rent<div>Prior Rent</div></th>{{/if}}
+		            {{#if showColumns.baseRent.show}}<th class="number no-mobile">Base Rent<div>Base Rent</div></th>{{/if}}
+		            {{#if showColumns.totalConcession.show}}<th class="number no-mobile">Total Conc.<div>Total Conc.</div></th>{{/if}}
+		            {{#if showColumns.amenityAmount.show}}<th class="number no-mobile">Amen. Amt.<div>Amen. Amt</div></th>{{/if}}
+		            {{#if showColumns.offset.show}}<th class="number no-mobile">Offset<div>Offset</div></th>{{/if}}
+		            {{#if showColumns.amenities.show}}<th class="no-mobile">Amenities<div>Amenities</div></th>{{/if}}
+          		</tr>
+        	</thead>
+        	<tbody>
+                {{#each groupedContent as |ut|}}
+                    <tr>
+                        <td colspan=99 class="grouper">{{ut.unitType}} ({{ut.unitCategory}})</td>
+                    </tr>
+                    {{#each ut.units as |unit|}}
+                		{{#link-to linkTo unit.id tagName='tr'}}
+                			<td>{{unit.unitNumber}}</td>
+                			<td>{{unit.status}}</td>
+                			<td>{{format-date unit.available}}</td>
+                            {{#if showColumns.pmsUnitType.show}}<td class="no-mobile">{{unit.pmsUnitType}}</td>{{/if}}
+                			<td>{{unit.leaseTerm}}</td>
+                			<td>${{format-commas unit.effectiveRent}}</td>
+                            {{#if showColumns.sf.show}}<td class="no-mobile">{{format-commas unit.sf}}</td>{{/if}}
+                            {{#if showColumns.moveout.show}}<td class="no-mobile">{{format-date unit.moveout}}</td>{{/if}}
+                            {{#if showColumns.priorRent.show}}<td class="number no-mobile">${{format-commas unit.priorRent}}</td>{{/if}}
+                            {{#if showColumns.baseRent.show}}<td class="number no-mobile">${{format-commas unit.baseRent}}</td>{{/if}}
+                            {{#if showColumns.totalConcession.show}}<td class="number no-mobile">${{format-commas unit.totalConcession}}</td>{{/if}}
+                            {{#if showColumns.amenityAmount.show}}<td class="number no-mobile">${{format-commas unit.amenityAmount}}</td>{{/if}}
+                            {{#if showColumns.offset.show}}<td class="number no-mobile">${{format-commas unit.offset}}</td>{{/if}}
+                            {{#if showColumns.amenities.show}}<td class="left no-mobile">{{unit.amenities}}</td>{{/if}}
+                		{{/link-to}}
+                    {{/each}}
+                {{/each}}
+        	</tbody>
+      	</table>
+    </div>
+</section>
