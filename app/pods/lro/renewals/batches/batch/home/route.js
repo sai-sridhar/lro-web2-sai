@@ -235,7 +235,7 @@ export default Ember.Route.extend({
 				}
 			);
 		},
-		clearUnitFilters : function() {
+		clearFilters : function() {
 			this.controller.setProperties({
 				"bedsFilter" : null,
 				"bathsFilter" : null,
@@ -249,11 +249,7 @@ export default Ember.Route.extend({
 				"minCurrentDtmFilter" : null,
 				"maxCurrentDtmFilter" : null,
 				"minNewDtmFilter" : null,
-				"maxNewDtmFilter" : null
-			});
-		},
-		clearCommunityFilters : function() {
-			this.controller.setProperties({
+				"maxNewDtmFilter" : null,
 				"minAvgIncFilter" : null,
 				"maxAvgIncFilter" : null,
 				"minAvgCurrentDtmFilter" : null,

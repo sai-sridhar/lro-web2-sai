@@ -17,6 +17,14 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 	showDetailFilters : false,
 	queryParams : ["showDetailFilters", "detailView"],
 
+	filtersApplied : Ember.computed("filteredCommunityContent.length", "filteredUnitContent.length", function() {
+		if( (this.get("filteredCommunityContent.length") === this.get("model.communities.length")) && (this.get("filteredUnitContent.length") === this.get("units.length")) ) {
+			return false;
+		} else {
+			return true;
+		}
+	}),
+
 	detailViewObserver : Ember.observer("detailView", function() {
 		if( this.get("detailView") === "community" ) {
 			this.setProperties({
@@ -138,21 +146,13 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 			}
 
 			if( this.get("communityFilter") ) {
-				if( unit.get("communityName") !== this.get("communityFilter.text") ) {
+				if( unit.get("communityFullName") !== this.get("communityFilter.text") ) {
 					f10 = false;
 				}
 			}
 		 	// console.log(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10, unit.get("id"));
 			return (f1 && f2 && f3 && f4 && f5 && f6 && f7 && f8 && f9 && f10);
 		}, this);
-	}),
-
-	unitFiltersApplied : Ember.computed("filteredUnitContent.length", function() {
-		if( this.get("filteredUnitContent.length") === this.get("units.length") ) {
-			return false;
-		} else {
-			return true;
-		}
 	}),
 
 	avgIncreaseObserver : Ember.observer("model.communities.@each.avgIncrease", function() {
@@ -271,14 +271,6 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 	}),
 
 	hbsCommunityContent : Ember.computed.sort("filteredCommunityContent", "communitySortBy"),
-
-	communityFiltersApplied : Ember.computed("filteredCommunityContent.length", function() {
-		if( this.get("filteredCommunityContent.length") === this.get("model.communities.length") ) {
-			return false;
-		} else {
-			return true;
-		}
-	}),
 
 	filteredSummaryContent : Ember.computed("units.@each.beds", "bedsFilter", "bathsFilter", "unitTypeFilter", "pmsUnitTypeFilter", function() {
 		return this.get("units").filter(function(unit) {

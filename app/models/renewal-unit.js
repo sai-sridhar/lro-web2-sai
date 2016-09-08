@@ -9,11 +9,14 @@ export default Model.extend({
 	renewalRange : belongsTo("renewalRange", { async : true }),
 	// batch : belongsTo("renewalBatch", { async : true }),
 	community : belongsTo("community", { async : true }),
-	communityName : Ember.computed("community", function() {
-		return this.get("community.name");
+	communityName : Ember.computed("renewalComm", function() {
+		return this.get("renewalComm.communityName");
 	}),
-	communityCode : Ember.computed("community", function() {
-		return this.get("community.code");
+	communityFullName : Ember.computed("renewalComm", function() {
+		return this.get("renewalComm.communityFullName");
+	}),
+	communityCode : Ember.computed("renewalComm", function() {
+		return this.get("renewalComm.communityCode");
 	}),
 	unitNumber : attr("string"),
 	unitType : attr("string"),

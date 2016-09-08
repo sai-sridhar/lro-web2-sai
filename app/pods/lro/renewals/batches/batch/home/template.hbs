@@ -28,14 +28,8 @@
 					><div {{action "toggleView" "community"}} class="{{if communityView 'active'}}">Community View</div
 					><div {{action "toggleView" "unit"}} class="{{if unitView 'active'}}">Unit View</div>
 				</div>
-				{{#if unitFiltersApplied}}
-					<div class="filter-tag clickable" {{action "clearUnitFilters"}}>
-						Clear filters
-						{{fa-icon "times-circle"}}
-					</div>
-				{{/if}}
-				{{#if communityFiltersApplied}}
-					<div class="filter-tag clickable" {{action "clearCommunityFilters"}}>
+				{{#if filtersApplied}}
+					<div class="filter-tag clickable" {{action "clearFilters"}}>
 						Clear filters
 						{{fa-icon "times-circle"}}
 					</div>

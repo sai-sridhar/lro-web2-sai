@@ -124,8 +124,8 @@ export default Model.extend(AggregationMixin, {
 		var uniqArr = arr.uniq();
 		return uniqArr;
 	}),
-	communityNames : Ember.computed("units.@each.communityName", function() {
-		var arr = this.get("units").mapBy("communityName");
+	communityNames : Ember.computed("units.@each.communityFullName", function() {
+		var arr = this.get("units").mapBy("communityFullName");
 		var uniqArr = arr.uniq();
 		return uniqArr;
 	})
