@@ -96,11 +96,11 @@ export default Ember.Controller.extend(RoundingMixin, AggregationMixin, {
 
 			ut.minIncrease = ut.units.reduce(function( prevValue, unit ) {
 				return Math.min(prevValue, unit.get("userIncreasePct"));
-			}, content.get("firstObject.minIncrease"));
+			}, ut.get("minIncrease"));
 
 			ut.maxIncrease = ut.units.reduce(function( prevValue, unit ) {
 				return Math.max(prevValue, unit.get("userIncreasePct"));
-			}, content.get("firstObject.maxIncrease"));
+			}, ut.get("maxIncrease"));
 
 			ut.minCurrentDtm = ut.units.reduce(function( prevValue, unit ) {
 				return Math.min(prevValue, unit.get("currentDiscountToMarket"));
