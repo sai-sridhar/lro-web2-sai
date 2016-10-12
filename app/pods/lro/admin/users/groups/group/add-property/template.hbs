@@ -1,0 +1,15 @@
+<div class="overlay show">
+	<div class="overlay-content w600">
+		<header>
+			<h2><b>Add Property to Group</b></h2>
+			<div class="close" {{action "cancel"}}>{{fa-icon "times"}}</div>
+		</header>
+		<section class="scroll-content">
+			{{community-select2 content=model selectedCommunities=selectedCommunities optionLabelPath="fullName" placeholder="Choose communities..." allowClear=true selectMultiple=true selectAll=true}}
+		</section>
+		<footer>
+			<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			<button class="white with-icon" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
+		</footer>
+	</div>
+</div>

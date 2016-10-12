@@ -1,16 +1,11 @@
-<section class="catalog">
-	<div class="catalog-search">
-		{{input type="search" placeholder="Search..." value=searchText}}
-	</div>
-	<div class="catalog-scroll">
-		{{#each arrangedContent as |user|}}
-			{{#link-to "lro.admin.users.user" user.id tagName="div"}}{{user.fullName}}{{/link-to}}
-		{{/each}}
-	</div>
-	<div class="catalog-add">
-		{{#link-to "lro.admin.users.newUser" class="with-icon" tagName="button"}}{{fa-icon "user-plus"}}Add User{{/link-to}}
-	</div>
-</section>
-<section class="item-content">
+<section class="users">
+	<section class="user-nav">
+		<div class="tab-menu tm-3 square-corners">
+			{{#link-to "lro.admin.users.people" tagName="div"}}Users{{/link-to}}
+			{{#link-to "lro.admin.users.roles" tagName="div"}}Roles{{/link-to}}
+			{{#link-to "lro.admin.users.groups" tagName="div"}}Groups{{/link-to}}
+		</div>
+	</section>
 	{{outlet}}
 </section>
+

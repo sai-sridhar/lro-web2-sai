@@ -6,12 +6,13 @@ export default Ember.Route.extend({
 	},
 	actions : {
 		saveUser : function() {
-			var id = this.controller.get("model.id");
-			this.transitionTo("lro.admin.users.user", id);
+			let id = this.controller.get("model.id");
+			// this.controllerFor("lro.admin.users.people").get("model").pushObject(this.controller.get("model"));
+			this.transitionTo("lro.admin.users.people.user", id);
 		},
 		cancel : function() {
 			this.controller.get("model").deleteRecord();
-			this.transitionTo("lro.admin.users");
+			this.transitionTo("lro.admin.users.people");
 		}
 	}
 });

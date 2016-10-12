@@ -1,0 +1,47 @@
+<div class="table-container">
+	<table class="sticky-headers">
+		<thead>
+			<tr class="sortable">
+				<th>LRO Property Code
+					<div>LRO Property Code</div>
+				</th>
+				<th>LRO Property Name
+					<div>LRO Property Name</div>
+				</th>
+				<th>Address
+					<div>Address</div>
+				</th>
+				<th>City
+					<div>City</div>
+				</th>
+				<th>State
+					<div>State</div>
+				</th>
+				<th>Zip Code
+					<div>Zip Code</div>
+				</th>
+				<th>Country
+					<div>Country</div>
+				</th>
+				<th>Remove
+					<div>Remove</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each model as |prop|}}
+				<tr>
+					<td>{{prop.code}}</td>
+					<td>{{prop.name}}</td>
+					<td>{{prop.address1}}</td>
+					<td>{{prop.city}}</td>
+					<td>{{prop.state}}</td>
+					<td>{{prop.zip}}</td>
+					<td>{{prop.country}}</td>
+					<td><span {{action "delete" prop}}>{{fa-icon "trash-o"}}</span></td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>
+

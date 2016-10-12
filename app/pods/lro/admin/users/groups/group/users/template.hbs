@@ -1,0 +1,36 @@
+<section class="table">
+	<div class="table-container">
+		<table class="sticky-headers">
+			<thead>
+				<tr class="sortable">
+					<th>First Name
+						<div>First Name</div>
+					</th>
+					<th>Last Name
+						<div>Last Name</div>
+					</th>
+					<th>Email
+						<div>Email</div>
+					</th>
+					<th>Role
+						<div>Role</div>
+					</th>
+					<th>Remove
+						<div>Remove</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each model as |member|}}
+					<tr>
+						<td>{{member.user.firstName}}</td>
+						<td>{{member.user.lastName}}</td>
+						<td>{{member.user.email}}</td>
+						<td>{{member.role.roleName}}</td>
+						<td><span {{action "delete" member}}>{{fa-icon "trash-o"}}</span></td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</section>

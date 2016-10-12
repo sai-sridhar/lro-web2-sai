@@ -1,0 +1,55 @@
+{{#if search}}
+	<div class="catalog-search">
+		{{input type="search" placeholder="Search..." value=searchText}}
+	</div>
+{{/if}}
+<div class="catalog-scroll {{if add 'add'}} {{if search 'search'}}">
+	{{#if people}}
+		{{#if filteredContent.length}}
+			{{#each filteredContent as |person|}}
+				{{#link-to linkTo person.id tagName="div"}}
+					{{user-tile user=true name=person.fullName email=person.email}}
+				{{/link-to}}
+			{{/each}}
+		{{else}}
+			<h3 class="center dbl-top-margin">No users found.</h3>
+		{{/if}}
+	{{else if groups}}
+		{{#if filteredContent.length}}
+			{{#each filteredContent as |group|}}
+				{{#link-to linkTo group.id tagName="div"}}
+					<div>{{user-tile group=true name=group.grpName}}</div>
+				{{/link-to}}
+			{{/each}}
+		{{else}}
+			<h3 class="center dbl-top-margin">No groups found.</h3>
+		{{/if}}
+	{{else if roles}}
+		{{#if filteredContent.length}}
+			{{#each filteredContent as |role|}}
+				{{#link-to linkTo role.id tagName="div"}}
+					{{user-tile name=role.roleName role=true}}
+				{{/link-to}}
+			{{/each}}
+		{{else}}
+			<h3 class="center dbl-top-margin">No roles found.</h3>
+		{{/if}}
+	{{/if}}
+</div>
+{{#if add}}
+	<div class="catalog-add users">
+		<div>
+			{{#link-to linkToNew tagName="button" class="with-icon"}}
+				{{fa-icon "plus"}}
+				{{#if people}}
+					Add User
+				{{else if groups}}
+					Add Group
+				{{else if roles}}
+					Add Role
+				{{/if}}
+			{{/link-to}}
+		</div>
+	</div>
+{{/if}}
+

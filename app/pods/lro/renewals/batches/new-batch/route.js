@@ -138,8 +138,6 @@ export default Ember.Route.extend(RenewalMixin, {
 												nru.set("finalRecRent", recRent.offer);
 												nru.set("renewalRange", recRent.range);
 												nru.save();
-
-
 											});
 										});
 									}, this);

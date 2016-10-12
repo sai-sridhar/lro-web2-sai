@@ -7,7 +7,7 @@ export default Ember.Route.extend(RenewalMixin, {
 	model(params, transition) {
 		let batch_id = transition.params["lro.renewals.batches.batch"].batch_id,
 			renewal_comm_id = transition.params["lro.renewals.batches.batch.community"].community_id;
-		return this.store.query("renewalRange", { unitType : params.unit_type, batch : batch_id, renewalComm : renewal_comm_id, isUnitType : true, isRenewalComm : true })
+		return this.store.query("renewalRange", { unitType : params.unit_type, batch : batch_id, renewalComm : renewal_comm_id, isUnitType : true, isRenewalComm : true });
 	},
 
 	setupController(controller, model) {

@@ -2,6 +2,7 @@
 import Model from 'ember-data/model';
 import Ember from 'ember';
 import attr from 'ember-data/attr';
+import { hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
 	email : attr("string"),
@@ -19,5 +20,10 @@ export default Model.extend({
 	}),
 	initials : Ember.computed("firstInitial", "lastInitial", function() {
 		return this.get("firstInitial") + this.get("lastInitial");
-	})
+	}),
+	title : attr("string"),
+	phone : attr("string"),
+	status : attr("string", { defaultValue: "Active" }),
+	isDeleted : attr("boolean", { defaultValue : false }),
+	groups : hasMany("member", { async : true })
 });

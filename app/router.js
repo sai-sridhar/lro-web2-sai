@@ -82,8 +82,25 @@ Router.map(function() {
       this.route('params');
       this.route('hierarchy');
       this.route('users', function() {
-        this.route('user', { path : "/:user_id" });
-        this.route('newUser', { path : "/new" });
+        this.route('roles', function() {
+          this.route('role', { path : "/:role_id" });
+          this.route('newRole', { path : "/new" });
+        });
+        this.route('groups', function() {
+          this.route('group', { path : "/:group_id" }, function() {
+            this.route('users');
+            this.route('properties');
+            this.route('addProperty');
+            this.route('addUser');
+          });
+          this.route('newGroup', { path : "/new" });
+        });
+        this.route('people', function() {
+          this.route('user', { path : "/:user_id" }, function() {
+            this.route('assign');
+          });
+          this.route('newUser', { path : "/new" });
+        });
       });
       this.route('utilities');
     });

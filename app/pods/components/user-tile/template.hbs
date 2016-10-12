@@ -1,0 +1,17 @@
+{{#if user}}
+	<div class="avatar">{{fa-icon "user"}}</div>
+	<div>
+		<div class="name">{{name}}</div>
+		<div class="email">{{email}}</div>
+	</div>
+{{else if group}}
+	<div class="avatar">{{fa-icon "users"}}</div>
+	<div>
+		<div class="group-name">{{name}}</div>
+	</div>
+{{else if role}}
+	<div class="avatar">{{fa-icon "user-secret"}}</div>
+	<div>
+		<div class="group-name">{{name}}</div>
+	</div>
+{{/if}}

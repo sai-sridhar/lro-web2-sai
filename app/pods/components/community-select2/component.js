@@ -4,6 +4,7 @@ export default Ember.Component.extend({
 	allowClear : true,
 	selectMultiple : false,
 	selectAll : false,
+	optionLabelPath : "communityFullName",
 
 	placeholder : Ember.computed("selectMultiple", function() {
 		if( this.get("selectMultiple") ) {

@@ -1,0 +1,18 @@
+<section class="group-content">
+	<section class="toolbar">
+		<title>
+			<h1>{{model.grpName}}</h1>
+			{{#link-to "lro.admin.users.groups.group.addUser" tagName="button" class="float-right with-icon"}}{{fa-icon "user-plus"}}Add User{{/link-to}}
+			{{#link-to "lro.admin.users.groups.group.addProperty" tagName="button" class="float-right with-icon"}}{{fa-icon "plus"}}Add Property{{/link-to}}
+		</title>
+		<div>
+			<div class="tab-menu tm-4 no-border">
+				{{#link-to "lro.admin.users.groups.group.users" tagName="div"}}Users ({{model.members.length}}){{/link-to}}
+				{{#link-to "lro.admin.users.groups.group.properties" tagName="div"}}Properties ({{model.communities.length}}){{/link-to}}
+			</div>
+		</div>
+	</section>
+	<section class="group-table-wrapper">
+		{{outlet}}
+	</section>
+</section>

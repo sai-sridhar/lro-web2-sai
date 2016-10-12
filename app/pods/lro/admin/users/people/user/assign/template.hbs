@@ -1,0 +1,21 @@
+<div class="overlay show">
+	<div class="overlay-content w600">
+		<header>
+			<h2><b>Assign User Rights</b></h2>
+			<div class="close" {{action "cancel"}}>{{fa-icon "times"}}</div>
+		</header>
+		<section class="scroll-content">
+			<h3>Select Groups & Role</h3>
+			{{select-2 content=model value=selectedGroups optionLabelPath="grpName" placeholder="Choose groups..." allowClear=true multiple=true}}
+			{{select-2 content=roles value=groupRole optionLabelPath="roleName" placeholder="Choose role" allowClear=true multiple=false}}
+			<br><br>
+			<h3 class="dbl-top-margin">Select Properties & Role</h3>
+			{{select-2 content=properties value=selectedProps optionLabelPath="fullName" placeholder="Choose properties..." allowClear=true multiple=true}}
+			{{select-2 content=roles value=propRole optionLabelPath="roleName" placeholder="Choose role" allowClear=true multiple=false}}
+		</section>
+		<footer>
+			<button class="with-icon" {{action "apply"}}>{{fa-icon "check"}}Apply</button>
+			<button class="white with-icon" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
+		</footer>
+	</div>
+</div>

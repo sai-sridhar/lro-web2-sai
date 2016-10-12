@@ -1,0 +1,55 @@
+<div class="table-container">
+	<table class="sticky-headers no-alt-row-color">
+		<thead>
+			<tr class="sortable">
+				<th>LRO Property Code
+					<div>LRO Property Code</div>
+				</th>
+				<th>LRO Property Name
+					<div>LRO Property Name</div>
+				</th>
+				<th>Role
+					<div>Role</div>
+				</th>
+				<th>Group
+					<div>Group</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each groupedContent as |comm|}}
+				{{#if comm.multiple}}
+					<tr>
+						<td rowspan={{comm.length}}>{{comm.code}}</td>
+						<td rowspan={{comm.length}} class="border-right">{{comm.name}}</td>
+						<td>{{comm.role}}</td>
+						<td class="left">
+							<span class="std-right-margin">{{fa-icon "users"}}</span>
+							<span class="clickable blue">{{comm.group}}</span>
+						</td>
+					</tr>
+					{{#each comm.roles as |role|}}
+						<tr>
+							<td>{{role.role}}</td>
+							<td class="left">
+								<span class="std-right-margin">{{fa-icon "users"}}</span>
+								<span class="clickable blue">{{role.group}}</span>
+							</td>
+						</tr>
+					{{/each}}
+				{{else}}
+					<tr>
+						<td>{{comm.code}}</td>
+						<td>{{comm.name}}</td>
+						<td>{{comm.role}}</td>
+						<td class="left">
+							<span class="std-right-margin">{{fa-icon "users"}}</span>
+							<span class="clickable blue">{{comm.group}}</span>
+						</td>
+					</tr>
+				{{/if}}
+			{{/each}}
+		</tbody>
+	</table>
+</div>
+

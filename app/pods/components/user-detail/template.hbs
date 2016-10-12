@@ -1,52 +1,101 @@
-<div class="fixed-header">
-	<section class="header">
-		<h2>
-			{{#if isNewUser}}
-				New User
-			{{else}}
-				{{model.fullName}}
-			{{/if}}
-		</h2>
-	</section>
-</div>
-<div class="scroll-content">
-	<section class="two-col">
+<section class="user-summary">
+	<div class="user-info">
 		<div>
-			<p>
-				<div class="label">First Name</div>
-				{{input value=model.firstName autofocus=true}}
-			</p>
-			<p>
-				<div class="label">Last Name</div>
-				{{input value=model.lastName}}
-			</p>
-			<p>
-				<div class="label">Email (User ID)</div>
-				{{input value=model.email}}
-			</p>
-			{{#if isNewUser}}
-			<p>
-				<div class="label">Password</div>
-				{{input type="password" value=model.password}}
-			</p>
-			{{/if}}
+			<div class="avatar">{{model.initials}}</div>
+			<div class="name-title">
+				<h2>
+					{{#if isEditing}}
+						{{input type="text" value=model.firstName placeholder="First name"}}{{input type="text" value=model.lastName placeholder="Last name"}}
+					{{else}}
+						{{model.fullName}}
+					{{/if}}
+				</h2>
+				<h4>
+					{{#if isEditing}}
+						{{input type="text" value=model.title placeholder="Title"}}
+					{{else}}
+						{{model.title}}
+					{{/if}}
+				</h4>
+			</div>
 		</div>
-
+			<div class="form-field">
+				<div>Email</div>
+				<div>
+					{{#if isNewUser}}
+						{{input type="text" value=model.email placeholder="Email"}}
+					{{else}}
+						{{model.email}}
+					{{/if}}
+				</div>
+			</div>
+			{{#if isNewUser}}
+				<div class="form-field">
+					<div>Password</div>
+					<div>
+						{{input type="password" value=model.password placeholder="Password"}}
+					</div>
+				</div>
+			{{/if}}
+			<div class="form-field">
+				<div>Phone</div>
+				<div>
+					{{#if isEditing}}
+						{{input type="text" value=model.phone placeholder="Phone"}}
+					{{else}}
+						{{model.phone}}
+					{{/if}}
+				</div>
+			</div>
+			<div class="form-field">
+				<div>Status</div>
+				<div>{{model.status}}</div>
+			</div>
+		<div>
+		</div>
+	</div>
+	<div class="user-groups">
+		<section>
+			<h3>Group -> Role Membership</h3>
+			<ul>
+				{{#if groupMembership.length}}
+					{{#each groupMembership as |group|}}
+						<li class="clickable blue">{{group.grp.grpName}} -> {{group.role.roleName}}</li>
+					{{/each}}
+				{{else}}
+					<span>No groups</span>
+				{{/if}}
+			</ul>
+		</section>
+		<section class="dbl-top-margin">
+			<h3>Property -> Role (explicit)</h3>
+			<ul>
+				{{#if propertyMembership.length}}
+					{{#each propertyMembership as |property|}}
+						<li class="clickable blue">{{property.prop.fullName}} -> {{property.role.roleName}}</li>
+					{{/each}}
+				{{else}}
+					<span>No explicit property rights</span>
+				{{/if}}
+			</ul>
+		</section>
+	</div>
+	<div class="user-controls">
+		{{#if isEditing}}
+			<button class="float-right with-icon" {{action "save"}}>{{fa-icon "check"}}Save</button>
+			<button class="float-right with-icon transparent dbl-right-margin" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
+		{{else}}
+			<button class="float-left transparent" {{action "delete"}}>{{fa-icon "trash-o"}}</button>
+			<button class="float-right with-icon" {{action "initEdit"}}>{{fa-icon "pencil"}}Edit</button>
+			{{#link-to "lro.admin.users.people.user.assign" tagName="button" class="float-right with-icon dbl-right-margin"}}{{fa-icon "user-plus"}}Assign{{/link-to}}
+		{{/if}}
+	</div>
+</section>
+<section class="user-rights">
+	<div class="pos-abs user-rights-header">
+		<h2>Property Rights</h2>
+	</div>
+	<section class="user-rights-content">
+		{{user-prop-table model=model}}
 	</section>
-</div>
-<div class="fixed-footer">
-	<button {{action "saveUser"}} class="with-icon float-right">
-		{{fa-icon "check"}}
-		Save
-	</button>
-	<button {{action "cancel"}} class="with-icon float-right transparent">
-		{{fa-icon "times"}}
-		Cancel
-	</button>
-	{{#unless isNewUser}}
-		<button {{action "deleteUser"}} class="float-right transparent">
-			{{fa-icon "trash-o"}}
-		</button>
-	{{/unless}}
-</div>
-
+</section>

@@ -354,9 +354,8 @@ table {
 				}
 			}
 		}
-
-
 	}
+
 	tbody {
 		font-size: 1em;
 		overflow: auto;
@@ -499,6 +498,17 @@ table {
 						border-bottom: 3px solid @mediumBlue;
 						color: @mediumBlue;
 					}
+				}
+			}
+		}
+	}
+
+	&.no-alt-row-color {
+		tbody {
+			tr {
+				background: rgb(255,255,255);
+				&:nth-of-type(2n) {
+					background: rgb(255,255,255);
 				}
 			}
 		}
@@ -847,6 +857,17 @@ section {
 							&.active {
 								background: @mediumBlue;
 								color: white;
+							}
+						}
+					}
+
+					&.no-alt-row-color {
+						tbody {
+							tr {
+								background: rgb(255,255,255);
+								&:nth-of-type(2n) {
+									background: rgb(255,255,255);
+								}
 							}
 						}
 					}
@@ -1412,17 +1433,20 @@ section {
 	}
 
 	&.tm-3 {
-		display: inline-block;
+		height: 100%;
+		width: 100%;
+		display: table;
 
 		&>div {
 			position: relative;
-			display: inline-block;
+			display: table-cell;
 			padding: 8px @dblPadding;
 			color: @grayBlue1;
 			font-size: 1.2em;
 			cursor: pointer;
 			border: @stdBorder;
 			background: white;
+			height: 100%;
 
 			&.active {
 				color: white;
@@ -1447,8 +1471,12 @@ section {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 			}
+		}
 
-
+		&.square-corners {
+			&>div {
+				border-radius: 0px !important;
+			}
 		}
 	}
 
@@ -1458,7 +1486,7 @@ section {
 
 		&>div {
 			position: relative;
-			display: inline-block;
+			display: table-cell;
 			padding: @stdPadding @dblPadding;
 			color: @grayBlue1;
 			font-size: 1em;
@@ -2140,8 +2168,8 @@ section {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 20%;
-	height: 100%;
+	bottom: 0;
+	width: @catalogWidth;
 	box-sizing: border-box;
 	border-right: @thickBorder;
 	background: white;
@@ -2176,9 +2204,9 @@ section {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: @headerBarHeight * 1.1;
+		top: initial;
+		height: @catalogAddHeight;
 		box-sizing: border-box;
-		padding: @dblPadding;
 		text-align: center;
 
 		&.taller {
@@ -2194,14 +2222,24 @@ section {
 				margin: 0 @stdPadding;
 			}
 		}
+
+		&.users {
+			&>div {
+				display: inline-block;
+				height: 100%;
+				width: 75%;
+				box-sizing: border-box;
+				padding: @dblPadding;
+			}
+		}
 	}
 
 	.catalog-scroll {
 		position: absolute;
-		top: 3.2em;
+		top: 0;
 		left: 0;
 		right: 0;
-		bottom: @headerBarHeight * 1.1;
+		bottom: 0;
 		box-sizing: border-box;
 		border-bottom: @stdBorder;
 		overflow-y: scroll;
@@ -2210,14 +2248,18 @@ section {
 			bottom: @headerBarHeight * 3;
 		}
 
-		&.no-add {
-			bottom: 0;
+		&.add {
+			bottom: @catalogAddHeight;
+		}
+
+		&.search {
+			top: 3.2em;
 		}
 
 		&>div {
 			padding: @stdPadding;
 			box-sizing: border-box;
-			height: 4em;
+			height: 3.0em;
 			border-bottom: @stdBorder;
 			cursor: pointer;
 			font-size: 1.5em;
@@ -2228,7 +2270,45 @@ section {
 
 			&.active {
 				background: @mediumBlue;
-				color: white;
+				color: white !important;
+				.email {
+					color: white !important;
+				}
+				i {
+					color: white !important;
+				}
+			}
+
+			.user-tile {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				&>div {
+					display: inline-block;
+					&.avatar {
+						font-size: 1.5em;
+						line-height: 1.5em;
+						vertical-align: top;
+						width: 1.2em;
+						text-align: center;
+						i {
+							color: @gray3;
+						}
+					}
+					&:last-of-type {
+						margin-left: @stdPadding;
+						height: 100%;
+						.email {
+							padding-top: 0.75 * @stdPadding;
+							font-size: 0.6em;
+							color: @gray3;
+						}
+						.group-name {
+							line-height: 2em;
+						}
+					}
+
+				}
 			}
 		}
 	}
@@ -3118,8 +3198,178 @@ section {
 	}
 }
 
-.overlay {
+.users {
 	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	&>section {
+		position: absolute;
+		&.user-nav {
+			top: 0;
+			left: 0;
+			width: @catalogWidth;
+			height: @nav2Height;
+			border-right: @thickBorder;
+			box-sizing: border-box;
+			.tab-menu {
+				&>div {
+					&:first-of-type {
+						border-left: none;
+					}
+					&:last-of-type {
+						border-right: none;
+					}
+				}
+			}
+		}
+		&.user-content {
+			box-sizing: border-box;
+			left: @catalogWidth;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			background: white;
+			border-top: @stdBorder;
+
+			.user-summary {
+				width: 30em;
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				border-right: @stdBorder;
+				border-top: @stdBorder;
+				box-sizing: border-box;
+
+				.user-info {
+					padding: @dblPadding;
+					&>div {
+						&:first-of-type {
+							margin-bottom: @dblPadding;
+
+							&>div {
+								display: inline-block;
+
+								&.avatar {
+									height: 2.5em;
+									width: 2.5em;
+									border-radius: 2em;
+									padding: 2px;
+									font-size: 1.5em;
+									border: 2px solid @buttonGreen;
+									background: none;
+									color: @buttonGreen;
+									margin-right: @dblPadding;
+									vertical-align: top;
+									text-align: center;
+									line-height: 2.5em;
+								}
+								&.name-title {
+									margin-top: @stdPadding;
+									width: 21em;
+									h2 {
+										input {
+											width: 7em;
+										}
+									}
+									 h4 {
+									 	padding-top: @stdPadding;
+									 	color: @gray3;
+									 	input {
+									 		width: 14em;
+									 	}
+									 }
+								}
+							}
+						}
+						&:last-of-type {
+
+						}
+					}
+				}
+
+				.user-groups {
+					padding: @dblPadding;
+					ul {
+						margin-top: @stdPadding;
+						li {
+							padding: @stdPadding 0px;
+						}
+					}
+				}
+
+				.user-controls {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					height: @catalogAddHeight;
+					padding: @dblPadding;
+					box-sizing: border-box;
+				}
+			}
+
+			.user-rights {
+				position: absolute;
+				left: 360px;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				border-top: @stdBorder;
+
+				.user-rights-header {
+					padding: @stdPadding;
+					height: 2.5em;
+					border-bottom: @stdBorder;
+					box-sizing: border-box;
+				}
+				.user-rights-content {
+					position: absolute;
+					top: 2.5em;
+					left: 0;
+					right: 0;
+					bottom: 0;
+
+				}
+			}
+
+			.group-content {
+
+				.toolbar {
+					height: @toolbarHeight + 2;
+					&>div {
+						display: block;
+						margin-top: 1.1em;
+					}
+					title {
+						display: block;
+						float: none;
+						h1 {
+							display: inline-block;
+						}
+					}
+				}
+
+				.group-table-wrapper {
+					position: absolute;
+					top: @toolbarHeight + 2;
+					bottom: 0;
+					left: 0;
+					right: 0;
+				}
+			}
+		}
+		&.catalog {
+			top: @nav2Height !important;
+		}
+	}
+}
+
+.overlay {
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -3129,7 +3379,6 @@ section {
 
 	@olHeaderHeight: 40px;
 	@olFooterHeight: 60px;
-
 
 	.overlay-content {
 		width: 800px;
@@ -3498,3 +3747,87 @@ section {
 	}
 }
 
+.form-field {
+	padding: @stdPadding 0px;
+	&>div {
+		display: inline-block;
+		&:first-of-type {
+			width: 100px;
+			color: @gray3;
+		}
+	}
+}
+
+.toolbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: @toolbarHeight;
+	border-bottom: @stdBorder;
+	box-sizing: border-box;
+	padding: @stdPadding;
+
+
+	&>div {
+		display: inline-block;
+	}
+
+	button {
+		margin-left: @stdPadding;
+	}
+
+	title {
+		display: inline-block;
+		float: left;
+	}
+
+	.filter-button {
+		display: none;
+	}
+
+	.apply-filters {
+		display: none;
+	}
+
+	&.filter-wrapper {
+		top: @toolbarHeight;
+		overflow-y: hidden;
+		.filter {
+			display: inline-block;
+			position: relative;
+			/*margin: (@stdPadding / 2) (2 * @dblPadding);*/
+			vertical-align: top;
+			margin-right: 2 * @dblPadding;
+
+			/*&:first-of-type {
+				margin-left: 2 * @dblPadding;
+			}
+*/
+			.label {
+				color: @gray;
+				font-size: 1em;
+				padding-bottom: @stdPadding / 2;
+			}
+
+			.selected {
+				display: block;
+				font-size: 1.5em;
+				color: @mediumBlue;
+				font-weight: 400;
+				cursor: pointer;
+			}
+
+			.control {
+				&.select2 {
+					min-width: 150px;
+				}
+			}
+		}
+	}
+
+	.button-wrapper {
+		display: inline-block;
+		float: right;
+	}
+}
