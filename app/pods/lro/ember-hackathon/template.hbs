@@ -1,0 +1,55 @@
+<div class="overlay show">
+	<div class="overlay-content w400">
+		<header>
+			<h2><b>Edit Profile</b></h2>
+			<div class="white float-right with-icon" {{action "previousRoute"}}>{{fa-icon "times"}}</div>
+		</header>
+		<section class="scroll-content">
+			{{#each model as |mod|}}
+				<div>				
+					<div class="name-title">
+						<h4>
+							{{input type="text" value=mod.firstName placeholder="First name" }}&nbsp;&nbsp;&nbsp;{{input type="text" value=mod.lastName placeholder="Last name"}}						
+						</h4>
+						<br/>
+						<h4>
+							{{input type="text" value=mod.title placeholder="Title"}}						
+						</h4>
+					</div>
+				</div>
+				<br/>
+				{{input value=mod.phone type="text" placeholder="Mobile Number" orientation="block"}}
+				<br/><br/>
+				{{input value=mod.email type="text" placeholder="Email" orientation="block"}}
+				<br/><br/>
+				<div class="password">
+					{{input placeholder="Password" type="password" value=password}}
+				</div>
+				<br/>
+				<div class="password">
+					{{input placeholder="Confirm Password" type="password" value=confirmPassword disabled=attemptingLogin}}
+				</div>
+				<br/>
+				<div class="password">
+					{{input placeholder="Password Hint" type="text" value=mod.passwordHint disabled=attemptingLogin}}
+				</div>
+			{{/each}}
+			<br/><br/>
+			{{#if testProp}}	
+			<div>{{fa-icon "check"}}&nbsp;Match</div>
+			{{else}}
+			<div>{{fa-icon "times"}}&nbsp;No Match</div>
+			{{/if}}	
+		</section>
+					
+		<footer>
+			{{#if testProp}}
+				<button class="float-right" {{action "saveUser"}}>{{fa-icon "check"}}Save</button>				
+			{{else}}
+				<button class="float-right {{unless testProp 'disabled'}}" >{{fa-icon "check"}}Save</button>				
+			{{/if}}			
+			&nbsp;&nbsp;
+			<button class="white with-icon" {{action "previousRoute"}}>{{fa-icon "times"}}Cancel</button>
+		</footer>		
+	</div>
+</div>

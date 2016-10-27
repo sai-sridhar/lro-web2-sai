@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Ember.Route.extend({
 	actions : {
 		toggleMainMenu : function() {
 			this.controller.toggleProperty("showMenu");
@@ -11,6 +11,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 		},
 		logout : function() {
 			this.controller.get("session").invalidate();
-		}
+		},
+
+		/*test : function(){
+			this.controller		
+		}*/
 	}
 });

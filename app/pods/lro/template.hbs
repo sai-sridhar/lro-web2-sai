@@ -47,7 +47,7 @@
 		</div>
 	</div>
 	<div class="my-account float-right">
-		<button class="user-avatar" {{action "toggleUserMenu"}}>{{userInitials}}</button>
+		{{#link-to "lro.emberHackathon" "Sai" tagName="button" class="user-avatar"}}{{userInitials}}{{/link-to}}		
 		<div class="user-menu {{if showUserMenu 'open'}}">
 			{{#if session.isAuthenticated}}
 				<div>My Account</div>
@@ -55,6 +55,7 @@
 			{{/if}}
 	    </div>
 	</div>
+	
 	<div class="online-help float-right no-mobile">
 		<button class="round-small">?</button>
 	</div>

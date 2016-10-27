@@ -4,18 +4,10 @@
 			<div class="avatar">{{model.initials}}</div>
 			<div class="name-title">
 				<h2>
-					{{#if isEditing}}
-						{{input type="text" value=model.firstName placeholder="First name"}}{{input type="text" value=model.lastName placeholder="Last name"}}
-					{{else}}
-						{{model.fullName}}
-					{{/if}}
+					{{model.fullName}}					
 				</h2>
 				<h4>
-					{{#if isEditing}}
-						{{input type="text" value=model.title placeholder="Title"}}
-					{{else}}
-						{{model.title}}
-					{{/if}}
+					{{model.title}}					
 				</h4>
 			</div>
 		</div>
@@ -40,11 +32,7 @@
 			<div class="form-field">
 				<div>Phone</div>
 				<div>
-					{{#if isEditing}}
-						{{input type="text" value=model.phone placeholder="Phone"}}
-					{{else}}
-						{{model.phone}}
-					{{/if}}
+					{{model.phone}}					
 				</div>
 			</div>
 			<div class="form-field">
@@ -81,14 +69,9 @@
 		</section>
 	</div>
 	<div class="user-controls">
-		{{#if isEditing}}
-			<button class="float-right with-icon" {{action "save"}}>{{fa-icon "check"}}Save</button>
-			<button class="float-right with-icon transparent dbl-right-margin" {{action "cancel"}}>{{fa-icon "times"}}Cancel</button>
-		{{else}}
-			<button class="float-left transparent" {{action "delete"}}>{{fa-icon "trash-o"}}</button>
-			<button class="float-right with-icon" {{action "initEdit"}}>{{fa-icon "pencil"}}Edit</button>
-			{{#link-to "lro.admin.users.people.user.assign" tagName="button" class="float-right with-icon dbl-right-margin"}}{{fa-icon "user-plus"}}Assign{{/link-to}}
-		{{/if}}
+		<button class="float-left transparent" {{action "delete"}}>{{fa-icon "trash-o"}}</button>
+		{{#link-to "lro.emberHackathon" model.firstName tagName="button" class="float-right with-icon"}}{{fa-icon "pencil"}}Edit{{/link-to}}
+		{{#link-to "lro.admin.users.people.user.assign" tagName="button" class="float-right with-icon dbl-right-margin"}}{{fa-icon "user-plus"}}Assign{{/link-to}}		
 	</div>
 </section>
 <section class="user-rights">

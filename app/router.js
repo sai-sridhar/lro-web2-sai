@@ -13,6 +13,8 @@ Router.map(function() {
   });
   this.route('lro', function() {
     this.route('dashboard');
+    //this.route('emberHackathon');
+    this.route('emberHackathon', { path : "/emberHackathon/:user_id" });
     this.route('pricingLeasing', function() {
       this.route('community', { path : "/:community_id" }, function() {
         this.route('new', function() {
@@ -106,8 +108,7 @@ Router.map(function() {
     });
     this.route('support');
     this.route('loading');
-  });
-
+  });  
 });
 
 export default Router;

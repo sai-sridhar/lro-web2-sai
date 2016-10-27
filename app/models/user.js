@@ -21,6 +21,7 @@ export default Model.extend({
 	initials : Ember.computed("firstInitial", "lastInitial", function() {
 		return this.get("firstInitial") + this.get("lastInitial");
 	}),
+	passwordHint : attr("string"),
 	title : attr("string"),
 	phone : attr("string"),
 	status : attr("string", { defaultValue: "Active" }),
